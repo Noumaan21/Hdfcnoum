@@ -851,6 +851,18 @@ main .form form .field-income-note p {
     margin: 0;
 }
 
+/* Blue links: "here" in consent labels and Terms & Privacy links */
+main .form form .field-consent-communication label a,
+main .form form .field-consent-communication label u,
+main .form form .field-consent-marketing label a,
+main .form form .field-consent-marketing label u,
+main .form form .field-terms-privacy-text p a,
+main .form form .field-terms-privacy-text p u {
+    color: #0d5dbf;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /* Submit button */
 main .form form .field-view-loan-eligibility button {
     background-color: #1a3c8f;
