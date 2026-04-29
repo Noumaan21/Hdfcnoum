@@ -851,15 +851,22 @@ main .form form .field-income-note p {
     margin: 0;
 }
 
-/* Blue links: "here" in consent labels and Terms & Privacy links */
+/* Blue "here" links in consent checkbox labels */
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label a,
 main .form form .field-consent-communication label a,
 main .form form .field-consent-communication label u,
 main .form form .field-consent-marketing label a,
-main .form form .field-consent-marketing label u,
+main .form form .field-consent-marketing label u {
+    color: #0d5dbf;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Terms & Conditions / Privacy Policy — blue, no underline */
 main .form form .field-terms-privacy-text p a,
 main .form form .field-terms-privacy-text p u {
     color: #0d5dbf;
-    text-decoration: underline;
+    text-decoration: none;
     cursor: pointer;
 }
 
