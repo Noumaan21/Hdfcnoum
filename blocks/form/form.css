@@ -851,6 +851,12 @@ main .form form .field-income-note p {
     margin: 0;
 }
 
+/* "here" word styled blue via JS-injected span */
+.here-link {
+    color: #0d5dbf;
+    cursor: pointer;
+}
+
 /* Blue "here" links in consent checkbox labels */
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper label a,
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper label u,

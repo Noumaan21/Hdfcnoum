@@ -579,5 +579,12 @@ export default async function decorate(block) {
       form.dataset.formpath = formDef.properties['fd:path'];
     }
     container.replaceWith(form);
+
+    // Wrap "here" in consent labels so it can be styled blue
+    form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
+      if (!label.querySelector('a, .here-link')) {
+        label.innerHTML = label.innerHTML.replace(/\bhere\b(?=\.)/, '<span class="here-link">here</span>');
+      }
+    });
   }
 }
