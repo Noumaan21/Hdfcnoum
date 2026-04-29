@@ -809,25 +809,57 @@ main .form form .field-personal-loan-offer-panel > legend {
     padding-bottom: 12px;
 }
 
-/* Mobile number +91 prefix */
+/* Taller, rounder inputs inside the panel */
+main .form form .field-personal-loan-offer-panel input[type="text"],
+main .form form .field-personal-loan-offer-panel .date-wrapper input {
+    height: 56px;
+    border-radius: 8px;
+    border-color: #ccc;
+}
+
+/* Mobile number: wider column, Indian flag + +91 */
 main .form form .field-mobile-number {
     position: relative;
+    grid-column: span 6;
 }
 
 main .form form .field-mobile-number input {
-    padding-left: 50px;
+    padding-left: 82px;
 }
 
+/* Indian flag */
 main .form form .field-mobile-number::before {
-    content: "+91";
+    content: "";
     position: absolute;
-    left: 10px;
-    top: 56px;
+    left: 14px;
+    top: 62px;
     transform: translateY(-50%);
-    font-size: 0.875rem;
-    color: #333;
+    width: 24px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='0.667' fill='%23FF9933'/%3E%3Crect y='0.667' width='3' height='0.667' fill='%23fff'/%3E%3Crect y='1.333' width='3' height='0.667' fill='%23138808'/%3E%3Ccircle cx='1.5' cy='1' r='0.3' fill='none' stroke='%23000080' stroke-width='0.05'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-repeat: no-repeat;
     pointer-events: none;
     z-index: 1;
+}
+
+/* +91 text */
+main .form form .field-mobile-number::after {
+    content: "+91";
+    position: absolute;
+    left: 44px;
+    top: 62px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Date of Birth: wider column */
+main .form form .field-date-of-birth {
+    grid-column: span 6;
 }
 
 /* Income note - amber box */
