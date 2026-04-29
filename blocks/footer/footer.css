@@ -18,3 +18,36 @@ footer .footer p {
     padding: 40px 32px 24px;
   }
 }
+
+/* footer for form */
+
+.footer {
+  background: #03164a;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  padding: 24px 16px;
+  line-height: 1.6;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;      /* add */
+  bottom: 0;            /* add */
+  z-index: 10;
+}
+
+/* show default text if empty */
+.footer:empty::before {
+  content: "© Copyright HDFC Bank Ltd.";
+}
+
+/* style inner content */
+.footer * {
+  color: #fff;
+  margin: 0;
+  font-size: 12px;
+}
+ 
