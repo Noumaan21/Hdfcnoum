@@ -876,15 +876,15 @@ main .form form .field-journey-steps > legend {
     display: none;
 }
 
-/* Journey step items: centered column */
+/* Journey step items: icon left, text right */
 main .form form .field-step-mobile-phone,
 main .form form .field-step-pan-card,
 main .form form .field-step-date-of-birth,
 main .form form .field-step-cheque-bank-details {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    text-align: center;
+    text-align: left;
     gap: 8px;
 }
 
@@ -892,8 +892,9 @@ main .form form .field-step-mobile-phone p,
 main .form form .field-step-pan-card p,
 main .form form .field-step-date-of-birth p,
 main .form form .field-step-cheque-bank-details p {
-    font-size: 0.78rem;
-    color: #444;
+    font-size: 0.82rem;
+    color: #0d5dbf;
+    font-weight: 500;
     margin: 0;
 }
 
@@ -904,8 +905,9 @@ main .form form .field-step-date-of-birth::before,
 main .form form .field-step-cheque-bank-details::before {
     content: "";
     display: block;
-    width: 36px;
-    height: 36px;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
