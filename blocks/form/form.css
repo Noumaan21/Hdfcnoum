@@ -853,11 +853,13 @@ main .form form .field-income-note p {
 
 /* Blue "here" links in consent checkbox labels */
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper label a,
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label u,
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label span,
 main .form form .field-consent-communication label a,
 main .form form .field-consent-communication label u,
 main .form form .field-consent-marketing label a,
 main .form form .field-consent-marketing label u {
-    color: #0d5dbf;
+    color: #0d5dbf !important;
     text-decoration: none;
     cursor: pointer;
 }
