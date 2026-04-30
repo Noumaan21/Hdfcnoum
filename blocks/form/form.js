@@ -570,12 +570,13 @@ function decorateLoanSliders(form) {
   }
 
   function updateEMI() {
-    const { amount, tenure } = state;
-    const annualRate = getRateForAmount(amount);
-    const r = annualRate / (12 * 100);
-    const pow = (1 + r) ** tenure;
-    const emi = Math.round((amount * r * pow) / (pow - 1));
-    const taxes = Math.round(amount * PROCESSING_FEE_RATE * GST_RATE);
+    const P = state.amount;                        // Principal
+    const n = state.tenure;                        // Tenure in months
+    const annualRate = getRateForAmount(P);
+    const r = annualRate / (12 * 100);             // r = Annual rate / (12 × 100)
+    const onePlusRPowN = (1 + r) ** n;             // (1 + r)^n
+    const emi = Math.round((P * r * onePlusRPowN) / (onePlusRPowN - 1)); // EMI = P×r×(1+r)^n / ((1+r)^n − 1)
+    const taxes = Math.round(P * PROCESSING_FEE_RATE * GST_RATE);
 
     const emiField = form.querySelector('.field-emi-amount');
     ensureLabel(emiField, 'EMI Amount');
@@ -585,12 +586,15 @@ function decorateLoanSliders(form) {
     const rateField = form.querySelector('.field-rate-of-interest');
     ensureLabel(rateField, 'Rate of Interest');
     const rateEl = rateField?.querySelector('p');
-    if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;
+    if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;  // Annual interest rate used in formula
 
     const taxesField = form.querySelector('.field-taxes-amount');
     ensureLabel(taxesField, 'Taxes');
     const taxesEl = taxesField?.querySelector('p');
     if (taxesEl) taxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
+
+    const approvedEl = form.querySelector('.field-approved-loan-amount p');
+    if (approvedEl) approvedEl.textContent = `₹${P.toLocaleString('en-IN')}`;
   }
 
   function buildSlider(fieldWrapper, config) {
