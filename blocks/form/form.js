@@ -559,14 +559,14 @@ function decorateLoanSliders(form) {
     const r = annualRate / (12 * 100);
     const pow = (1 + r) ** tenure;
     const emi = Math.round((amount * r * pow) / (pow - 1));
+    const totalInterest = (emi * tenure) - amount;
+    const effectiveRate = ((totalInterest / amount) / (tenure / 12)) * 100;
 
     const emiEl = form.querySelector('.field-emi-amount p');
     if (emiEl) emiEl.textContent = `₹${emi.toLocaleString('en-IN')}`;
 
     const rateEl = form.querySelector('.field-rate-of-interest p');
-    if (rateEl && !parseFloat(rateEl.textContent)) {
-      rateEl.textContent = `${annualRate.toFixed(2)}% p.a.`;
-    }
+    if (rateEl) rateEl.textContent = `${effectiveRate.toFixed(2)}% p.a.`;
   }
 
   function buildSlider(fieldWrapper, config) {
