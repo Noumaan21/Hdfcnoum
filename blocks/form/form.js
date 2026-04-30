@@ -526,54 +526,18 @@ function addRequestContextToForm(formDef) {
 
 
 function decorateLoanSliders(form) {
-  const ANNUAL_RATE = 10.97;
-  const sliders = {};
-
   const sliderConfigs = {
     'field-loan-amount-inr': {
-      key: 'amount',
       min: 50000, max: 1500000, step: 10000, defaultVal: 1500000,
       labels: ['50K', '2L', '4L', '6L', '8L', '10L', '15L'],
       format: (v) => `₹${Number(v).toLocaleString('en-IN')}`,
     },
     'field-loan-tenure-months': {
-      key: 'tenure',
       min: 12, max: 84, step: 12, defaultVal: 84,
       labels: ['12m', '24m', '36m', '48m', '60m', '72m', '84m'],
       format: (v) => `${v} months`,
     },
   };
-
-  function fmtINR(n) {
-    return `₹${Math.round(n).toLocaleString('en-IN')}`;
-  }
-
-  function calcEMI(principal, months) {
-    const r = ANNUAL_RATE / 12 / 100;
-    return Math.round(principal * r * (1 + r) ** months / ((1 + r) ** months - 1));
-  }
-
-  function calcTaxes(principal) {
-    // 18% GST on 1% processing fee
-    return Math.round(principal * 0.01 * 0.18);
-  }
-
-  function updateSummary() {
-    const principal = Number(sliders.amount?.value || 1500000);
-    const months = Number(sliders.tenure?.value || 84);
-    const emi = calcEMI(principal, months);
-    const taxes = calcTaxes(principal);
-
-    const approvedEl = form.querySelector('.field-approved-loan-amount p');
-    const emiEl = form.querySelector('.field-emi-amount p');
-    const roiEl = form.querySelector('.field-rate-of-interest p');
-    const taxesEl = form.querySelector('.field-taxes-amount p');
-
-    if (approvedEl) approvedEl.textContent = fmtINR(principal);
-    if (emiEl) emiEl.textContent = `EMI Amount: ${fmtINR(emi)}`;
-    if (roiEl) roiEl.textContent = `Rate of Interest: ${ANNUAL_RATE}%`;
-    if (taxesEl) taxesEl.textContent = `Taxes: ${fmtINR(taxes)}`;
-  }
 
   function buildSlider(fieldWrapper, config) {
     if (fieldWrapper.querySelector('.loan-range-slider')) return;
@@ -595,7 +559,6 @@ function decorateLoanSliders(form) {
     range.max = config.max;
     range.step = config.step;
     range.value = config.defaultVal;
-    sliders[config.key] = range;
 
     const labelsDiv = document.createElement('div');
     labelsDiv.className = 'loan-range-labels';
@@ -608,16 +571,23 @@ function decorateLoanSliders(form) {
     sliderWrap.append(range, labelsDiv);
     fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
 
+    function syncApprovedAmount(value) {
+      const approvedEl = form.querySelector('.field-approved-loan-amount p');
+      if (approvedEl && fieldWrapper.classList.contains('field-loan-amount-inr')) {
+        approvedEl.textContent = `₹${Number(value).toLocaleString('en-IN')}`;
+      }
+    }
+
     function updateFill() {
       const pct = ((range.value - config.min) / (config.max - config.min)) * 100;
       range.style.setProperty('--range-pct', `${pct}%`);
       display.value = config.format(range.value);
       numInput.value = range.value;
+      syncApprovedAmount(range.value);
     }
 
     range.addEventListener('input', () => {
       updateFill();
-      updateSummary();
       numInput.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
@@ -629,7 +599,6 @@ function decorateLoanSliders(form) {
       const wrapper = form.querySelector(`.${cls}`);
       if (wrapper) buildSlider(wrapper, config);
     });
-    updateSummary();
   }
 
   apply();
