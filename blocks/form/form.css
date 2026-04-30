@@ -1074,29 +1074,19 @@ main .form form .field-otp-attempts-info p {
 
 /* Submit OTP button */
 main .form form .field-submit-otp button {
-    background-color: rgb(165 180 252 / 25%);
-    border: 1px solid #a5b4fc;
-    border-radius: 6px;
-    padding: 10px 16px;
-    color: #5b5ed6;
-    font-size: 0.9rem;
-    font-weight: 500;
+    background-color: #4a62b6;
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px 32px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    transition: background-color 0.2s ease;
-}
-
-main .form form .field-submit-otp button::after {
-    content: "›";
-    font-size: 1.2rem;
-    line-height: 1;
+    width: auto;
 }
 
 main .form form .field-submit-otp button:hover {
-    background-color: rgb(165 180 252 / 45%);
+    background-color: #3a52a6;
 }
 
 /* Important links note — centered gray text with top divider */
