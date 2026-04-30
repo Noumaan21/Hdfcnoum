@@ -526,18 +526,49 @@ function addRequestContextToForm(formDef) {
 
 
 function decorateLoanSliders(form) {
+  const RATE = 10.97;
+
   const sliderConfigs = {
     'field-loan-amount-inr': {
+      key: 'amount',
       min: 50000, max: 1500000, step: 10000, defaultVal: 1500000,
       labels: ['50K', '2L', '4L', '6L', '8L', '10L', '15L'],
       format: (v) => `₹${Number(v).toLocaleString('en-IN')}`,
     },
     'field-loan-tenure-months': {
+      key: 'tenure',
       min: 12, max: 84, step: 12, defaultVal: 84,
       labels: ['12m', '24m', '36m', '48m', '60m', '72m', '84m'],
       format: (v) => `${v} months`,
     },
   };
+
+  function fmt(n) {
+    return `₹${Math.round(n).toLocaleString('en-IN')}`;
+  }
+
+  function updateSummary() {
+    const amountRange = form.querySelector('[data-loan-field="amount"]');
+    const tenureRange = form.querySelector('[data-loan-field="tenure"]');
+    if (!amountRange || !tenureRange) return;
+
+    const p = Number(amountRange.value);
+    const n = Number(tenureRange.value);
+    if (!p || !n) return;
+
+    const r = RATE / 1200;
+    const factor = Math.pow(1 + r, n);
+    const emi = Math.round(p * r * factor / (factor - 1));
+    const taxes = Math.round(p * 0.0018);
+
+    const emiEl = form.querySelector('.field-emi-amount p');
+    const roiEl = form.querySelector('.field-rate-of-interest p');
+    const taxesEl = form.querySelector('.field-taxes-amount p');
+
+    if (emiEl) emiEl.textContent = `EMI Amount: ${fmt(emi)}`;
+    if (roiEl) roiEl.textContent = `Rate of Interest: ${RATE}%`;
+    if (taxesEl) taxesEl.textContent = `Taxes: ${fmt(taxes)}`;
+  }
 
   function buildSlider(fieldWrapper, config) {
     if (fieldWrapper.querySelector('.loan-range-slider')) return;
@@ -559,6 +590,7 @@ function decorateLoanSliders(form) {
     range.max = config.max;
     range.step = config.step;
     range.value = config.defaultVal;
+    range.dataset.loanField = config.key;
 
     const labelsDiv = document.createElement('div');
     labelsDiv.className = 'loan-range-labels';
@@ -571,23 +603,20 @@ function decorateLoanSliders(form) {
     sliderWrap.append(range, labelsDiv);
     fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
 
-    function syncApprovedAmount(value) {
-      const approvedEl = form.querySelector('.field-approved-loan-amount p');
-      if (approvedEl && fieldWrapper.classList.contains('field-loan-amount-inr')) {
-        approvedEl.textContent = `₹${Number(value).toLocaleString('en-IN')}`;
-      }
-    }
-
     function updateFill() {
       const pct = ((range.value - config.min) / (config.max - config.min)) * 100;
       range.style.setProperty('--range-pct', `${pct}%`);
       display.value = config.format(range.value);
       numInput.value = range.value;
-      syncApprovedAmount(range.value);
+      if (config.key === 'amount') {
+        const approvedEl = form.querySelector('.field-approved-loan-amount p');
+        if (approvedEl) approvedEl.textContent = `₹${Number(range.value).toLocaleString('en-IN')}`;
+      }
     }
 
     range.addEventListener('input', () => {
       updateFill();
+      updateSummary();
       numInput.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
@@ -599,6 +628,7 @@ function decorateLoanSliders(form) {
       const wrapper = form.querySelector(`.${cls}`);
       if (wrapper) buildSlider(wrapper, config);
     });
+    updateSummary();
   }
 
   apply();
