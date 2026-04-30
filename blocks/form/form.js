@@ -540,6 +540,27 @@ function decorateLoanSliders(form) {
     },
   };
 
+  const state = { amount: 1500000, tenure: 84 };
+
+  function getAnnualRate() {
+    const rateEl = form.querySelector('.field-rate-of-interest p');
+    if (rateEl) {
+      const parsed = parseFloat(rateEl.textContent);
+      if (!Number.isNaN(parsed)) return parsed;
+    }
+    return 10.97;
+  }
+
+  function updateEMI() {
+    const emiEl = form.querySelector('.field-emi-amount p');
+    if (!emiEl) return;
+    const { amount, tenure } = state;
+    const r = getAnnualRate() / (12 * 100);
+    const pow = (1 + r) ** tenure;
+    const emi = Math.round((amount * r * pow) / (pow - 1));
+    emiEl.textContent = `₹${emi.toLocaleString('en-IN')}`;
+  }
+
   function buildSlider(fieldWrapper, config) {
     if (fieldWrapper.querySelector('.loan-range-slider')) return;
     const numInput = fieldWrapper.querySelector('input[type="number"]');
@@ -585,6 +606,12 @@ function decorateLoanSliders(form) {
       display.value = config.format(range.value);
       numInput.value = range.value;
       syncApprovedAmount(range.value);
+      if (fieldWrapper.classList.contains('field-loan-amount-inr')) {
+        state.amount = Number(range.value);
+      } else {
+        state.tenure = Number(range.value);
+      }
+      updateEMI();
     }
 
     range.addEventListener('input', () => {
