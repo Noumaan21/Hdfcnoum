@@ -542,23 +542,31 @@ function decorateLoanSliders(form) {
 
   const state = { amount: 1500000, tenure: 84 };
 
+  const DEFAULT_RATE = 10.97;
+
   function getAnnualRate() {
     const rateEl = form.querySelector('.field-rate-of-interest p');
     if (rateEl) {
       const parsed = parseFloat(rateEl.textContent);
       if (!Number.isNaN(parsed)) return parsed;
     }
-    return 10.97;
+    return DEFAULT_RATE;
   }
 
   function updateEMI() {
-    const emiEl = form.querySelector('.field-emi-amount p');
-    if (!emiEl) return;
     const { amount, tenure } = state;
-    const r = getAnnualRate() / (12 * 100);
+    const annualRate = getAnnualRate();
+    const r = annualRate / (12 * 100);
     const pow = (1 + r) ** tenure;
     const emi = Math.round((amount * r * pow) / (pow - 1));
-    emiEl.textContent = `₹${emi.toLocaleString('en-IN')}`;
+
+    const emiEl = form.querySelector('.field-emi-amount p');
+    if (emiEl) emiEl.textContent = `₹${emi.toLocaleString('en-IN')}`;
+
+    const rateEl = form.querySelector('.field-rate-of-interest p');
+    if (rateEl && !parseFloat(rateEl.textContent)) {
+      rateEl.textContent = `${annualRate.toFixed(2)}% p.a.`;
+    }
   }
 
   function buildSlider(fieldWrapper, config) {
