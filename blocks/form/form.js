@@ -573,7 +573,7 @@ function decorateLoanSliders(form) {
     const rateEl = form.querySelector('.field-rate-of-interest p');
     if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;
 
-    const taxesEl = form.querySelector('.field-taxes p');
+    const taxesEl = form.querySelector('.field-taxes-amount p');
     if (taxesEl) taxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
   }
 
