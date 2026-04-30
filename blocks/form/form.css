@@ -797,16 +797,21 @@ main .form form select[multiple] {
 
 main .form form .field-personal-loan-offer-panel {
     background: #fff;
-    border-radius: 8px;
-    padding: 24px 28px;
-    box-shadow: 0 2px 16px rgb(0 0 0 / 8%);
+    border-radius: 12px;
+    padding: 28px 32px 32px;
+    box-shadow: 0 2px 20px rgb(0 0 0 / 8%);
+    border: 1px solid #e8eaf0;
+    row-gap: 16px;
+    column-gap: 16px;
 }
 
+/* Panel heading */
 main .form form .field-personal-loan-offer-panel > legend {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: #222;
-    padding-bottom: 12px;
+    color: #111;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 /* Taller, rounder inputs inside the panel */
@@ -814,12 +819,23 @@ main .form form .field-personal-loan-offer-panel input[type="text"],
 main .form form .field-personal-loan-offer-panel .date-wrapper input {
     height: 56px;
     border-radius: 8px;
-    border-color: #ccc;
+    border: 1.5px solid #d0d5dd;
+    font-size: 0.95rem;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-/* Mobile number: wider column, Indian flag + +91 inside input */
+main .form form .field-personal-loan-offer-panel input[type="text"]:focus,
+main .form form .field-personal-loan-offer-panel .date-wrapper input:focus {
+    border-color: #3d52d5;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
+}
+
+/* Mobile number: col-5, Indian flag + +91 prefix */
 main .form form .field-mobile-number {
-    grid-column: span 6;
+    grid-column: span 5;
 }
 
 main .form form .field-mobile-number input {
@@ -832,9 +848,89 @@ main .form form .field-mobile-number input {
     background-size: 24px 16px, auto;
 }
 
-/* Date of Birth: wider column */
+/* OTP note below mobile */
+main .form form .field-mobile-number ~ .field-description,
+main .form form .field-mobile-number .field-description {
+    font-size: 0.78rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Date of Birth: col-4 */
 main .form form .field-date-of-birth {
-    grid-column: span 6;
+    grid-column: span 4;
+}
+
+/* Your source of income: col-3, radio group label styled as heading */
+main .form form .field-source-of-income,
+main .form form [class*="field-source-of-income"],
+main .form form .radio-group-wrapper[name="source_of_income"],
+main .form form .field-personal-loan-offer-panel .radio-group-wrapper {
+    grid-column: span 3;
+}
+
+main .form form .field-personal-loan-offer-panel .radio-group-wrapper > legend {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 8px;
+    display: block;
+}
+
+main .form form .field-personal-loan-offer-panel .radio-wrapper {
+    margin-bottom: 6px;
+    align-items: center;
+}
+
+main .form form .field-personal-loan-offer-panel .radio-wrapper label {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Consent checkboxes */
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper {
+    align-items: flex-start;
+    gap: 10px;
+}
+
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label {
+    font-size: 0.88rem;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* "here" word styled blue via JS-injected span */
+.here-link {
+    color: #0d5dbf;
+    cursor: pointer;
+}
+
+/* Blue links in consent labels */
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label a,
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label u,
+main .form form .field-personal-loan-offer-panel .checkbox-wrapper label span,
+main .form form .field-consent-communication label a,
+main .form form .field-consent-communication label u,
+main .form form .field-consent-marketing label a,
+main .form form .field-consent-marketing label u {
+    color: #0d5dbf !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Terms & Conditions / Privacy Policy */
+main .form form .field-terms-privacy-text p {
+    font-size: 0.88rem;
+    color: #444;
+    margin: 0;
+}
+
+main .form form .field-terms-privacy-text p a,
+main .form form .field-terms-privacy-text p u {
+    color: #0d5dbf;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
 }
 
 /* Income note - amber box */
@@ -851,38 +947,18 @@ main .form form .field-income-note p {
     margin: 0;
 }
 
-/* "here" word styled blue via JS-injected span */
-.here-link {
-    color: #0d5dbf;
-    cursor: pointer;
-}
-
-/* Blue "here" links in consent checkbox labels */
-main .form form .field-personal-loan-offer-panel .checkbox-wrapper label a,
-main .form form .field-personal-loan-offer-panel .checkbox-wrapper label u,
-main .form form .field-personal-loan-offer-panel .checkbox-wrapper label span,
-main .form form .field-consent-communication label a,
-main .form form .field-consent-communication label u,
-main .form form .field-consent-marketing label a,
-main .form form .field-consent-marketing label u {
-    color: #0d5dbf !important;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Terms & Conditions / Privacy Policy — blue, no underline */
-main .form form .field-terms-privacy-text p a,
-main .form form .field-terms-privacy-text p u {
-    color: #0d5dbf;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Submit button */
-main .form form .field-view-loan-eligibility button {
+/* View Loan Eligibility — always blue, never gray */
+main .form form .field-view-loan-eligibility button,
+main .form form .field-view-loan-eligibility button:disabled {
     background-color: #1a3c8f;
-    border-radius: 4px;
-    padding: 12px 28px;
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px 32px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    opacity: 1;
 }
 
 main .form form .field-view-loan-eligibility button:hover {
