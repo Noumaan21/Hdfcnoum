@@ -542,26 +542,23 @@ function decorateLoanSliders(form) {
 
   const state = { amount: 1500000, tenure: 84 };
 
-  const DEFAULT_RATE = 10.97;
-  let cachedRate = null;
+  const RATE_TIERS = [
+    { upTo: 200000, rate: 14.50 },
+    { upTo: 400000, rate: 13.50 },
+    { upTo: 600000, rate: 12.75 },
+    { upTo: 900000, rate: 12.00 },
+    { upTo: 1200000, rate: 11.25 },
+    { upTo: 1500000, rate: 10.97 },
+  ];
 
-  function getAnnualRate() {
-    if (cachedRate !== null) return cachedRate;
-    const rateEl = form.querySelector('.field-rate-of-interest p');
-    if (rateEl) {
-      const parsed = parseFloat(rateEl.textContent);
-      if (!Number.isNaN(parsed) && parsed > 0) {
-        cachedRate = parsed;
-        return cachedRate;
-      }
-    }
-    cachedRate = DEFAULT_RATE;
-    return cachedRate;
+  function getRateForAmount(amount) {
+    const tier = RATE_TIERS.find((t) => amount <= t.upTo);
+    return tier ? tier.rate : RATE_TIERS[RATE_TIERS.length - 1].rate;
   }
 
   function updateEMI() {
     const { amount, tenure } = state;
-    const annualRate = getAnnualRate();
+    const annualRate = getRateForAmount(amount);
     const r = annualRate / (12 * 100);
     const pow = (1 + r) ** tenure;
     const emi = Math.round((amount * r * pow) / (pow - 1));
