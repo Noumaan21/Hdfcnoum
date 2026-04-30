@@ -674,6 +674,7 @@ function decorateOtpInput(form) {
     const fieldOtp = form.querySelector('.field-otp');
     const input = fieldOtp?.querySelector('input');
     if (!input || input.dataset.otpDecorated) return;
+    input.type = 'text';
     input.maxLength = 6;
     input.placeholder = '· · · · · ·';
     input.dataset.otpDecorated = 'true';
@@ -683,20 +684,17 @@ function decorateOtpInput(form) {
     btn.className = 'otp-eye-toggle';
     btn.setAttribute('aria-label', 'Hide OTP');
     btn.innerHTML = EYE_SLASH_SVG;
-    btn.dataset.visible = 'true';
 
     btn.addEventListener('click', () => {
-      const isVisible = btn.dataset.visible === 'true';
-      if (isVisible) {
-        input.type = 'password';
-        btn.innerHTML = EYE_OPEN_SVG;
-        btn.setAttribute('aria-label', 'Show OTP');
-        btn.dataset.visible = 'false';
-      } else {
+      const isHidden = input.type === 'password';
+      if (isHidden) {
         input.type = 'text';
         btn.innerHTML = EYE_SLASH_SVG;
         btn.setAttribute('aria-label', 'Hide OTP');
-        btn.dataset.visible = 'true';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = EYE_OPEN_SVG;
+        btn.setAttribute('aria-label', 'Show OTP');
       }
     });
 
