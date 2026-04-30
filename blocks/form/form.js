@@ -573,11 +573,19 @@ function decorateLoanSliders(form) {
     sliderWrap.append(range, labelsDiv);
     fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
 
+    function syncApprovedAmount(value) {
+      const approvedEl = form.querySelector('.field-approved-loan-amount p');
+      if (approvedEl && fieldWrapper.classList.contains('field-loan-amount-inr')) {
+        approvedEl.textContent = `₹${Number(value).toLocaleString('en-IN')}`;
+      }
+    }
+
     function updateFill() {
       const pct = ((range.value - config.min) / (config.max - config.min)) * 100;
       range.style.setProperty('--range-pct', `${pct}%`);
       display.value = config.format(range.value);
       numInput.value = range.value;
+      syncApprovedAmount(range.value);
     }
 
     range.addEventListener('input', () => {
