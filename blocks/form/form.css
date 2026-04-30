@@ -1072,33 +1072,31 @@ main .form form .field-otp-attempts-info p {
     margin: 0;
 }
 
-/* Submit OTP button — light periwinkle compact */
+/* Submit OTP button */
 main .form form .field-submit-otp button {
-    background-color: rgb(165 180 252 / 35%);
-    border-radius: 8px;
-    padding: 8px 14px;
-    color: #4338ca;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1.5px solid #a5b4fc;
+    background-color: rgb(165 180 252 / 25%);
+    border: 1px solid #a5b4fc;
+    border-radius: 6px;
+    padding: 10px 16px;
+    color: #5b5ed6;
+    font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
     width: 100%;
+    transition: background-color 0.2s ease;
 }
 
 main .form form .field-submit-otp button::after {
     content: "›";
-    font-size: 1.1rem;
-    color: #4338ca;
+    font-size: 1.2rem;
     line-height: 1;
-    flex-shrink: 0;
 }
 
 main .form form .field-submit-otp button:hover {
-    background-color: rgb(165 180 252 / 55%);
+    background-color: rgb(165 180 252 / 45%);
 }
 
 /* Important links note — centered gray text with top divider */
