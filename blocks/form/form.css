@@ -959,6 +959,154 @@ main .form form .field-view-loan-eligibility button:hover {
     background-color: #3a52a6;
 }
 
+/* ===== Enter OTP Panel ===== */
+
+main .form form .field-enter-otp-panel {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    row-gap: 12px;
+    column-gap: 16px;
+}
+
+/* "Enter OTP" heading */
+main .form form .field-enter-otp-panel > legend {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+    padding-bottom: 2px;
+    margin-bottom: 0;
+    border: none;
+}
+
+/* Instructions: "We've sent a 6-digit OTP..." */
+main .form form .field-otp-instructions {
+    margin: 0;
+    padding: 0;
+}
+
+main .form form .field-otp-instructions p {
+    font-size: 0.88rem;
+    color: #333;
+    margin: 0;
+    line-height: 1.5;
+}
+
+main .form form .field-otp-instructions u {
+    color: #4a62b6;
+    text-decoration: underline;
+    cursor: pointer;
+    font-style: normal;
+}
+
+/* OTP input wrapper */
+main .form form .field-otp {
+    position: relative;
+    margin: 4px 0;
+}
+
+/* Hide label "OTP:" */
+main .form form .field-otp > label {
+    display: none;
+}
+
+/* OTP text input */
+main .form form .field-otp input[type="text"] {
+    height: 56px;
+    border-radius: 10px;
+    border: 1.5px solid #d0d5dd;
+    font-size: 1.5rem;
+    letter-spacing: 20px;
+    padding: 0 48px 0 20px;
+    width: 100%;
+    color: #333;
+    margin: 0;
+}
+
+main .form form .field-otp input[type="text"]:focus {
+    border-color: #4a62b6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(74 98 182 / 10%);
+}
+
+/* Eye-off icon on the right */
+main .form form .field-otp::after {
+    content: "";
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94'/%3E%3Cpath d='M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19'/%3E%3Cline x1='1' y1='1' x2='23' y2='23'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    pointer-events: none;
+}
+
+/* Resend timer — left side */
+main .form form .field-resend-otp-timer {
+    grid-column: 1 / span 6;
+    margin: 0;
+    padding: 0;
+}
+
+main .form form .field-resend-otp-timer p {
+    font-size: 0.82rem;
+    color: #444;
+    margin: 0;
+}
+
+/* Attempts info — right side */
+main .form form .field-otp-attempts-info {
+    grid-column: 7 / span 6;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+main .form form .field-otp-attempts-info p {
+    font-size: 0.82rem;
+    color: #888;
+    margin: 0;
+}
+
+/* Submit OTP button — light periwinkle pill */
+main .form form .field-submit-otp button {
+    background-color: #a5b4fc;
+    border-radius: 28px;
+    padding: 13px 16px 13px 28px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+}
+
+main .form form .field-submit-otp button::after {
+    content: "›";
+    font-size: 1.3rem;
+    background: rgb(255 255 255 / 30%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+main .form form .field-submit-otp button:hover {
+    background-color: #818cf8;
+}
+
 /* Important links note — centered gray text with top divider */
 main .form form .field-important-links-note {
     border-top: 1px solid #e0e0e0;
