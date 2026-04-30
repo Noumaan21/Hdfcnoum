@@ -1072,39 +1072,33 @@ main .form form .field-otp-attempts-info p {
     margin: 0;
 }
 
-/* Submit OTP button — light periwinkle pill */
+/* Submit OTP button — light periwinkle compact */
 main .form form .field-submit-otp button {
-    background-color: #a5b4fc;
-    border-radius: 28px;
-    padding: 13px 16px 13px 28px;
-    color: #fff;
-    font-size: 0.95rem;
+    background-color: rgb(165 180 252 / 35%);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: #4338ca;
+    font-size: 0.85rem;
     font-weight: 600;
-    border: none;
+    border: 1.5px solid #a5b4fc;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 10px;
     width: 100%;
 }
 
 main .form form .field-submit-otp button::after {
     content: "›";
-    font-size: 1.3rem;
-    background: rgb(255 255 255 / 30%);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 1.1rem;
+    color: #4338ca;
     line-height: 1;
     flex-shrink: 0;
 }
 
 main .form form .field-submit-otp button:hover {
-    background-color: #818cf8;
+    background-color: rgb(165 180 252 / 55%);
 }
 
 /* Important links note — centered gray text with top divider */
