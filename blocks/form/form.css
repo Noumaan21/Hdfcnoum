@@ -1068,10 +1068,12 @@ main .form form .field-resend-otp-timer p {
     margin: 0;
 }
 
-/* Attempts info — right side */
+/* Attempts info — directly below eye icon */
 main .form form .field-otp-attempts-info {
-    grid-column: 7 / span 6;
-    text-align: right;
+    grid-column: 7 / -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     margin: 0;
     padding: 0;
 }
@@ -1080,6 +1082,7 @@ main .form form .field-otp-attempts-info p {
     font-size: 0.82rem;
     color: #888;
     margin: 0;
+    text-align: right;
 }
 
 /* Submit OTP button */
