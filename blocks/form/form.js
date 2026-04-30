@@ -556,18 +556,25 @@ function decorateLoanSliders(form) {
     return tier ? tier.rate : RATE_TIERS[RATE_TIERS.length - 1].rate;
   }
 
+  const PROCESSING_FEE_RATE = 0.015;
+  const GST_RATE = 0.18;
+
   function updateEMI() {
     const { amount, tenure } = state;
     const annualRate = getRateForAmount(amount);
     const r = annualRate / (12 * 100);
     const pow = (1 + r) ** tenure;
     const emi = Math.round((amount * r * pow) / (pow - 1));
+    const taxes = Math.round(amount * PROCESSING_FEE_RATE * GST_RATE);
 
     const emiEl = form.querySelector('.field-emi-amount p');
     if (emiEl) emiEl.textContent = `₹${emi.toLocaleString('en-IN')}`;
 
     const rateEl = form.querySelector('.field-rate-of-interest p');
     if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;
+
+    const taxesEl = form.querySelector('.field-taxes p');
+    if (taxesEl) taxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
   }
 
   function buildSlider(fieldWrapper, config) {
