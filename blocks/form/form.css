@@ -1011,30 +1011,34 @@ main .form form .field-otp > label {
     display: none;
 }
 
-/* OTP 6-dot inputs */
+/* OTP 6-dot inputs — single bordered container */
 main .form form .field-otp .otp-dots {
     display: flex;
-    gap: 8px;
-    justify-content: space-between;
-    margin: 4px 0;
-}
-
-main .form form .field-otp .otp-dot {
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    border: 1.5px solid #d0d5dd;
-    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 10px;
+    padding: 0 44px 0 12px;
+    height: 44px;
     background: #fff;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-main .form form .field-otp .otp-dot:focus-within {
+main .form form .field-otp .otp-dots:focus-within {
     border-color: #4a62b6;
-    box-shadow: 0 0 0 2px rgb(74 98 182 / 12%);
+    box-shadow: 0 0 0 3px rgb(74 98 182 / 10%);
+}
+
+main .form form .field-otp .otp-dot {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
 }
 
 main .form form .field-otp .otp-dot-input {
@@ -1044,13 +1048,31 @@ main .form form .field-otp .otp-dot-input {
     outline: none;
     background: transparent;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: #333;
     padding: 0;
     margin: 0;
     caret-color: #4a62b6;
-    border-radius: 50%;
+}
+
+/* Eye icon — positioned inside the dots container */
+main .form form .field-otp {
+    position: relative;
+}
+
+main .form form .field-otp::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94'/%3E%3Cpath d='M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19'/%3E%3Cline x1='1' y1='1' x2='23' y2='23'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    pointer-events: none;
 }
 
 /* Resend timer — left side */
@@ -1062,7 +1084,8 @@ main .form form .field-resend-otp-timer {
 
 main .form form .field-resend-otp-timer p {
     font-size: 0.82rem;
-    color: #444;
+    color: #222;
+    font-weight: 700;
     margin: 0;
 }
 
@@ -1082,19 +1105,29 @@ main .form form .field-otp-attempts-info p {
 
 /* Submit OTP button */
 main .form form .field-submit-otp button {
-    background-color: #4a62b6;
-    color: #fff;
+    background-color: rgb(165 180 252 / 30%);
+    color: #3730a3;
+    border: 1.5px solid #a5b4fc;
     border-radius: 8px;
-    padding: 14px 32px;
-    font-size: 0.95rem;
+    padding: 10px 20px;
+    font-size: 0.9rem;
     font-weight: 600;
-    border: none;
     cursor: pointer;
-    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    transition: background-color 0.2s;
+    justify-content: space-between;
+}
+
+main .form form .field-submit-otp button::after {
+    content: "›";
+    font-size: 1.1rem;
 }
 
 main .form form .field-submit-otp button:hover {
-    background-color: #3a52a6;
+    background-color: rgb(165 180 252 / 50%);
 }
 
 /* Important links note — centered gray text with top divider */
