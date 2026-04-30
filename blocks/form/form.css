@@ -878,20 +878,18 @@ main .form form .field-personal-loan-offer-panel .radio-wrapper label {
     font-weight: 400;
 }
 
-/* Consent checkboxes — single line, no wrap */
+/* Consent checkboxes — text wraps naturally */
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper {
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 }
 
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper label {
     font-size: 0.9rem;
     color: #333;
     line-height: 1.55;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex-basis: calc(100% - 26px);
 }
 
 /* "here" word styled blue via JS-injected span */
@@ -961,15 +959,32 @@ main .form form .field-view-loan-eligibility button:hover {
     background-color: #0d2970;
 }
 
-/* Hide important links note, essentials heading and journey steps */
-main .form form .field-important-links-note,
-main .form form .field-essentials-for-journey,
-main .form form .field-journey-steps,
-main .form form .field-step-mobile-phone,
-main .form form .field-step-pan-card,
-main .form form .field-step-date-of-birth,
-main .form form .field-step-cheque-bank-details {
-    display: none !important;
+/* Important links note — centered gray text with top divider */
+main .form form .field-important-links-note {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 16px;
+    text-align: center;
+}
+
+main .form form .field-important-links-note p {
+    font-size: 0.78rem;
+    color: #777;
+    margin: 0;
+}
+
+/* Essentials for the journey — bold heading */
+main .form form .field-essentials-for-journey p {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #111;
+    margin: 0 0 16px;
+}
+
+/* Journey steps: 4-column flex row */
+main .form form .field-journey-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
 }
 
 /* Journey step items: icon left, text right */
