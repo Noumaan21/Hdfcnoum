@@ -965,7 +965,6 @@ main .form form .field-step-cheque-bank-details::before {
 
 /* ===== Loan Details Panel ===== */
 
-/* Card wrapper */
 main .form form .field-loan-details {
     background: #fff;
     border: 1px solid #dde2ec;
@@ -977,7 +976,6 @@ main .form form .field-loan-details {
     column-gap: 24px;
 }
 
-/* Header / Legend — light blue background */
 main .form form .field-loan-details > legend {
     width: 100%;
     background: #eef2ff;
@@ -992,7 +990,6 @@ main .form form .field-loan-details > legend {
     gap: 10px;
 }
 
-/* Lock icon — indigo */
 main .form form .field-loan-details > legend::before {
     content: "";
     display: inline-block;
@@ -1004,7 +1001,6 @@ main .form form .field-loan-details > legend::before {
     background-size: contain;
 }
 
-/* Chevron icon — right side */
 main .form form .field-loan-details > legend::after {
     content: "";
     display: inline-block;
@@ -1017,23 +1013,33 @@ main .form form .field-loan-details > legend::after {
     background-size: contain;
 }
 
-/* Field wrappers — left accent border, no extra margin */
-main .form form .field-loan-details .field-wrapper {
-    padding: 18px 16px 14px 14px;
+/* text-wrappers: short accent line via ::before pseudo (no label conflict) */
+main .form form .field-loan-details .text-wrapper {
+    padding: 14px 16px 10px 14px;
     margin: 0;
-    border-left: 2.5px solid #c7d0f8;
+    position: relative;
 }
 
-/* Labels: small gray */
-main .form form .field-loan-details .field-wrapper > label {
+main .form form .field-loan-details .text-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5px;
+    height: 36px;
+    background-color: #c7d0f8;
+    border-radius: 2px;
+}
+
+main .form form .field-loan-details .text-wrapper > label {
     font-size: 0.72rem;
     color: #888;
     font-weight: 400;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
-/* Inputs: display as plain bold text, no border/background */
 main .form form .field-loan-details input[type="text"] {
     border: none;
     background: transparent;
@@ -1053,27 +1059,25 @@ main .form form .field-loan-details input[type="text"]:hover {
     border: none;
 }
 
-/* Schedule of Charges wrapper — same left accent */
+/* button-wrapper: ::before used for label, accent line via box-shadow */
 main .form form .field-loan-details .button-wrapper {
-    padding: 18px 16px 14px 14px;
+    padding: 14px 16px 10px 14px;
     margin: 0;
-    border-left: 2.5px solid #c7d0f8;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    box-shadow: inset 2.5px 0 0 #c7d0f8;
 }
 
-/* "Schedule of Charges" shown as the gray label */
 main .form form .field-loan-details .button-wrapper::before {
     content: "Schedule of Charges";
     font-size: 0.72rem;
     color: #888;
     font-weight: 400;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
-/* Button text hidden; "Click here" shown via ::after */
 main .form form .field-loan-details .button-wrapper button {
     background: transparent;
     border: none;
