@@ -889,25 +889,15 @@ main .form form .field-view-loan-eligibility button:hover {
     background-color: #0d2970;
 }
 
-/* Important links note */
-main .form form .field-important-links-note p {
-    font-size: 0.78rem;
-    color: #777;
-    text-align: center;
-}
-
-/* Essentials for the journey heading */
-main .form form .field-essentials-for-journey p {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #333;
-    border-top: 1px solid #eee;
-    padding-top: 14px;
-}
-
-/* Journey steps: hide empty legend */
-main .form form .field-journey-steps > legend {
-    display: none;
+/* Hide important links note, essentials heading and journey steps */
+main .form form .field-important-links-note,
+main .form form .field-essentials-for-journey,
+main .form form .field-journey-steps,
+main .form form .field-step-mobile-phone,
+main .form form .field-step-pan-card,
+main .form form .field-step-date-of-birth,
+main .form form .field-step-cheque-bank-details {
+    display: none !important;
 }
 
 /* Journey step items: icon left, text right */
