@@ -1013,15 +1013,24 @@ main .form form .field-otp > label {
 
 /* OTP text input */
 main .form form .field-otp input[type="text"] {
-    height: 44px;
-    border-radius: 10px;
-    border: 1.5px solid #d0d5dd;
-    font-size: 1.2rem;
-    letter-spacing: 16px;
-    padding: 0 44px 0 16px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #d0d5dd;
+    font-size: 1.1rem;
+    letter-spacing: 1.8em;
+    text-indent: 0.9em;
+    padding: 0 44px 0 0;
     width: 100%;
     color: #333;
     margin: 0;
+    background-color: #fff;
+}
+
+main .form form .field-otp input[type="text"]::placeholder {
+    letter-spacing: 1.5em;
+    text-indent: 0.9em;
+    color: #bbb;
+    font-size: 0.6rem;
 }
 
 main .form form .field-otp input[type="text"]:focus {

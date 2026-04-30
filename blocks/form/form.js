@@ -525,6 +525,19 @@ function addRequestContextToForm(formDef) {
 }
 
 
+function decorateOtpInput(form) {
+  function applyToInput() {
+    const input = form.querySelector('.field-otp input[type="text"]');
+    if (!input || input.dataset.otpDecorated) return;
+    input.maxLength = 6;
+    input.placeholder = '· · · · · ·';
+    input.dataset.otpDecorated = 'true';
+  }
+  applyToInput();
+  const observer = new MutationObserver(() => applyToInput());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href]');
   let formDef;
@@ -580,6 +593,7 @@ export default async function decorate(block) {
       form.dataset.formpath = formDef.properties['fd:path'];
     }
     container.replaceWith(form);
+    decorateOtpInput(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
