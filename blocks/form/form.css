@@ -1012,7 +1012,8 @@ main .form form .field-otp > label {
 }
 
 /* OTP text input */
-main .form form .field-otp input[type="text"] {
+main .form form .field-otp input[type="text"],
+main .form form .field-otp input[type="password"] {
     height: 40px;
     border-radius: 8px;
     border: 1px solid #d0d5dd;
@@ -1024,6 +1025,7 @@ main .form form .field-otp input[type="text"] {
     color: #333;
     margin: 0;
     background-color: #fff;
+    box-sizing: border-box;
 }
 
 main .form form .field-otp input[type="text"]::placeholder {
@@ -1033,25 +1035,31 @@ main .form form .field-otp input[type="text"]::placeholder {
     font-size: 0.6rem;
 }
 
-main .form form .field-otp input[type="text"]:focus {
+main .form form .field-otp input[type="text"]:focus,
+main .form form .field-otp input[type="password"]:focus {
     border-color: #4a62b6;
     outline: none;
     box-shadow: 0 0 0 3px rgb(74 98 182 / 10%);
 }
 
-/* Eye icon */
-main .form form .field-otp::after {
-    content: "";
+/* Eye toggle button */
+main .form form .field-otp .otp-eye-toggle {
     position: absolute;
-    right: 14px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94'/%3E%3Cpath d='M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19'/%3E%3Cline x1='1' y1='1' x2='23' y2='23'/%3E%3C/svg%3E");
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
     background-repeat: no-repeat;
     background-size: contain;
-    pointer-events: none;
+    background-position: center;
+    cursor: pointer;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 /* Resend timer — left side */

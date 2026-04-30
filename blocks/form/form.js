@@ -666,13 +666,41 @@ function decorateLoanSliders(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+const EYE_OPEN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23aaa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const EYE_SLASH_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23aaa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
 function decorateOtpInput(form) {
   function applyToInput() {
-    const input = form.querySelector('.field-otp input[type="text"]');
+    const fieldOtp = form.querySelector('.field-otp');
+    const input = fieldOtp?.querySelector('input');
     if (!input || input.dataset.otpDecorated) return;
     input.maxLength = 6;
     input.placeholder = '· · · · · ·';
     input.dataset.otpDecorated = 'true';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'otp-eye-toggle';
+    btn.setAttribute('aria-label', 'Hide OTP');
+    btn.style.backgroundImage = `url("data:image/svg+xml,${EYE_SLASH_SVG}")`;
+    btn.dataset.visible = 'true';
+
+    btn.addEventListener('click', () => {
+      const isVisible = btn.dataset.visible === 'true';
+      if (isVisible) {
+        input.type = 'password';
+        btn.style.backgroundImage = `url("data:image/svg+xml,${EYE_OPEN_SVG}")`;
+        btn.setAttribute('aria-label', 'Show OTP');
+        btn.dataset.visible = 'false';
+      } else {
+        input.type = 'text';
+        btn.style.backgroundImage = `url("data:image/svg+xml,${EYE_SLASH_SVG}")`;
+        btn.setAttribute('aria-label', 'Hide OTP');
+        btn.dataset.visible = 'true';
+      }
+    });
+
+    fieldOtp.append(btn);
   }
   applyToInput();
   const observer = new MutationObserver(() => applyToInput());
