@@ -1014,14 +1014,15 @@ main .form form .field-otp > label {
 /* OTP 6-dot inputs */
 main .form form .field-otp .otp-dots {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: space-between;
     margin: 4px 0;
 }
 
 main .form form .field-otp .otp-dot {
-    flex: 1;
-    aspect-ratio: 1;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
     border-radius: 50%;
     border: 1.5px solid #d0d5dd;
     display: flex;
@@ -1033,7 +1034,7 @@ main .form form .field-otp .otp-dot {
 
 main .form form .field-otp .otp-dot:focus-within {
     border-color: #4a62b6;
-    box-shadow: 0 0 0 3px rgb(74 98 182 / 12%);
+    box-shadow: 0 0 0 2px rgb(74 98 182 / 12%);
 }
 
 main .form form .field-otp .otp-dot-input {
@@ -1043,7 +1044,7 @@ main .form form .field-otp .otp-dot-input {
     outline: none;
     background: transparent;
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: #333;
     padding: 0;
