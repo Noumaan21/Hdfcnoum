@@ -1696,26 +1696,34 @@ main .form form .field-loan-tenure-months input {
     margin: 0;
 }
 
-/* Slider track — styled range input via CSS */
+/* Hide original "Range: X to Y" note — replaced by slider labels */
 main .form form .field-loan-amount-slider-note,
 main .form form .field-loan-tenure-slider-note {
-    margin: 2px 0 16px;
-    padding: 0;
+    display: none;
 }
 
-main .form form .field-loan-amount-slider-note p,
-main .form form .field-loan-tenure-slider-note p {
-    font-size: 0.75rem;
-    color: #888;
+/* Formatted value display box */
+main .form form .loan-amount-display {
+    width: 140px;
+    height: 36px;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 0 8px;
+    background: #fff;
+    flex-shrink: 0;
     margin: 0;
+    cursor: default;
 }
 
-/* Range slider — injected via JS, styled here */
-main .form form .field-loan-amount-inr ~ .loan-range-slider,
-main .form form .field-loan-tenure-months ~ .loan-range-slider {
-    width: 100%;
-    margin: 8px 0 4px;
+/* Range slider wrapper */
+main .form form .loan-range-slider {
     grid-column: span 12;
+    margin: 4px 0 8px;
+    padding: 0;
 }
 
 main .form form .loan-range-slider input[type="range"] {

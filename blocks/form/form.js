@@ -525,6 +525,81 @@ function addRequestContextToForm(formDef) {
 }
 
 
+function decorateLoanSliders(form) {
+  const sliderConfigs = {
+    'field-loan-amount-inr': {
+      min: 50000, max: 1500000, step: 10000, defaultVal: 1500000,
+      labels: ['50K', '2L', '4L', '6L', '8L', '10L', '15L'],
+      format: (v) => `₹${Number(v).toLocaleString('en-IN')}`,
+    },
+    'field-loan-tenure-months': {
+      min: 12, max: 84, step: 12, defaultVal: 84,
+      labels: ['12m', '24m', '36m', '48m', '60m', '72m', '84m'],
+      format: (v) => `${v} months`,
+    },
+  };
+
+  function buildSlider(fieldWrapper, config) {
+    if (fieldWrapper.querySelector('.loan-range-slider')) return;
+    const numInput = fieldWrapper.querySelector('input[type="number"]');
+    if (!numInput) return;
+
+    // Replace number input with a readonly text display
+    const display = document.createElement('input');
+    display.type = 'text';
+    display.readOnly = true;
+    display.className = 'loan-amount-display';
+    numInput.replaceWith(display);
+
+    // Build slider + labels
+    const sliderWrap = document.createElement('div');
+    sliderWrap.className = 'loan-range-slider';
+
+    const range = document.createElement('input');
+    range.type = 'range';
+    range.min = config.min;
+    range.max = config.max;
+    range.step = config.step;
+    range.value = config.defaultVal;
+
+    const labelsDiv = document.createElement('div');
+    labelsDiv.className = 'loan-range-labels';
+    config.labels.forEach((label) => {
+      const span = document.createElement('span');
+      span.textContent = label;
+      labelsDiv.append(span);
+    });
+
+    sliderWrap.append(range, labelsDiv);
+    fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
+
+    function updateFill() {
+      const pct = ((range.value - config.min) / (config.max - config.min)) * 100;
+      range.style.setProperty('--range-pct', `${pct}%`);
+      display.value = config.format(range.value);
+      numInput.value = range.value;
+    }
+
+    range.addEventListener('input', () => {
+      updateFill();
+      numInput.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    updateFill();
+  }
+
+  function apply() {
+    Object.entries(sliderConfigs).forEach(([cls, config]) => {
+      const wrapper = form.querySelector(`.${cls}`);
+      if (wrapper) buildSlider(wrapper, config);
+    });
+  }
+
+  apply();
+  const observer = new MutationObserver(() => apply());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateOtpInput(form) {
   function applyToInput() {
     const input = form.querySelector('.field-otp input[type="text"]');
@@ -594,6 +669,7 @@ export default async function decorate(block) {
     }
     container.replaceWith(form);
     decorateOtpInput(form);
+    decorateLoanSliders(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
