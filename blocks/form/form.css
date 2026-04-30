@@ -973,7 +973,8 @@ main .form form .field-loan-details {
     padding: 0 0 20px;
     box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
     overflow: hidden;
-    gap: 0;
+    row-gap: 16px;
+    column-gap: 24px;
 }
 
 /* Header / Legend — light blue background */
