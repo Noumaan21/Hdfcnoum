@@ -1132,16 +1132,15 @@ main .form form .field-loan-application-summary {
     column-gap: 16px;
 }
 
-/* Hide outer legend */
 main .form form .field-loan-application-summary > legend {
     display: none;
 }
 
-/* Loan Application Number: icon circle on left via ::before */
+/* Loan Application Number: circular icon on the left */
 main .form form .field-loan-application-number {
     position: relative;
     padding-left: 68px;
-    min-height: 56px;
+    min-height: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1165,15 +1164,98 @@ main .form form .field-loan-application-number::before {
 }
 
 main .form form .field-loan-application-number > label {
-    font-size: 0.8rem;
-    color: #555;
+    font-size: 0.78rem;
+    color: #666;
     font-weight: 400;
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
-/* All inputs inside the summary card */
-main .form form .field-loan-application-summary input[type="text"] {
+/* Large bold application number */
+main .form form .field-loan-application-number input[type="text"] {
+    border: none;
+    background: transparent;
+    padding: 0;
+    height: auto;
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0;
+    pointer-events: none;
+    cursor: default;
+    border-radius: 0;
+    width: 100%;
+    letter-spacing: 0.5px;
+}
+
+main .form form .field-loan-application-number input[type="text"]:hover {
+    border: none;
+}
+
+/* Hide the duplicate value field */
+main .form form .field-loan-application-number-value {
+    display: none;
+}
+
+/* Contact note text */
+main .form form .field-contact-note {
+    padding: 14px 0 6px;
+    margin: 0;
+}
+
+main .form form .field-contact-note p {
+    color: #555;
+    font-size: 0.88rem;
+    margin: 0;
+}
+
+/* Xpress Personal Loan Summary inner panel */
+main .form form .field-xpress-personal-loan-summary-panel {
+    border: none;
+    border-top: 1.5px dashed #d0d5e8;
+    padding: 20px 0 8px;
+    margin: 12px 0 0;
+    row-gap: 8px;
+    column-gap: 0;
+}
+
+main .form form .field-xpress-personal-loan-summary-panel > legend {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    padding: 0 0 14px;
+    margin-bottom: 0;
+    border: none;
+}
+
+/* Loan Amount field — left accent line */
+main .form form .field-xpress-personal-loan-summary-panel .text-wrapper {
+    position: relative;
+    padding: 10px 12px 8px 14px;
+    margin: 0;
+}
+
+main .form form .field-xpress-personal-loan-summary-panel .text-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5px;
+    height: 36px;
+    background-color: #c7d0f8;
+    border-radius: 2px;
+}
+
+main .form form .field-xpress-personal-loan-summary-panel .text-wrapper > label {
+    font-size: 0.72rem;
+    color: #888;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 4px;
+}
+
+main .form form .field-xpress-personal-loan-summary-panel input[type="text"] {
     border: none;
     background: transparent;
     padding: 0;
@@ -1188,61 +1270,8 @@ main .form form .field-loan-application-summary input[type="text"] {
     width: 100%;
 }
 
-main .form form .field-loan-application-summary input[type="text"]:hover {
+main .form form .field-xpress-personal-loan-summary-panel input[type="text"]:hover {
     border: none;
-}
-
-/* Value field (no label, sits beside the number field) */
-main .form form .field-loan-application-number-value {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-}
-
-/* Contact note text */
-main .form form .field-contact-note {
-    padding: 16px 0 8px;
-    margin: 0;
-}
-
-main .form form .field-contact-note p {
-    color: #444;
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-/* Inner Xpress Personal Loan Summary panel */
-main .form form .field-xpress-personal-loan-summary-panel {
-    border: none;
-    border-top: 1.5px dashed #d0d5e8;
-    padding: 20px 0 8px;
-    margin: 8px 0 0;
-    row-gap: 8px;
-    column-gap: 0;
-}
-
-main .form form .field-xpress-personal-loan-summary-panel > legend {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    padding: 0 0 12px;
-    margin-bottom: 0;
-    border: none;
-}
-
-/* Loan Amount inside the summary panel */
-main .form form .field-xpress-personal-loan-summary-panel .text-wrapper {
-    padding: 0;
-    margin: 0;
-}
-
-main .form form .field-xpress-personal-loan-summary-panel .text-wrapper > label {
-    font-size: 0.78rem;
-    color: #888;
-    font-weight: 400;
-    display: block;
-    margin-bottom: 4px;
 }
 
 /* Disbursal note — light blue info box */
@@ -1254,42 +1283,83 @@ main .form form .field-disbursal-note {
 }
 
 main .form form .field-disbursal-note p {
-    color: #333;
-    font-size: 0.88rem;
+    color: #3d52d5;
+    font-size: 0.85rem;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-/* Easy Loan Management panel */
+/* Easy Loan Management panel — styled light blue card */
 main .form form .field-easy-loan-management-panel {
+    background: #eef2ff;
+    border-radius: 10px;
     border: none;
-    padding: 20px 0 0;
-    margin: 8px 0 0;
+    padding: 16px 20px 0;
+    margin: 20px 0 0;
+    row-gap: 0;
+    column-gap: 0;
 }
 
 main .form form .field-easy-loan-management-panel > legend {
-    font-size: 1rem;
-    font-weight: 600;
+    width: 100%;
+    font-size: 0.95rem;
+    font-weight: 700;
     color: #1a1a1a;
-    padding: 0 0 8px;
+    padding: 0 0 12px;
     border: none;
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-main .form form .field-easy-loan-management-panel .plain-text-wrapper p {
-    font-size: 0.88rem;
-    color: #555;
+main .form form .field-easy-loan-management-panel > legend::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background-color: #dde6ff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z'/%3E%3Cpath d='M12 8v8'/%3E%3Cpath d='M8 12l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px 18px;
+}
+
+/* Download app link row */
+main .form form .field-download-app-link-text {
+    border-top: 1px solid #d4daff;
+    padding: 14px 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .form form .field-download-app-link-text::after {
+    content: "›";
+    font-size: 1.4rem;
+    color: #3d52d5;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+main .form form .field-download-app-link-text p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
     margin: 0;
 }
 
 /* More services text */
 main .form form .field-more-services-text {
-    margin: 8px 0 0;
+    margin: 14px 0 0;
     padding: 0;
 }
 
 main .form form .field-more-services-text p {
     font-size: 0.88rem;
-    color: #555;
+    color: #444;
     margin: 0;
 }
