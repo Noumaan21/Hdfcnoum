@@ -878,16 +878,20 @@ main .form form .field-personal-loan-offer-panel .radio-wrapper label {
     font-weight: 400;
 }
 
-/* Consent checkboxes */
+/* Consent checkboxes — single line, no wrap */
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper {
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
+    flex-wrap: nowrap;
 }
 
 main .form form .field-personal-loan-offer-panel .checkbox-wrapper label {
     font-size: 0.9rem;
     color: #333;
     line-height: 1.55;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* "here" word styled blue via JS-injected span */
