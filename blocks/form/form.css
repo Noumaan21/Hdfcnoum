@@ -1797,7 +1797,7 @@ main .form form .field-xpress-personal-loan-summary {
     background: #fef9ec;
     border-radius: 14px;
     padding: 20px;
-    border: none;
+    border: 1px solid transparent; /* keeps background behind legend */
     row-gap: 0;
     column-gap: 0;
     align-content: start;
@@ -1810,12 +1810,14 @@ main .form form .field-xpress-personal-loan-summary > legend {
     border: none;
     padding: 0 0 6px;
     margin-bottom: 0;
+    width: 100%;
 }
 
 /* Large loan amount */
 main .form form .field-approved-loan-amount {
     margin: 0 0 14px;
     padding: 0;
+    grid-column: span 12;
 }
 
 main .form form .field-approved-loan-amount p {
@@ -1857,31 +1859,8 @@ main .form form .field-rate-of-interest::before {
 
 main .form form .field-emi-amount p,
 main .form form .field-rate-of-interest p {
-    font-size: 0.8rem;
-    color: #888;
-    margin: 0 0 3px;
-}
-
-main .form form .field-emi-amount p::before {
-    content: "EMI Amount";
-    display: block;
-    font-size: 0.72rem;
-    color: #888;
-    font-weight: 400;
-}
-
-main .form form .field-rate-of-interest p::before {
-    content: "Rate of Interest";
-    display: block;
-    font-size: 0.72rem;
-    color: #888;
-    font-weight: 400;
-}
-
-main .form form .field-emi-amount p,
-main .form form .field-rate-of-interest p {
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: #111;
     margin: 0;
 }
