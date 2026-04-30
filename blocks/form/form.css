@@ -1599,3 +1599,345 @@ main .form form .field-more-services-text p {
     margin: 0;
 }
 
+/* ===== Loan Offer Declared Income Panel ===== */
+
+main .form form .field-loan-offer-declared-income {
+    border: none;
+    padding: 0;
+    row-gap: 20px;
+    column-gap: 20px;
+}
+
+main .form form .field-loan-offer-declared-income > legend {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+    border: none;
+    padding: 0 0 4px;
+    margin-bottom: 0;
+}
+
+/* Blue banner — "You can get a loan up to ₹15,00,000!" */
+main .form form .field-loan-offer-banner-text {
+    background: #e8f4fd;
+    border-radius: 12px;
+    padding: 16px 20px 16px 72px;
+    position: relative;
+    margin: 0;
+    grid-column: span 12;
+}
+
+main .form form .field-loan-offer-banner-text::before {
+    content: "💰";
+    font-size: 2rem;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+main .form form .field-loan-offer-banner-text p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* ===== Left section — Loan Amount & Tenure ===== */
+
+main .form form .field-loan-amount-tenure-section {
+    border: none;
+    padding: 0;
+    row-gap: 4px;
+    column-gap: 16px;
+    align-content: start;
+}
+
+main .form form .field-loan-amount-tenure-section > legend {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+    border: none;
+    padding: 0 0 12px;
+    margin-bottom: 0;
+}
+
+/* Loan amount & tenure — label + value box inline */
+main .form form .field-loan-amount-inr,
+main .form form .field-loan-tenure-months {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 0 0;
+}
+
+main .form form .field-loan-amount-inr > label,
+main .form form .field-loan-tenure-months > label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+}
+
+main .form form .field-loan-amount-inr input,
+main .form form .field-loan-tenure-months input {
+    width: 140px;
+    height: 36px;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 0 10px;
+    background: #fff;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+/* Slider track — styled range input via CSS */
+main .form form .field-loan-amount-slider-note,
+main .form form .field-loan-tenure-slider-note {
+    margin: 2px 0 16px;
+    padding: 0;
+}
+
+main .form form .field-loan-amount-slider-note p,
+main .form form .field-loan-tenure-slider-note p {
+    font-size: 0.75rem;
+    color: #888;
+    margin: 0;
+}
+
+/* Range slider — injected via JS, styled here */
+main .form form .field-loan-amount-inr ~ .loan-range-slider,
+main .form form .field-loan-tenure-months ~ .loan-range-slider {
+    width: 100%;
+    margin: 8px 0 4px;
+    grid-column: span 12;
+}
+
+main .form form .loan-range-slider input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #f97316 var(--range-pct, 100%), #e0e0e0 var(--range-pct, 100%));
+    outline: none;
+    margin: 0;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+main .form form .loan-range-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+    cursor: pointer;
+}
+
+main .form form .loan-range-slider input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+    cursor: pointer;
+}
+
+main .form form .loan-range-labels {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0 0;
+}
+
+main .form form .loan-range-labels span {
+    font-size: 0.7rem;
+    color: #888;
+}
+
+/* Proceed button */
+main .form form .field-proceed-button button {
+    background: #1e3a8a;
+    color: #fff;
+    border-radius: 24px;
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    width: auto;
+}
+
+main .form form .field-proceed-button button::after {
+    content: "›";
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+main .form form .field-proceed-button button:hover {
+    background: #1e40af;
+}
+
+/* ===== Right section — XPRESS Loan Summary ===== */
+
+main .form form .field-xpress-personal-loan-summary {
+    background: #fef9ec;
+    border-radius: 14px;
+    padding: 20px;
+    border: none;
+    row-gap: 0;
+    column-gap: 0;
+    align-content: start;
+}
+
+main .form form .field-xpress-personal-loan-summary > legend {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #555;
+    border: none;
+    padding: 0 0 6px;
+    margin-bottom: 0;
+}
+
+/* Large loan amount */
+main .form form .field-approved-loan-amount {
+    margin: 0 0 14px;
+    padding: 0;
+}
+
+main .form form .field-approved-loan-amount p {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Divider below amount */
+main .form form .field-approved-loan-amount::after {
+    content: "";
+    display: block;
+    border-top: 1.5px dashed #d4c8a0;
+    margin-top: 14px;
+}
+
+/* EMI and Rate side-by-side */
+main .form form .field-emi-amount,
+main .form form .field-rate-of-interest {
+    padding: 10px 12px 10px 14px;
+    margin: 8px 0 0;
+    position: relative;
+}
+
+main .form form .field-emi-amount::before,
+main .form form .field-rate-of-interest::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 32px;
+    background: #f4c06a;
+    border-radius: 2px;
+}
+
+main .form form .field-emi-amount p,
+main .form form .field-rate-of-interest p {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0 0 3px;
+}
+
+main .form form .field-emi-amount p::before {
+    content: "EMI Amount";
+    display: block;
+    font-size: 0.72rem;
+    color: #888;
+    font-weight: 400;
+}
+
+main .form form .field-rate-of-interest p::before {
+    content: "Rate of Interest";
+    display: block;
+    font-size: 0.72rem;
+    color: #888;
+    font-weight: 400;
+}
+
+main .form form .field-emi-amount p,
+main .form form .field-rate-of-interest p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+/* Taxes */
+main .form form .field-taxes-amount {
+    padding: 10px 12px 10px 14px;
+    margin: 8px 0 0;
+    position: relative;
+    grid-column: span 12;
+}
+
+main .form form .field-taxes-amount::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 32px;
+    background: #f4c06a;
+    border-radius: 2px;
+}
+
+main .form form .field-taxes-amount p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+/* Orange disclaimer box */
+main .form form .field-principal-offer-note {
+    background: #f97316;
+    border-radius: 10px;
+    padding: 12px 14px 12px 38px;
+    margin: 16px 0 0;
+    position: relative;
+    grid-column: span 12;
+}
+
+main .form form .field-principal-offer-note::before {
+    content: "ℹ";
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1;
+}
+
+main .form form .field-principal-offer-note p {
+    font-size: 0.78rem;
+    color: #fff;
+    margin: 0;
+    line-height: 1.5;
+}
+
