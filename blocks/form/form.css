@@ -962,3 +962,126 @@ main .form form .field-step-date-of-birth::before {
 main .form form .field-step-cheque-bank-details::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='1.5' stroke-linecap='round'%3E%3Crect x='2' y='5' width='20' height='14' rx='1'/%3E%3Cline x1='6' y1='10' x2='12' y2='10'/%3E%3Cline x1='6' y1='14' x2='10' y2='14'/%3E%3C/svg%3E");
 }
+
+/* ===== Loan Details Panel ===== */
+
+/* Card wrapper */
+main .form form .field-loan-details {
+    background: #fff;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    padding: 0 0 16px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 6%);
+    overflow: hidden;
+}
+
+/* Header / Legend */
+main .form form .field-loan-details > legend {
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #dde2ec;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Lock icon before legend text */
+main .form form .field-loan-details > legend::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Chevron icon on the right */
+main .form form .field-loan-details > legend::after {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Field wrappers inside the card */
+main .form form .field-loan-details .field-wrapper {
+    padding: 12px 20px 4px;
+    margin: 0;
+}
+
+/* Labels: small gray */
+main .form form .field-loan-details .field-wrapper > label {
+    font-size: 0.72rem;
+    color: #888;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Inputs: display as plain bold text, no border/background */
+main .form form .field-loan-details input[type="text"] {
+    border: none;
+    background: transparent;
+    padding: 0;
+    height: auto;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    pointer-events: none;
+    cursor: default;
+    border-radius: 0;
+}
+
+main .form form .field-loan-details input[type="text"]:hover {
+    border: none;
+}
+
+/* Schedule of Charges: styled as a blue text link */
+main .form form .field-loan-details .button-wrapper {
+    padding: 12px 20px 4px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+main .form form .field-loan-details .button-wrapper::before {
+    content: "Schedule of Charges";
+    font-size: 0.72rem;
+    color: #888;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 4px;
+}
+
+main .form form .field-loan-details .button-wrapper button {
+    background: transparent;
+    border: none;
+    color: #0d5dbf;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+main .form form .field-loan-details .button-wrapper button:hover {
+    background: transparent;
+    text-decoration: underline;
+    color: #0a47a0;
+}
