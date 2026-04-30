@@ -524,6 +524,67 @@ function addRequestContextToForm(formDef) {
   }
 }
 
+function decorateOtpField(form) {
+  const otpWrapper = form.querySelector('.field-otp');
+  if (!otpWrapper) return;
+  const originalInput = otpWrapper.querySelector('input[type="text"]');
+  if (!originalInput) return;
+
+  originalInput.style.display = 'none';
+  originalInput.setAttribute('aria-hidden', 'true');
+
+  const dotsContainer = document.createElement('div');
+  dotsContainer.className = 'otp-dots';
+
+  const dotInputs = [];
+  for (let i = 0; i < 6; i += 1) {
+    const dot = document.createElement('div');
+    dot.className = 'otp-dot';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.maxLength = 1;
+    input.inputMode = 'numeric';
+    input.autocomplete = 'off';
+    input.className = 'otp-dot-input';
+    input.setAttribute('aria-label', `OTP digit ${i + 1}`);
+    dot.append(input);
+    dotsContainer.append(dot);
+    dotInputs.push(input);
+  }
+
+  function syncValue() {
+    originalInput.value = dotInputs.map((inp) => inp.value).join('');
+    originalInput.dispatchEvent(new Event('input', { bubbles: true }));
+    originalInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  dotInputs.forEach((input, idx) => {
+    input.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(-1);
+      syncValue();
+      if (e.target.value && idx < 5) dotInputs[idx + 1].focus();
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+        dotInputs[idx - 1].value = '';
+        dotInputs[idx - 1].focus();
+        syncValue();
+      }
+    });
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+      pasted.split('').forEach((char, offset) => {
+        if (idx + offset < 6) dotInputs[idx + offset].value = char;
+      });
+      dotInputs[Math.min(idx + pasted.length, 5)].focus();
+      syncValue();
+    });
+  });
+
+  originalInput.insertAdjacentElement('afterend', dotsContainer);
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href]');
   let formDef;
@@ -579,6 +640,7 @@ export default async function decorate(block) {
       form.dataset.formpath = formDef.properties['fd:path'];
     }
     container.replaceWith(form);
+    decorateOtpField(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
