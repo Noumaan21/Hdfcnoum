@@ -1044,29 +1044,31 @@ main .form form .field-otp input[type="password"]:focus {
 
 /* Eye toggle button */
 main .form form .field-otp .otp-eye-toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 22px;
-    padding: 0;
-    margin: 0;
-    border: none;
-    background: transparent;
+    position: absolute !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 28px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
     cursor: pointer;
-    box-shadow: none;
-    border-radius: 0;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    color: inherit;
+    z-index: 2;
 }
 
 main .form form .field-otp .otp-eye-toggle svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     display: block;
+    flex-shrink: 0;
 }
 
 /* Resend timer — left side */
