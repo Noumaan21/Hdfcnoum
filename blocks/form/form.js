@@ -524,9 +524,8 @@ function addRequestContextToForm(formDef) {
   }
 }
 
-function decorateOtpField(form) {
-  const otpWrapper = form.querySelector('.field-otp');
-  if (!otpWrapper) return;
+function buildOtpDots(otpWrapper) {
+  if (otpWrapper.querySelector('.otp-dots')) return; // already decorated
   const originalInput = otpWrapper.querySelector('input[type="text"]');
   if (!originalInput) return;
 
@@ -583,6 +582,22 @@ function decorateOtpField(form) {
   });
 
   originalInput.insertAdjacentElement('afterend', dotsContainer);
+}
+
+function decorateOtpField(form) {
+  // Decorate if already present
+  const existing = form.querySelector('.field-otp');
+  if (existing) { buildOtpDots(existing); return; }
+
+  // Watch for the OTP panel being revealed by the rule engine
+  const observer = new MutationObserver(() => {
+    const otpWrapper = form.querySelector('.field-otp');
+    if (otpWrapper) {
+      buildOtpDots(otpWrapper);
+      observer.disconnect();
+    }
+  });
+  observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
 }
 
 export default async function decorate(block) {
