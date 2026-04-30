@@ -963,9 +963,10 @@ main .form form .field-step-cheque-bank-details::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='1.5' stroke-linecap='round'%3E%3Crect x='2' y='5' width='20' height='14' rx='1'/%3E%3Cline x1='6' y1='10' x2='12' y2='10'/%3E%3Cline x1='6' y1='14' x2='10' y2='14'/%3E%3C/svg%3E");
 }
 
-/* ===== Loan Details Panel ===== */
+/* ===== Summary Panels (Loan Details & Personal Details) ===== */
 
-main .form form .field-loan-details {
+main .form form .field-loan-details,
+main .form form .field-personal-details {
     background: #fff;
     border: 1px solid #dde2ec;
     border-radius: 12px;
@@ -976,7 +977,8 @@ main .form form .field-loan-details {
     column-gap: 24px;
 }
 
-main .form form .field-loan-details > legend {
+main .form form .field-loan-details > legend,
+main .form form .field-personal-details > legend {
     width: 100%;
     background: #eef2ff;
     border-bottom: 1px solid #dde2ec;
@@ -990,7 +992,8 @@ main .form form .field-loan-details > legend {
     gap: 10px;
 }
 
-main .form form .field-loan-details > legend::before {
+main .form form .field-loan-details > legend::before,
+main .form form .field-personal-details > legend::before {
     content: "";
     display: inline-block;
     width: 18px;
@@ -1001,7 +1004,8 @@ main .form form .field-loan-details > legend::before {
     background-size: contain;
 }
 
-main .form form .field-loan-details > legend::after {
+main .form form .field-loan-details > legend::after,
+main .form form .field-personal-details > legend::after {
     content: "";
     display: inline-block;
     width: 18px;
@@ -1013,14 +1017,20 @@ main .form form .field-loan-details > legend::after {
     background-size: contain;
 }
 
-/* text-wrappers: short accent line via ::before pseudo (no label conflict) */
-main .form form .field-loan-details .text-wrapper {
+/* text-wrapper & date-wrapper: short accent line via ::before */
+main .form form .field-loan-details .text-wrapper,
+main .form form .field-loan-details .date-wrapper,
+main .form form .field-personal-details .text-wrapper,
+main .form form .field-personal-details .date-wrapper {
     padding: 14px 16px 10px 14px;
     margin: 0;
     position: relative;
 }
 
-main .form form .field-loan-details .text-wrapper::before {
+main .form form .field-loan-details .text-wrapper::before,
+main .form form .field-loan-details .date-wrapper::before,
+main .form form .field-personal-details .text-wrapper::before,
+main .form form .field-personal-details .date-wrapper::before {
     content: "";
     position: absolute;
     left: 0;
@@ -1032,7 +1042,10 @@ main .form form .field-loan-details .text-wrapper::before {
     border-radius: 2px;
 }
 
-main .form form .field-loan-details .text-wrapper > label {
+main .form form .field-loan-details .text-wrapper > label,
+main .form form .field-loan-details .date-wrapper > label,
+main .form form .field-personal-details .text-wrapper > label,
+main .form form .field-personal-details .date-wrapper > label {
     font-size: 0.72rem;
     color: #888;
     font-weight: 400;
@@ -1040,7 +1053,8 @@ main .form form .field-loan-details .text-wrapper > label {
     margin-bottom: 4px;
 }
 
-main .form form .field-loan-details input[type="text"] {
+main .form form .field-loan-details input[type="text"],
+main .form form .field-personal-details input[type="text"] {
     border: none;
     background: transparent;
     padding: 0;
@@ -1055,11 +1069,12 @@ main .form form .field-loan-details input[type="text"] {
     width: 100%;
 }
 
-main .form form .field-loan-details input[type="text"]:hover {
+main .form form .field-loan-details input[type="text"]:hover,
+main .form form .field-personal-details input[type="text"]:hover {
     border: none;
 }
 
-/* button-wrapper: ::before used for label, accent line via box-shadow */
+/* button-wrapper: ::before used for label text, accent line via box-shadow */
 main .form form .field-loan-details .button-wrapper {
     padding: 14px 16px 10px 14px;
     margin: 0;
