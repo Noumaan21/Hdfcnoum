@@ -1289,60 +1289,57 @@ main .form form .field-disbursal-note p {
     line-height: 1.6;
 }
 
-/* Easy Loan Management panel — styled light blue card */
+/* Easy Loan Management panel — white card, blue legend header */
 main .form form .field-easy-loan-management-panel {
-    background: #eef2ff;
+    background: #fff;
+    border: 1px solid #dde2ec;
     border-radius: 10px;
-    border: none;
-    padding: 16px 20px 0;
+    overflow: hidden;
+    padding: 0;
     margin: 20px 0 0;
     row-gap: 0;
     column-gap: 0;
 }
 
+/* Blue header row */
 main .form form .field-easy-loan-management-panel > legend {
     width: 100%;
+    background: #eef2ff;
     font-size: 0.95rem;
     font-weight: 700;
     color: #1a1a1a;
-    padding: 0 0 12px;
+    padding: 14px 20px;
     border: none;
     margin-bottom: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
+/* Download icon in a rounded box */
 main .form form .field-easy-loan-management-panel > legend::before {
     content: "";
     display: inline-block;
     width: 32px;
     height: 32px;
     flex-shrink: 0;
-    border-radius: 6px;
+    border-radius: 7px;
     background-color: #dde6ff;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z'/%3E%3Cpath d='M12 8v8'/%3E%3Cpath d='M8 12l4 4 4-4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v13'/%3E%3Cpath d='M8 13l4 4 4-4'/%3E%3Cpath d='M4 19h16'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 18px 18px;
+    background-size: 17px 17px;
 }
 
-/* Download app link row */
+/* Download app link row — white bg, bold text, arrow on right */
 main .form form .field-download-app-link-text {
-    border-top: 1px solid #d4daff;
-    padding: 14px 0;
+    padding: 16px 20px;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-main .form form .field-download-app-link-text::after {
-    content: "›";
-    font-size: 1.4rem;
-    color: #3d52d5;
-    flex-shrink: 0;
-    line-height: 1;
+    gap: 12px;
+    background: #fff;
 }
 
 main .form form .field-download-app-link-text p {
@@ -1352,14 +1349,22 @@ main .form form .field-download-app-link-text p {
     margin: 0;
 }
 
+main .form form .field-download-app-link-text::after {
+    content: "›";
+    font-size: 1.5rem;
+    color: #3d52d5;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
 /* More services text */
 main .form form .field-more-services-text {
-    margin: 14px 0 0;
+    margin: 16px 0 0;
     padding: 0;
 }
 
 main .form form .field-more-services-text p {
-    font-size: 0.88rem;
-    color: #444;
+    font-size: 0.85rem;
+    color: #666;
     margin: 0;
 }
