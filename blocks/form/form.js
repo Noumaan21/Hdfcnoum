@@ -525,84 +525,55 @@ function addRequestContextToForm(formDef) {
 }
 
 
-function decorateLoanSliders(form) {
-  const sliderConfigs = {
-    'field-loan-amount-inr': {
-      min: 50000, max: 1500000, step: 10000, defaultVal: 1500000,
-      labels: ['50K', '2L', '4L', '6L', '8L', '10L', '15L'],
-      format: (v) => `₹${Number(v).toLocaleString('en-IN')}`,
-    },
-    'field-loan-tenure-months': {
-      min: 12, max: 84, step: 12, defaultVal: 84,
-      labels: ['12m', '24m', '36m', '48m', '60m', '72m', '84m'],
-      format: (v) => `${v} months`,
-    },
-  };
 
-  function buildSlider(fieldWrapper, config) {
-    if (fieldWrapper.querySelector('.loan-range-slider')) return;
-    const numInput = fieldWrapper.querySelector('input[type="number"]');
-    if (!numInput) return;
+function formatIndianCurrency(amount) {
+  return `₹${amount.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
+}
 
-    const display = document.createElement('input');
-    display.type = 'text';
-    display.readOnly = true;
-    display.className = 'loan-amount-display';
-    numInput.replaceWith(display);
+function calculateEMI(principal, annualRate, tenureMonths) {
+  const monthlyRate = annualRate / (12 * 100);
+  const onePlusR = 1 + monthlyRate;
+  const onePlusRPowerN = Math.pow(onePlusR, tenureMonths);
+  return Math.round((principal * monthlyRate * onePlusRPowerN) / (onePlusRPowerN - 1));
+}
 
-    const sliderWrap = document.createElement('div');
-    sliderWrap.className = 'loan-range-slider';
+function initEMICalculator(form) {
+  const loanAmountInput = form.querySelector('input[name="loanAmount"]');
+  const loanTenureInput = form.querySelector('input[name="loanTenure"]');
+  const xpressField = form.querySelector('input[name="xpress"]');
+  const emiAmountField = form.querySelector('input[name="emi_amount"]');
+  const loanAmountBubble = form.querySelector('#numberinput-45bf0620a4')
+    ?.closest('.range-widget-wrapper')
+    ?.querySelector('.range-bubble');
+  const tenureBubble = form.querySelector('#numberinput-2a9c496a67')
+    ?.closest('.range-widget-wrapper')
+    ?.querySelector('.range-bubble');
 
-    const range = document.createElement('input');
-    range.type = 'range';
-    range.min = config.min;
-    range.max = config.max;
-    range.step = config.step;
-    range.value = config.defaultVal;
+  if (!loanAmountInput || !loanTenureInput || !xpressField || !emiAmountField) return;
 
-    const labelsDiv = document.createElement('div');
-    labelsDiv.className = 'loan-range-labels';
-    config.labels.forEach((label) => {
-      const span = document.createElement('span');
-      span.textContent = label;
-      labelsDiv.append(span);
-    });
+  const annualRate = 10.97;
 
-    sliderWrap.append(range, labelsDiv);
-    fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
+  function updateEMICalculation() {
+    const loanAmount = parseFloat(loanAmountInput.value) || 775000;
+    const tenure = parseFloat(loanTenureInput.value) || 48;
 
-    function syncApprovedAmount(value) {
-      const approvedEl = form.querySelector('.field-approved-loan-amount p');
-      if (approvedEl && fieldWrapper.classList.contains('field-loan-amount-inr')) {
-        approvedEl.textContent = `₹${Number(value).toLocaleString('en-IN')}`;
-      }
-    }
+    xpressField.value = formatIndianCurrency(loanAmount);
 
-    function updateFill() {
-      const pct = ((range.value - config.min) / (config.max - config.min)) * 100;
-      range.style.setProperty('--range-pct', `${pct}%`);
-      display.value = config.format(range.value);
-      numInput.value = range.value;
-      syncApprovedAmount(range.value);
-    }
+    const emi = calculateEMI(loanAmount, annualRate, tenure);
+    emiAmountField.value = formatIndianCurrency(emi);
 
-    range.addEventListener('input', () => {
-      updateFill();
-      numInput.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-
-    updateFill();
+    if (loanAmountBubble) loanAmountBubble.textContent = formatIndianCurrency(loanAmount);
+    if (tenureBubble) tenureBubble.textContent = `${Math.round(tenure)} months`;
   }
 
-  function apply() {
-    Object.entries(sliderConfigs).forEach(([cls, config]) => {
-      const wrapper = form.querySelector(`.${cls}`);
-      if (wrapper) buildSlider(wrapper, config);
-    });
-  }
+  loanAmountInput.addEventListener('input', updateEMICalculation);
+  loanTenureInput.addEventListener('input', updateEMICalculation);
+  updateEMICalculation();
+}
 
-  apply();
-  const observer = new MutationObserver(() => apply());
+function setupEMICalculator(form) {
+  initEMICalculator(form);
+  const observer = new MutationObserver(() => initEMICalculator(form));
   observer.observe(form, { childList: true, subtree: true });
 }
 
@@ -675,7 +646,7 @@ export default async function decorate(block) {
     }
     container.replaceWith(form);
     decorateOtpInput(form);
-    decorateLoanSliders(form);
+    setupEMICalculator(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
