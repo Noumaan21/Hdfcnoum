@@ -586,5 +586,36 @@ export default async function decorate(block) {
         label.innerHTML = label.innerHTML.replace(/\bhere\b(?=\.)/, '<span class="here-link">here</span>');
       }
     });
+
+    injectPromoCards(block);
   }
+}
+
+function injectPromoCards(block) {
+  if (!block.querySelector('.field-loan-application-summary')) return;
+
+  const promoContainer = document.createElement('div');
+  promoContainer.className = 'loan-promo-cards';
+  promoContainer.innerHTML = `
+    <div class="promo-card promo-card--rd">
+      <div class="promo-card__image promo-card__image--rd"></div>
+      <div class="promo-card__body">
+        <p class="promo-card__label">Open a new</p>
+        <h3 class="promo-card__title">Recurring Deposit</h3>
+      </div>
+    </div>
+    <div class="promo-card promo-card--hi">
+      <div class="promo-card__image promo-card__image--hi"></div>
+      <div class="promo-card__body">
+        <p class="promo-card__label">Buy a new</p>
+        <h3 class="promo-card__title">Health Insurance</h3>
+      </div>
+    </div>
+  `;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'loan-summary-layout';
+  block.parentNode.insertBefore(wrapper, block);
+  wrapper.appendChild(block);
+  wrapper.appendChild(promoContainer);
 }

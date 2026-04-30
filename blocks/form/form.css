@@ -1368,3 +1368,111 @@ main .form form .field-more-services-text p {
     color: #666;
     margin: 0;
 }
+
+/* ===== Loan Summary Two-Column Layout ===== */
+
+.loan-summary-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.loan-summary-layout .form {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ===== Promo Cards Sidebar ===== */
+
+.loan-promo-cards {
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.promo-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.promo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+}
+
+/* Card image area */
+.promo-card__image {
+    height: 130px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+/* Recurring Deposit — purple gradient with coin-bag illustration */
+.promo-card__image--rd {
+    background-color: #e5d9f8;
+    background-image:
+        radial-gradient(circle at 70% 20%, #c9aaff 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, #b89cf5 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cellipse cx='40' cy='52' rx='22' ry='20' fill='%237c3aed' opacity='0.85'/%3E%3Cellipse cx='40' cy='32' rx='14' ry='12' fill='%238b5cf6'/%3E%3Cpath d='M30 32 Q40 18 50 32' fill='%236d28d9'/%3E%3Ctext x='34' y='56' font-size='18' fill='white' font-weight='bold' font-family='Arial'%25%3C/text%3E%3C/svg%3E");
+    background-size: cover, cover, 70px 70px;
+    background-position: center, center, 65% 55%;
+}
+
+/* Health Insurance — pink gradient with heart illustration */
+.promo-card__image--hi {
+    background-color: #fce7f3;
+    background-image:
+        radial-gradient(circle at 70% 20%, #fbcfe8 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, #f9a8d4 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M40 62 C20 48 10 36 10 26 C10 18 18 12 26 14 C31 15 36 19 40 24 C44 19 49 15 54 14 C62 12 70 18 70 26 C70 36 60 48 40 62Z' fill='%23ec4899' opacity='0.9'/%3E%3Cpolyline points='24,36 32,36 36,28 40,44 44,30 48,36 56,36' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: cover, cover, 75px 75px;
+    background-position: center, center, 62% 50%;
+}
+
+/* Card body */
+.promo-card__body {
+    padding: 12px 16px 16px;
+    background: #fff;
+}
+
+.promo-card__label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #7c3aed;
+    margin: 0 0 2px;
+    text-transform: none;
+}
+
+.promo-card--hi .promo-card__label {
+    color: #db2777;
+}
+
+.promo-card__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+@media (width <= 900px) {
+    .loan-summary-layout {
+        flex-direction: column;
+    }
+
+    .loan-promo-cards {
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .promo-card {
+        flex: 1;
+    }
+}
