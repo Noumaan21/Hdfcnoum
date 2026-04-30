@@ -943,7 +943,7 @@ main .form form .field-income-note p {
 /* View Loan Eligibility — always blue, never gray */
 main .form form .field-view-loan-eligibility button,
 main .form form .field-view-loan-eligibility button:disabled {
-    background-color: #1a3c8f;
+    background-color: #4a62b6;
     color: #fff;
     border-radius: 8px;
     padding: 14px 32px;
@@ -956,7 +956,7 @@ main .form form .field-view-loan-eligibility button:disabled {
 }
 
 main .form form .field-view-loan-eligibility button:hover {
-    background-color: #0d2970;
+    background-color: #3a52a6;
 }
 
 /* Important links note — centered gray text with top divider */
