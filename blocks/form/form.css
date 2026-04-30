@@ -1850,6 +1850,9 @@ main .form form .field-rate-of-interest {
     padding: 10px 12px 10px 14px;
     margin: 8px 0 0;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 main .form form .field-emi-amount::before,
@@ -1863,6 +1866,15 @@ main .form form .field-rate-of-interest::before {
     height: 32px;
     background: #f4c06a;
     border-radius: 2px;
+}
+
+main .form form .field-emi-amount label,
+main .form form .field-rate-of-interest label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #666;
+    margin: 0;
+    display: block;
 }
 
 main .form form .field-emi-amount p,
@@ -1879,6 +1891,9 @@ main .form form .field-taxes-amount {
     margin: 8px 0 0;
     position: relative;
     grid-column: span 12;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 main .form form .field-taxes-amount::before {
@@ -1891,6 +1906,14 @@ main .form form .field-taxes-amount::before {
     height: 32px;
     background: #f4c06a;
     border-radius: 2px;
+}
+
+main .form form .field-taxes-amount label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #666;
+    margin: 0;
+    display: block;
 }
 
 main .form form .field-taxes-amount p {
