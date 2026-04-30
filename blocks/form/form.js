@@ -559,6 +559,16 @@ function decorateLoanSliders(form) {
   const PROCESSING_FEE_RATE = 0.015;
   const GST_RATE = 0.18;
 
+  function ensureLabel(fieldEl, labelText) {
+    if (!fieldEl) return;
+    if (!fieldEl.querySelector('.field-label')) {
+      const label = document.createElement('label');
+      label.className = 'field-label';
+      label.textContent = labelText;
+      fieldEl.prepend(label);
+    }
+  }
+
   function updateEMI() {
     const { amount, tenure } = state;
     const annualRate = getRateForAmount(amount);
@@ -567,13 +577,19 @@ function decorateLoanSliders(form) {
     const emi = Math.round((amount * r * pow) / (pow - 1));
     const taxes = Math.round(amount * PROCESSING_FEE_RATE * GST_RATE);
 
-    const emiEl = form.querySelector('.field-emi-amount p');
+    const emiField = form.querySelector('.field-emi-amount');
+    ensureLabel(emiField, 'EMI Amount');
+    const emiEl = emiField?.querySelector('p');
     if (emiEl) emiEl.textContent = `₹${emi.toLocaleString('en-IN')}`;
 
-    const rateEl = form.querySelector('.field-rate-of-interest p');
+    const rateField = form.querySelector('.field-rate-of-interest');
+    ensureLabel(rateField, 'Rate of Interest');
+    const rateEl = rateField?.querySelector('p');
     if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;
 
-    const taxesEl = form.querySelector('.field-taxes-amount p');
+    const taxesField = form.querySelector('.field-taxes-amount');
+    ensureLabel(taxesField, 'Taxes');
+    const taxesEl = taxesField?.querySelector('p');
     if (taxesEl) taxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
   }
 
