@@ -1418,6 +1418,45 @@ main .form form .field-loan-details .button-wrapper button:hover::after {
     text-decoration: underline;
 }
 
+/* Submit button moved outside Personal Details panel */
+main .form form .field-personal-details + .button-wrapper {
+    margin-top: 20px;
+    grid-column: span 12;
+}
+
+main .form form .field-personal-details + .button-wrapper button {
+    background-color: rgb(165 180 252 / 30%);
+    color: #3730a3;
+    border: 1.5px solid #a5b4fc;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+main .form form .field-personal-details + .button-wrapper button::after {
+    content: "›";
+    font-size: 1.1rem;
+}
+
+main .form form .field-personal-details + .button-wrapper button:hover {
+    background-color: rgb(165 180 252 / 50%);
+}
+
+main .form form .field-personal-details + .button-wrapper button:disabled {
+    background-color: rgb(165 180 252 / 15%);
+    color: #9090c0;
+    border-color: #d0d5f0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 /* ===== Loan Application Summary ===== */
 
 main .form form .field-loan-application-summary {

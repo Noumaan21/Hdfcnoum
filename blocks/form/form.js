@@ -777,6 +777,22 @@ function decorateSubmitOtpButton(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateMoveSubmitButton(form) {
+  function moveButton() {
+    const personalDetails = form.querySelector('.field-personal-details');
+    if (!personalDetails) return;
+    [...personalDetails.children].forEach((child) => {
+      if (child.classList.contains('button-wrapper') && !child.dataset.movedOut) {
+        child.dataset.movedOut = 'true';
+        personalDetails.insertAdjacentElement('afterend', child);
+      }
+    });
+  }
+  moveButton();
+  const observer = new MutationObserver(() => moveButton());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateCollapsiblePanels(form) {
   const selectors = ['.field-loan-details > legend', '.field-personal-details > legend'];
   selectors.forEach((sel) => {
@@ -886,6 +902,7 @@ export default async function decorate(block) {
     decorateCollapsiblePanels(form);
     decorateLoanEligibilityButton(form);
     decorateSubmitOtpButton(form);
+    decorateMoveSubmitButton(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
