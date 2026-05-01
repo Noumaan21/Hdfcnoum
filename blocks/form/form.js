@@ -570,12 +570,12 @@ function decorateLoanSliders(form) {
   }
 
   function updateEMI() {
-    const P = state.amount;                        // Principal
-    const n = state.tenure;                        // Tenure in months
+    const P = state.amount;
+    const n = state.tenure;
     const annualRate = getRateForAmount(P);
-    const r = annualRate / (12 * 100);             // r = Annual rate / (12 × 100)
-    const onePlusRPowN = (1 + r) ** n;             // (1 + r)^n
-    const emi = Math.round((P * r * onePlusRPowN) / (onePlusRPowN - 1)); // EMI = P×r×(1+r)^n / ((1+r)^n − 1)
+    const r = annualRate / (12 * 100);
+    const onePlusRPowN = (1 + r) ** n;
+    const emi = Math.round((P * r * onePlusRPowN) / (onePlusRPowN - 1));
     const taxes = Math.round(P * PROCESSING_FEE_RATE * GST_RATE);
 
     const emiField = form.querySelector('.field-emi-amount');
@@ -586,7 +586,7 @@ function decorateLoanSliders(form) {
     const rateField = form.querySelector('.field-rate-of-interest');
     ensureLabel(rateField, 'Rate of Interest');
     const rateEl = rateField?.querySelector('p');
-    if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;  // Annual interest rate used in formula
+    if (rateEl) rateEl.textContent = `${annualRate.toFixed(2)}%`;
 
     const taxesField = form.querySelector('.field-taxes-amount');
     ensureLabel(taxesField, 'Taxes');
@@ -595,6 +595,25 @@ function decorateLoanSliders(form) {
 
     const approvedEl = form.querySelector('.field-approved-loan-amount p');
     if (approvedEl) approvedEl.textContent = `₹${P.toLocaleString('en-IN')}`;
+
+    // Sync values into Loan Details summary card by matching label text
+    const loanDetails = form.querySelector('.field-loan-details');
+    if (loanDetails) {
+      loanDetails.querySelectorAll('.text-wrapper, .date-wrapper').forEach((wrapper) => {
+        const labelText = (wrapper.querySelector('label')?.textContent || '').toLowerCase();
+        const input = wrapper.querySelector('input');
+        if (!input) return;
+        if (labelText.includes('loan amount')) {
+          input.value = `₹${P.toLocaleString('en-IN')}`;
+        } else if (labelText.includes('emi')) {
+          input.value = `₹${emi.toLocaleString('en-IN')}`;
+        } else if (labelText.includes('tenure')) {
+          input.value = `${n} months`;
+        } else if (labelText.includes('rate') || labelText.includes('interest')) {
+          input.value = `${annualRate.toFixed(2)}% p.a.`;
+        }
+      });
+    }
   }
 
   function buildSlider(fieldWrapper, config) {
