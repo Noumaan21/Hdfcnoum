@@ -1429,14 +1429,14 @@ main .form form .field-personal-details + .button-wrapper button {
     color: #3730a3;
     border: 1.5px solid #a5b4fc;
     border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 0.9rem;
+    padding: 16px 24px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 100% !important;
     transition: background-color 0.2s;
 }
 
