@@ -674,6 +674,17 @@ const EYE_OPEN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24
 const EYE_SLASH_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
 function decorateLoanEligibilityButton(form) {
+  function getAge(dobValue) {
+    if (!dobValue) return 0;
+    const dob = new Date(dobValue);
+    if (Number.isNaN(dob.getTime())) return 0;
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) age -= 1;
+    return age;
+  }
+
   function isValid() {
     const phone = form.querySelector('.field-mobile-number input');
     const dob = form.querySelector('.field-date-of-birth input');
@@ -682,7 +693,8 @@ function decorateLoanEligibilityButton(form) {
       ...form.querySelectorAll('.field-consent-marketing input[type="checkbox"]'),
     ];
     const phoneOk = (phone?.value || '').replace(/\D/g, '').length >= 10;
-    const dobOk = (phone && dob) ? (dob.value || dob.getAttribute('edit-value') || '').trim().length > 0 : false;
+    const dobRaw = (dob?.getAttribute('edit-value') || dob?.value || '').trim();
+    const dobOk = dobRaw.length > 0 && getAge(dobRaw) >= 21;
     const checkboxesOk = checkboxes.length > 0 && checkboxes.every((cb) => cb.checked);
     return phoneOk && dobOk && checkboxesOk;
   }
