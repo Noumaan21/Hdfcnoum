@@ -724,6 +724,26 @@ function decorateLoanEligibilityButton(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateSubmitOtpButton(form) {
+  function attachListeners() {
+    const btn = form.querySelector('.field-submit-otp button');
+    const input = form.querySelector('.field-otp input');
+    if (!btn || !input || input.dataset.submitWired) return;
+
+    btn.disabled = true;
+
+    input.addEventListener('input', () => {
+      btn.disabled = input.value.replace(/\s/g, '').length < 6;
+    });
+
+    input.dataset.submitWired = 'true';
+  }
+
+  attachListeners();
+  const observer = new MutationObserver(() => attachListeners());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateCollapsiblePanels(form) {
   const selectors = ['.field-loan-details > legend', '.field-personal-details > legend'];
   selectors.forEach((sel) => {
@@ -832,6 +852,7 @@ export default async function decorate(block) {
     decorateLoanSliders(form);
     decorateCollapsiblePanels(form);
     decorateLoanEligibilityButton(form);
+    decorateSubmitOtpButton(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
