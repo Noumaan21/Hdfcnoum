@@ -673,6 +673,57 @@ function decorateLoanSliders(form) {
 const EYE_OPEN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const EYE_SLASH_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
+function decorateLoanEligibilityButton(form) {
+  function isValid() {
+    const phone = form.querySelector('.field-mobile-number input');
+    const dob = form.querySelector('.field-date-of-birth input');
+    const checkboxes = [
+      ...form.querySelectorAll('.field-consent-communication input[type="checkbox"]'),
+      ...form.querySelectorAll('.field-consent-marketing input[type="checkbox"]'),
+    ];
+    const phoneOk = (phone?.value || '').replace(/\D/g, '').length >= 10;
+    const dobOk = (phone && dob) ? (dob.value || dob.getAttribute('edit-value') || '').trim().length > 0 : false;
+    const checkboxesOk = checkboxes.length > 0 && checkboxes.every((cb) => cb.checked);
+    return phoneOk && dobOk && checkboxesOk;
+  }
+
+  function updateButton() {
+    const btn = form.querySelector('.field-view-loan-eligibility button');
+    if (!btn) return;
+    btn.disabled = !isValid();
+  }
+
+  function attachListeners() {
+    const phone = form.querySelector('.field-mobile-number input');
+    const dob = form.querySelector('.field-date-of-birth input');
+    const checkboxes = [
+      ...form.querySelectorAll('.field-consent-communication input[type="checkbox"]'),
+      ...form.querySelectorAll('.field-consent-marketing input[type="checkbox"]'),
+    ];
+
+    [phone, dob].forEach((el) => {
+      if (el && !el.dataset.eligibilityWired) {
+        el.addEventListener('input', updateButton);
+        el.addEventListener('change', updateButton);
+        el.dataset.eligibilityWired = 'true';
+      }
+    });
+
+    checkboxes.forEach((cb) => {
+      if (!cb.dataset.eligibilityWired) {
+        cb.addEventListener('change', updateButton);
+        cb.dataset.eligibilityWired = 'true';
+      }
+    });
+
+    updateButton();
+  }
+
+  attachListeners();
+  const observer = new MutationObserver(() => attachListeners());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateCollapsiblePanels(form) {
   const selectors = ['.field-loan-details > legend', '.field-personal-details > legend'];
   selectors.forEach((sel) => {
@@ -780,6 +831,7 @@ export default async function decorate(block) {
     decorateOtpInput(form);
     decorateLoanSliders(form);
     decorateCollapsiblePanels(form);
+    decorateLoanEligibilityButton(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
