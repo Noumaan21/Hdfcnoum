@@ -777,6 +777,38 @@ function decorateSubmitOtpButton(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateMobileValidation(form) {
+  function attachListeners() {
+    const input = form.querySelector('.field-mobile-number input');
+    if (!input || input.dataset.mobileValidated) return;
+    input.dataset.mobileValidated = 'true';
+
+    function validate() {
+      const mobileField = form.querySelector('.field-mobile-number');
+      if (!mobileField) return;
+      let errorEl = mobileField.querySelector('.mobile-error');
+      const digits = input.value.replace(/\D/g, '');
+      if (digits.length > 0 && !/^[6-9]/.test(digits)) {
+        if (!errorEl) {
+          errorEl = document.createElement('span');
+          errorEl.className = 'mobile-error';
+          mobileField.append(errorEl);
+        }
+        errorEl.textContent = 'Please enter a valid Indian mobile number.';
+      } else if (errorEl) {
+        errorEl.remove();
+      }
+    }
+
+    input.addEventListener('input', validate);
+    input.addEventListener('blur', validate);
+  }
+
+  attachListeners();
+  const observer = new MutationObserver(() => attachListeners());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateMoveSubmitButton(form) {
   function moveButton() {
     const personalDetails = form.querySelector('.field-personal-details');
@@ -902,6 +934,7 @@ export default async function decorate(block) {
     decorateCollapsiblePanels(form);
     decorateLoanEligibilityButton(form);
     decorateSubmitOtpButton(form);
+    decorateMobileValidation(form);
     decorateMoveSubmitButton(form);
 
     // Wrap "here" in consent labels so it can be styled blue

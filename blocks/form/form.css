@@ -848,6 +848,14 @@ main .form form .field-mobile-number input {
     background-size: 24px 16px, auto;
 }
 
+main .form form .field-mobile-number .mobile-error {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--form-error-color);
+}
+
 /* Date of Birth: col-4 */
 main .form form .field-date-of-birth {
     grid-column: span 4;
