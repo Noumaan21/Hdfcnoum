@@ -856,8 +856,9 @@ main .form form .field-date-of-birth {
 main .form form .field-date-of-birth .dob-age-error {
     display: block;
     margin-top: 4px;
-    font-size: 0.78rem;
-    color: #d92d20;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--form-error-color);
 }
 
 /* Source of income radio group: col-4, legend as bold heading */
