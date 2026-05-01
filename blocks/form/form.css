@@ -853,6 +853,13 @@ main .form form .field-date-of-birth {
     grid-column: span 4;
 }
 
+main .form form .field-date-of-birth .dob-age-error {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: #d92d20;
+}
+
 /* Source of income radio group: col-4, legend as bold heading */
 main .form form .field-personal-loan-offer-panel .radio-group-wrapper {
     grid-column: span 4;

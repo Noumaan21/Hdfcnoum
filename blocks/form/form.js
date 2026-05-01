@@ -705,6 +705,27 @@ function decorateLoanEligibilityButton(form) {
     btn.disabled = !isValid();
   }
 
+  function updateDobError() {
+    const dob = form.querySelector('.field-date-of-birth input');
+    const dobField = form.querySelector('.field-date-of-birth');
+    if (!dobField || !dob) return;
+
+    let errorEl = dobField.querySelector('.dob-age-error');
+    const dobRaw = (dob.getAttribute('edit-value') || dob.value || '').trim();
+    const age = dobRaw.length > 0 ? getAge(dobRaw) : null;
+
+    if (age !== null && age < 21) {
+      if (!errorEl) {
+        errorEl = document.createElement('span');
+        errorEl.className = 'dob-age-error';
+        dobField.append(errorEl);
+      }
+      errorEl.textContent = 'Age must be 21 or above to apply for a loan.';
+    } else if (errorEl) {
+      errorEl.remove();
+    }
+  }
+
   function attachListeners() {
     const phone = form.querySelector('.field-mobile-number input');
     const dob = form.querySelector('.field-date-of-birth input');
@@ -715,8 +736,8 @@ function decorateLoanEligibilityButton(form) {
 
     [phone, dob].forEach((el) => {
       if (el && !el.dataset.eligibilityWired) {
-        el.addEventListener('input', updateButton);
-        el.addEventListener('change', updateButton);
+        el.addEventListener('input', () => { updateDobError(); updateButton(); });
+        el.addEventListener('change', () => { updateDobError(); updateButton(); });
         el.dataset.eligibilityWired = 'true';
       }
     });
