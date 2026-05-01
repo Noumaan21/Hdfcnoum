@@ -1862,21 +1862,27 @@ main .form form .field-proceed-button button:hover {
 main .form form .field-xpress-personal-loan-summary {
     background: #fef9ec;
     border-radius: 14px;
-    padding: 20px;
-    border: 1px solid transparent; /* keeps background behind legend */
+    padding: 42px 20px 20px;
+    border: none;
+    position: relative;
     row-gap: 0;
     column-gap: 0;
     align-content: start;
 }
 
 main .form form .field-xpress-personal-loan-summary > legend {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    right: 20px;
     font-size: 0.85rem;
     font-weight: 500;
     color: #555;
     border: none;
-    padding: 0 0 6px;
-    margin-bottom: 0;
-    width: 100%;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    float: none;
 }
 
 /* Large loan amount */
