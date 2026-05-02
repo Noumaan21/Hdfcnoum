@@ -1370,6 +1370,213 @@ main .form form .field-customer-details-panel input[type="text"]:hover {
     border: none;
 }
 
+/* ===== Personal Details Entry Panel ===== */
+
+main .form form .field-personal-details-panel {
+    background: #fff;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    padding: 0 24px 28px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
+    overflow: hidden;
+    row-gap: 16px;
+    column-gap: 16px;
+}
+
+main .form form .field-personal-details-panel > legend {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
+    background: #eef2ff;
+    border-bottom: 1px solid #dde2ec;
+    padding: 16px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+main .form form .field-personal-details-panel > legend::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='7' width='20' height='14' rx='2'/%3E%3Cpath d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Floating label wrappers */
+main .form form .field-personal-details-panel .drop-down-wrapper,
+main .form form .field-personal-details-panel .text-wrapper,
+main .form form .field-personal-details-panel .email-wrapper {
+    position: relative;
+    padding-top: 12px;
+    margin: 0;
+}
+
+main .form form .field-personal-details-panel .drop-down-wrapper > label,
+main .form form .field-personal-details-panel .text-wrapper > label,
+main .form form .field-personal-details-panel .email-wrapper > label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 0 4px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #888;
+    z-index: 1;
+    line-height: 1;
+    pointer-events: none;
+    margin: 0;
+}
+
+/* Select */
+main .form form .field-personal-details-panel select {
+    height: 52px !important;
+    border-radius: 8px;
+    border: 1.5px solid #d0d5dd !important;
+    padding: 0 36px 0 14px !important;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    margin: 0 !important;
+    width: 100%;
+    background-color: #fff !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 18px !important;
+    appearance: none;
+    cursor: pointer;
+}
+
+main .form form .field-personal-details-panel select:focus {
+    border-color: #3d52d5 !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
+}
+
+/* Text & email inputs */
+main .form form .field-personal-details-panel input[type="text"],
+main .form form .field-personal-details-panel input[type="email"] {
+    height: 52px !important;
+    border-radius: 8px;
+    border: 1.5px solid #d0d5dd !important;
+    padding: 0 14px !important;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    margin: 0 !important;
+    width: 100%;
+    background: #fff !important;
+    cursor: text;
+}
+
+main .form form .field-personal-details-panel input[type="text"]:focus,
+main .form form .field-personal-details-panel input[type="email"]:focus {
+    border-color: #3d52d5 !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
+}
+
+/* Email + Verify — joined layout */
+main .form form .field-personal-details-panel .field-email-id {
+    grid-column: span 9 !important;
+}
+
+main .form form .field-personal-details-panel .field-email-id input[type="email"] {
+    border-radius: 8px 0 0 8px !important;
+    border-right: none !important;
+}
+
+main .form form .field-personal-details-panel .field-verify-email-button {
+    grid-column: span 3 !important;
+    padding-top: 12px;
+    margin: 0;
+    display: flex;
+    align-items: stretch;
+}
+
+main .form form .field-personal-details-panel .field-verify-email-button button {
+    background: transparent !important;
+    border: 1.5px solid #d0d5dd !important;
+    border-left: none !important;
+    border-radius: 0 8px 8px 0 !important;
+    color: #3d52d5 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    padding: 0 16px !important;
+    width: 100% !important;
+    height: 52px;
+    cursor: pointer;
+    box-shadow: none !important;
+}
+
+main .form form .field-personal-details-panel .field-verify-email-button button:hover {
+    background: #f0f4ff !important;
+}
+
+/* Email suggestion chips */
+main .form form .field-personal-details-panel .field-email-suggestions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    border: none;
+    padding: 0;
+    grid-column: span 12;
+    margin: 0;
+}
+
+main .form form .field-personal-details-panel .field-email-suggestions > legend {
+    display: none;
+}
+
+main .form form .field-personal-details-panel .field-email-suggestions .checkbox-wrapper {
+    display: inline-flex;
+    position: relative;
+    margin: 0;
+    gap: 0;
+}
+
+main .form form .field-personal-details-panel .field-email-suggestions input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+main .form form .field-personal-details-panel .field-email-suggestions label {
+    display: inline-block;
+    padding: 5px 14px;
+    border: 1px solid #a5b4fc;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    color: #4a62b6;
+    cursor: pointer;
+    background: #fff;
+    white-space: nowrap;
+    margin: 0;
+    font-weight: 400;
+    flex-basis: unset;
+    transition: background 0.15s;
+}
+
+main .form form .field-personal-details-panel .field-email-suggestions label:hover {
+    background: #eef2ff;
+}
+
+main .form form .field-personal-details-panel .field-email-suggestions input[type="checkbox"]:checked + label {
+    background: #eef2ff;
+    border-color: #3d52d5;
+    font-weight: 600;
+}
+
 /* ===== Full Name (As per PAN) Panel ===== */
 
 main .form form .field-full-name-as-per-pan {
