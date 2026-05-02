@@ -1492,7 +1492,6 @@ main .form form .field-personal-details-panel .field-email-id {
     border: 1.5px solid #d0d5dd;
     border-radius: 8px;
     background: #fff;
-    overflow: hidden;
     position: relative;
     margin: 0;
 }
