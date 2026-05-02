@@ -2888,7 +2888,7 @@ main .form form .field-salary-account-details.collapsed > legend::after {
 main .form form .field-salary-account-details .text-wrapper {
     padding: 14px 16px 10px 14px;
     margin: 0;
-    align-items: flex-start;
+    align-self: start;
     box-shadow: inset 2.5px 0 0 #c7d0f8;
 }
 
@@ -2992,7 +2992,7 @@ main .form form .field-office-address-panel.collapsed > legend::after {
 main .form form .field-office-address-panel .text-wrapper {
     padding: 14px 16px 10px 14px;
     margin: 0;
-    align-items: flex-start;
+    align-self: start;
     box-shadow: inset 2.5px 0 0 #c7d0f8;
 }
 
