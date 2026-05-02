@@ -797,6 +797,23 @@ function decorateSubmitOtpButton(form) {
 }
 
 
+function decorateEmailVerifyJoined(form) {
+  function mergeVerifyButton() {
+    const panel = form.querySelector('.field-personal-details-panel');
+    if (!panel) return;
+    const emailWrapper = panel.querySelector('.field-email-id');
+    const verifyWrapper = panel.querySelector('.field-verify-email-button');
+    if (!emailWrapper || !verifyWrapper || emailWrapper.dataset.verifyMerged) return;
+    const btn = verifyWrapper.querySelector('button');
+    if (!btn) return;
+    emailWrapper.dataset.verifyMerged = 'true';
+    emailWrapper.appendChild(btn);
+  }
+  mergeVerifyButton();
+  const observer = new MutationObserver(() => mergeVerifyButton());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateMoveSubmitButton(form) {
   function moveButton() {
     const personalDetails = form.querySelector('.field-personal-details');
@@ -923,6 +940,7 @@ export default async function decorate(block) {
     decorateLoanEligibilityButton(form);
     decorateSubmitOtpButton(form);
     decorateMoveSubmitButton(form);
+    decorateEmailVerifyJoined(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {

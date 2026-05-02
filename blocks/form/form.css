@@ -1483,44 +1483,68 @@ main .form form .field-personal-details-panel input[type="email"]:focus {
     box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
 }
 
-/* Email + Verify — joined layout */
+/* Email + Verify — single unified box */
 main .form form .field-personal-details-panel .field-email-id {
-    grid-column: span 9 !important;
-    margin-right: -16px;
+    grid-column: span 12 !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    align-items: stretch;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
     position: relative;
-    z-index: 1;
+    margin: 0;
+}
+
+main .form form .field-personal-details-panel .field-email-id > label {
+    top: 0 !important;
+    left: 14px !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
 }
 
 main .form form .field-personal-details-panel .field-email-id input[type="email"] {
-    border-radius: 8px 0 0 8px !important;
-    border-right: none !important;
-}
-
-main .form form .field-personal-details-panel .field-verify-email-button {
-    grid-column: span 3 !important;
-    padding-top: 12px;
-    margin: 0;
-    display: flex;
-    align-items: stretch;
-}
-
-main .form form .field-personal-details-panel .field-verify-email-button button {
+    border: none !important;
+    border-radius: 0 !important;
+    height: 52px !important;
+    flex: 1;
+    padding: 0 14px !important;
+    margin: 0 !important;
     background: transparent !important;
-    border: 1.5px solid #d0d5dd !important;
-    border-left: none !important;
-    border-radius: 0 8px 8px 0 !important;
-    color: #3d52d5 !important;
-    font-weight: 700 !important;
-    font-size: 0.95rem !important;
-    padding: 0 16px !important;
-    width: 100% !important;
-    height: 52px;
-    cursor: pointer;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+main .form form .field-personal-details-panel .field-email-id input[type="email"]:focus {
+    border: none !important;
     box-shadow: none !important;
 }
 
-main .form form .field-personal-details-panel .field-verify-email-button button:hover {
+main .form form .field-personal-details-panel .field-email-id > button {
+    border: none !important;
+    border-left: 1.5px solid #d0d5dd !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #3d52d5 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    padding: 0 20px !important;
+    height: 52px !important;
+    width: auto !important;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: none !important;
+    align-self: center;
+    margin: 0 !important;
+}
+
+main .form form .field-personal-details-panel .field-email-id > button:hover {
     background: #f0f4ff !important;
+}
+
+main .form form .field-personal-details-panel .field-verify-email-button {
+    display: none !important;
 }
 
 /* Email suggestion chips */
