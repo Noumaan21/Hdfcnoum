@@ -1597,6 +1597,140 @@ main .form form .field-personal-details-panel .field-email-suggestions label:hov
     background: #eef2ff;
 }
 
+/* ── Address Details Panel ──────────────────────────────── */
+main .form form .field-address-details {
+    background: #eef0ff;
+    border: 1px solid #dae0f5;
+    border-radius: 12px;
+    padding: 0 24px 24px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 5%);
+    row-gap: 16px;
+    column-gap: 16px;
+}
+
+main .form form .field-address-details > legend {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
+    background: #eef0ff;
+    padding: 16px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: none;
+}
+
+main .form form .field-address-details > legend::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Address display block */
+main .form form .field-address-details .field-aadhaar-address-display {
+    border-left: 3px solid #3d52d5;
+    padding: 6px 14px;
+    margin: 0;
+    background: transparent;
+    grid-column: span 12;
+}
+
+main .form form .field-address-details .field-aadhaar-address-display p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.85rem;
+    color: #5a6473;
+}
+
+main .form form .field-address-details .field-aadhaar-address-display b {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-top: 2px;
+}
+
+/* Aadhaar address type radio group */
+main .form form .field-address-details .field-aadhaar-address-type {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    grid-column: span 12;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    row-gap: 10px;
+    column-gap: 0;
+}
+
+main .form form .field-address-details .field-aadhaar-address-type > legend {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+    width: 100%;
+    padding: 0 0 8px;
+    margin: 0;
+    background: transparent;
+    border: none;
+}
+
+main .form form .field-address-details .field-aadhaar-address-type .radio-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 20px 0 0;
+}
+
+main .form form .field-address-details .field-aadhaar-address-type .radio-wrapper label {
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* Custom radio buttons */
+main .form form .field-address-details input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid #c5cdd8;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+main .form form .field-address-details input[type="radio"]:checked {
+    border-color: #3d52d5;
+    border-width: 2px;
+    background: #fff;
+}
+
+main .form form .field-address-details input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3d52d5;
+}
+
 main .form form .field-personal-details-panel .field-email-suggestions input[type="checkbox"]:checked + label {
     background: #eef2ff;
     border-color: #3d52d5;
