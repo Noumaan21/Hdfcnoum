@@ -1422,8 +1422,8 @@ main .form form .field-full-name-as-per-pan > legend::after {
 /* Floating label inputs */
 main .form form .field-full-name-as-per-pan .text-wrapper {
     position: relative;
-    padding-top: 0;
-    margin: 0 24px;
+    margin: 10px 24px 0;
+    padding: 0;
 }
 
 main .form form .field-full-name-as-per-pan .text-wrapper > label {
@@ -1439,31 +1439,32 @@ main .form form .field-full-name-as-per-pan .text-wrapper > label {
     z-index: 1;
     line-height: 1;
     pointer-events: none;
+    margin: 0;
 }
 
 main .form form .field-full-name-as-per-pan input[type="text"] {
-    height: 52px;
+    height: 52px !important;
     border-radius: 8px;
-    border: 1.5px solid #d0d5dd;
-    padding: 12px 14px;
+    border: 1.5px solid #d0d5dd !important;
+    padding: 0 14px !important;
     font-size: 0.95rem;
     font-weight: 500;
     color: #1a1a1a;
-    margin: 0;
+    margin: 0 !important;
     width: 100%;
-    background: #fff;
+    background: #fff !important;
     pointer-events: auto;
     cursor: text;
 }
 
 main .form form .field-full-name-as-per-pan input[type="text"]:focus {
-    border-color: #3d52d5;
+    border-color: #3d52d5 !important;
     outline: none;
     box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
 }
 
 main .form form .field-full-name-as-per-pan input[type="text"]:hover {
-    border-color: #9ca3af;
+    border-color: #9ca3af !important;
 }
 
 main .form form .field-full-name-as-per-pan .field-description {
