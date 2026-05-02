@@ -797,6 +797,55 @@ function decorateSubmitOtpButton(form) {
 }
 
 
+function decorateIncomeVerification(form) {
+  function decorate() {
+    const radioGroup = form.querySelector('.field-income-verification-method');
+    if (!radioGroup || radioGroup.dataset.incomeDecorated) return;
+    radioGroup.dataset.incomeDecorated = 'true';
+
+    const descs = (radioGroup.dataset.description || '').split(' | ');
+    const wrappers = radioGroup.querySelectorAll('.radio-wrapper');
+
+    wrappers.forEach((wrapper, i) => {
+      const radio = wrapper.querySelector('input[type="radio"]');
+      const label = wrapper.querySelector('label');
+      if (!radio || !label) return;
+
+      const headerRow = document.createElement('div');
+      headerRow.className = 'iv-card-header';
+      headerRow.append(radio, label);
+      wrapper.appendChild(headerRow);
+
+      if (descs[i]) {
+        const desc = document.createElement('p');
+        desc.className = 'iv-card-desc';
+        desc.textContent = descs[i].trim();
+        wrapper.appendChild(desc);
+      }
+
+      if (i === 0) {
+        const badge = document.createElement('span');
+        badge.className = 'iv-recommended';
+        badge.textContent = 'Recommended';
+        wrapper.appendChild(badge);
+      }
+
+      if (radio.checked) wrapper.classList.add('iv-checked');
+      radio.addEventListener('change', () => {
+        wrappers.forEach((w) => w.classList.remove('iv-checked'));
+        wrapper.classList.add('iv-checked');
+      });
+    });
+
+    const descDiv = radioGroup.querySelector('.field-description');
+    if (descDiv) descDiv.style.display = 'none';
+  }
+
+  decorate();
+  const observer = new MutationObserver(() => decorate());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 const BANK_CARDS = [
   {
     value: 'hdfc_bank', name: 'HDFC Bank',
@@ -1055,6 +1104,7 @@ export default async function decorate(block) {
     decorateMoveSubmitButton(form);
     decorateEmailVerifyJoined(form);
     decorateBankSelector(form);
+    decorateIncomeVerification(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
