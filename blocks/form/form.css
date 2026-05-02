@@ -1486,6 +1486,9 @@ main .form form .field-personal-details-panel input[type="email"]:focus {
 /* Email + Verify — joined layout */
 main .form form .field-personal-details-panel .field-email-id {
     grid-column: span 9 !important;
+    margin-right: -16px;
+    position: relative;
+    z-index: 1;
 }
 
 main .form form .field-personal-details-panel .field-email-id input[type="email"] {
