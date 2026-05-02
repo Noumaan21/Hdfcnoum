@@ -797,6 +797,95 @@ function decorateSubmitOtpButton(form) {
 }
 
 
+const BANK_CARDS = [
+  { value: 'hdfc_bank', name: 'HDFC Bank', bg: '#e31837', fg: '#fff', abbr: 'H' },
+  { value: 'icici_bank', name: 'ICICI Bank', bg: '#f26522', fg: '#fff', abbr: 'i', round: true },
+  { value: 'axis_bank', name: 'Axis Bank', bg: '#97144d', fg: '#fff', abbr: 'A' },
+  { value: 'kotak', name: 'Kotak', bg: '#231f20', fg: '#ed1c24', abbr: '∞' },
+  { value: 'sbi', name: 'SBI', bg: '#2255a4', fg: '#fff', abbr: 'SBI', small: true },
+  { value: 'bank_of_baroda', name: 'Bank of Bar...', bg: '#e55000', fg: '#fff', abbr: 'BoB', small: true },
+  { value: 'idfc_first', name: 'IDFC First', bg: '#971b2f', fg: '#fff', abbr: 'F' },
+];
+
+function decorateBankSelector(form) {
+  function build() {
+    const panel = form.querySelector('.field-loan-type-selection');
+    if (!panel || panel.dataset.bankDecorated) return;
+    const selectWrapper = panel.querySelector('.field-select-loan-type');
+    const select = selectWrapper?.querySelector('select');
+    if (!select) return;
+    panel.dataset.bankDecorated = 'true';
+
+    const container = document.createElement('div');
+    container.className = 'bank-picker-container';
+
+    const cardsRow = document.createElement('div');
+    cardsRow.className = 'bank-cards-row';
+
+    BANK_CARDS.forEach(({ value, name, bg, fg, abbr, round, small }) => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'bank-card';
+      card.dataset.value = value;
+
+      const iconWrap = document.createElement('span');
+      iconWrap.className = 'bank-icon-wrap';
+
+      const icon = document.createElement('span');
+      icon.className = `bank-icon${round ? ' round' : ''}`;
+      icon.style.cssText = `background:${bg};color:${fg};${small ? 'font-size:11px;font-weight:700;' : ''}`;
+      icon.textContent = abbr;
+
+      iconWrap.appendChild(icon);
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'bank-card-name';
+      nameEl.textContent = name;
+
+      card.append(iconWrap, nameEl);
+      if (select.value === value) card.classList.add('selected');
+
+      card.addEventListener('click', () => {
+        container.querySelectorAll('.bank-card').forEach((c) => c.classList.remove('selected'));
+        card.classList.add('selected');
+        select.value = value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        otherSelect.value = '';
+      });
+
+      cardsRow.appendChild(card);
+    });
+
+    const otherWrap = document.createElement('div');
+    otherWrap.className = 'bank-other-wrap';
+
+    const otherSelect = document.createElement('select');
+    otherSelect.className = 'bank-other-select';
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = 'Other Bank';
+    otherSelect.appendChild(placeholder);
+
+    otherSelect.addEventListener('change', () => {
+      if (otherSelect.value) {
+        container.querySelectorAll('.bank-card').forEach((c) => c.classList.remove('selected'));
+        select.value = 'other_bank';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
+    otherWrap.appendChild(otherSelect);
+    container.append(cardsRow, otherWrap);
+
+    selectWrapper.style.display = 'none';
+    panel.appendChild(container);
+  }
+
+  build();
+  const observer = new MutationObserver(() => build());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateEmailVerifyJoined(form) {
   const pairs = [
     { panel: '.field-personal-details-panel', email: '.field-email-id', verify: '.field-verify-email-button' },
@@ -947,6 +1036,7 @@ export default async function decorate(block) {
     decorateSubmitOtpButton(form);
     decorateMoveSubmitButton(form);
     decorateEmailVerifyJoined(form);
+    decorateBankSelector(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
