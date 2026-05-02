@@ -831,7 +831,7 @@ function decorateMoveSubmitButton(form) {
 }
 
 function decorateCollapsiblePanels(form) {
-  const selectors = ['.field-loan-details > legend', '.field-personal-details > legend'];
+  const selectors = ['.field-loan-details > legend', '.field-personal-details > legend', '.field-employer-details-panel > legend'];
   selectors.forEach((sel) => {
     const legend = form.querySelector(sel);
     if (!legend || legend.dataset.collapsible) return;
