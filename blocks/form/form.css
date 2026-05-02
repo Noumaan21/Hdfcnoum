@@ -2820,6 +2820,111 @@ main .form form .field-income-details-panel input[type="number"]:focus {
     box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
 }
 
+/* ── Salary Account Details Panel ───────────────────────── */
+main .form form .field-salary-account-details {
+    background: #fff;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    padding: 0 24px 28px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
+    overflow: hidden;
+    row-gap: 16px;
+    column-gap: 16px;
+}
+
+main .form form .field-salary-account-details > legend {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
+    background: #eef2ff;
+    border-bottom: 1px solid #dde2ec;
+    padding: 16px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+main .form form .field-salary-account-details > legend::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='3' y1='22' x2='21' y2='22'/%3E%3Cline x1='6' y1='18' x2='6' y2='11'/%3E%3Cline x1='10' y1='18' x2='10' y2='11'/%3E%3Cline x1='14' y1='18' x2='14' y2='11'/%3E%3Cline x1='18' y1='18' x2='18' y2='11'/%3E%3Cpolygon points='12 2 20 7 4 7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+main .form form .field-salary-account-details > legend::after {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform 0.25s ease;
+}
+
+main .form form .field-salary-account-details.collapsed {
+    padding-bottom: 0;
+    row-gap: 0;
+}
+
+main .form form .field-salary-account-details.collapsed > *:not(legend) {
+    display: none !important;
+}
+
+main .form form .field-salary-account-details.collapsed > legend::after {
+    transform: rotate(180deg);
+}
+
+/* Floating labels on text inputs */
+main .form form .field-salary-account-details .text-wrapper {
+    position: relative;
+    padding-top: 12px;
+    margin: 0;
+}
+
+main .form form .field-salary-account-details .text-wrapper > label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 0 4px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #888;
+    z-index: 1;
+    line-height: 1;
+    pointer-events: none;
+    margin: 0;
+}
+
+main .form form .field-salary-account-details input[type="text"] {
+    height: 52px !important;
+    border-radius: 8px;
+    border: 1.5px solid #d0d5dd !important;
+    padding: 0 14px !important;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    margin: 0 !important;
+    width: 100%;
+    background: #fff !important;
+}
+
+main .form form .field-salary-account-details input[type="text"]:focus {
+    border-color: #3d52d5 !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
+}
+
 /* ── Income Verification Panel ──────────────────────────── */
 main .form form .field-income-verification-panel {
     background: #fff;
