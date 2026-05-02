@@ -2675,6 +2675,48 @@ main .form form .field-principal-offer-note p {
     line-height: 1.5;
 }
 
+/* Continue button — same style as Proceed */
+main .form form .field-continue button,
+main .form form .field-continue-button button,
+main .form form .wizard-button-next button {
+    background: #1e3a8a;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    width: auto;
+    transition: background 0.2s;
+}
+
+main .form form .field-continue button::after,
+main .form form .field-continue-button button::after,
+main .form form .wizard-button-next button::after {
+    content: "›";
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+main .form form .field-continue button:hover,
+main .form form .field-continue-button button:hover,
+main .form form .wizard-button-next button:hover {
+    background: #1e40af;
+}
+
+main .form form .field-continue button:disabled,
+main .form form .field-continue-button button:disabled,
+main .form form .wizard-button-next button:disabled {
+    background: #b0b8d1;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
 /* Confirm (submit) button — same style as Proceed */
 main .form form .field-confirm-button {
     margin-top: 20px;
