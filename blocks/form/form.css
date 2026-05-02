@@ -3377,7 +3377,8 @@ main .form form .field-loan-type-selection .bank-cards-row {
     display: flex;
     align-items: flex-start;
     gap: 4px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
 /* Bank card */
@@ -3392,6 +3393,7 @@ main .form form .field-loan-type-selection .bank-card {
     cursor: pointer;
     border-radius: 10px;
     min-width: 62px;
+    width: auto !important;
     position: relative;
     transition: background 0.15s;
 }
