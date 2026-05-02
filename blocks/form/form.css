@@ -2820,6 +2820,105 @@ main .form form .field-income-details-panel input[type="number"]:focus {
     box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
 }
 
+/* ── Reference Details Panel ────────────────────────────── */
+main .form form .field-reference-details {
+    background: #fff;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    padding: 0 24px 28px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
+    overflow: hidden;
+    row-gap: 16px;
+    column-gap: 16px;
+}
+
+main .form form .field-reference-details > legend {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
+    background: #eef2ff;
+    border-bottom: 1px solid #dde2ec;
+    padding: 16px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+main .form form .field-reference-details > legend::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+main .form form .field-reference-details > legend::after {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform 0.25s ease;
+}
+
+main .form form .field-reference-details.collapsed {
+    padding-bottom: 0;
+    row-gap: 0;
+}
+
+main .form form .field-reference-details.collapsed > *:not(legend) {
+    display: none !important;
+}
+
+main .form form .field-reference-details.collapsed > legend::after {
+    transform: rotate(180deg);
+}
+
+/* Display-field style */
+main .form form .field-reference-details .text-wrapper {
+    padding: 14px 16px 10px 14px;
+    margin: 0;
+    align-self: start;
+    box-shadow: inset 2.5px 0 0 #c7d0f8;
+}
+
+main .form form .field-reference-details .text-wrapper > label {
+    font-size: 0.78rem;
+    color: #666;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 4px;
+}
+
+main .form form .field-reference-details input[type="text"] {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    height: auto !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 !important;
+    border-radius: 0;
+    width: 100%;
+    box-shadow: none !important;
+}
+
+main .form form .field-reference-details input[type="text"]:focus {
+    outline: none;
+    box-shadow: none !important;
+}
+
 /* ── Salary Account Details Panel ───────────────────────── */
 main .form form .field-salary-account-details {
     background: #fff;
