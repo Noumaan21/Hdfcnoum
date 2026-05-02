@@ -1290,20 +1290,19 @@ main .form form .field-personal-details .field-date-of-birth input {
 
 main .form form .field-customer-details-panel {
     background: #fff;
-    border: 1px solid #dde2ec;
-    border-radius: 12px;
-    padding: 0 0 20px;
-    box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
-    overflow: hidden;
-    row-gap: 16px;
+    border: none;
+    border-radius: 0;
+    padding: 8px 0 0;
+    box-shadow: none;
+    row-gap: 14px;
     column-gap: 24px;
 }
 
 main .form form .field-customer-details-panel > legend {
     width: 100%;
-    background: #eef2ff;
-    border-bottom: 1px solid #dde2ec;
-    padding: 16px 24px;
+    background: transparent;
+    border: none;
+    padding: 0 0 4px;
     font-size: 1rem;
     font-weight: 700;
     color: #1a1a2e;
@@ -1324,38 +1323,12 @@ main .form form .field-customer-details-panel > legend::before {
     background-size: contain;
 }
 
-main .form form .field-customer-details-panel > legend::after {
-    content: "";
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    margin-left: auto;
-    flex-shrink: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-size: contain;
-    transition: transform 0.25s ease;
-}
-
-main .form form .field-customer-details-panel.collapsed {
-    padding-bottom: 0;
-    row-gap: 0;
-}
-
-main .form form .field-customer-details-panel.collapsed > *:not(legend) {
-    display: none !important;
-}
-
-main .form form .field-customer-details-panel.collapsed > legend::after {
-    transform: rotate(180deg);
-}
-
 main .form form .field-customer-details-panel .text-wrapper {
-    padding: 14px 16px 10px 14px;
-    margin: 0 20px;
+    padding: 16px 20px 14px 20px;
+    margin: 0;
     position: relative;
     background: #f4f6ff;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 main .form form .field-customer-details-panel .text-wrapper::before {
@@ -1364,10 +1337,10 @@ main .form form .field-customer-details-panel .text-wrapper::before {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 2.5px;
+    width: 3px;
     height: 36px;
     background-color: #c7d0f8;
-    border-radius: 2px;
+    border-radius: 0 2px 2px 0;
 }
 
 main .form form .field-customer-details-panel .text-wrapper > label {
