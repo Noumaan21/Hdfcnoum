@@ -798,19 +798,25 @@ function decorateSubmitOtpButton(form) {
 
 
 function decorateEmailVerifyJoined(form) {
-  function mergeVerifyButton() {
-    const panel = form.querySelector('.field-personal-details-panel');
-    if (!panel) return;
-    const emailWrapper = panel.querySelector('.field-email-id');
-    const verifyWrapper = panel.querySelector('.field-verify-email-button');
-    if (!emailWrapper || !verifyWrapper || emailWrapper.dataset.verifyMerged) return;
-    const btn = verifyWrapper.querySelector('button');
-    if (!btn) return;
-    emailWrapper.dataset.verifyMerged = 'true';
-    emailWrapper.appendChild(btn);
+  const pairs = [
+    { panel: '.field-personal-details-panel', email: '.field-email-id', verify: '.field-verify-email-button' },
+    { panel: '.field-work-email-id-panel', email: '.field-work-email-id', verify: '.field-verify-work-email-button' },
+  ];
+  function mergeAll() {
+    pairs.forEach(({ panel, email, verify }) => {
+      const panelEl = form.querySelector(panel);
+      if (!panelEl) return;
+      const emailWrapper = panelEl.querySelector(email);
+      const verifyWrapper = panelEl.querySelector(verify);
+      if (!emailWrapper || !verifyWrapper || emailWrapper.dataset.verifyMerged) return;
+      const btn = verifyWrapper.querySelector('button');
+      if (!btn) return;
+      emailWrapper.dataset.verifyMerged = 'true';
+      emailWrapper.appendChild(btn);
+    });
   }
-  mergeVerifyButton();
-  const observer = new MutationObserver(() => mergeVerifyButton());
+  mergeAll();
+  const observer = new MutationObserver(() => mergeAll());
   observer.observe(form, { childList: true, subtree: true });
 }
 
@@ -831,7 +837,7 @@ function decorateMoveSubmitButton(form) {
 }
 
 function decorateCollapsiblePanels(form) {
-  const selectors = ['.field-loan-details > legend', '.field-personal-details > legend', '.field-employer-details-panel > legend', '.field-income-details-panel > legend'];
+  const selectors = ['.field-loan-details > legend', '.field-personal-details > legend', '.field-employer-details-panel > legend', '.field-income-details-panel > legend', '.field-work-email-id-panel > legend'];
   selectors.forEach((sel) => {
     const legend = form.querySelector(sel);
     if (!legend || legend.dataset.collapsible) return;

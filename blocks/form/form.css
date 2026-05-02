@@ -2781,6 +2781,146 @@ main .form form .field-income-details-panel input[type="number"]:focus {
     box-shadow: 0 0 0 3px rgb(61 82 213 / 10%);
 }
 
+/* ── Work Email ID Panel ────────────────────────────────── */
+main .form form .field-work-email-id-panel {
+    background: #fff;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    padding: 0 24px 28px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
+    overflow: hidden;
+    row-gap: 16px;
+    column-gap: 16px;
+}
+
+main .form form .field-work-email-id-panel > legend {
+    width: calc(100% + 48px);
+    margin: 0 -24px;
+    background: #eef2ff;
+    border-bottom: 1px solid #dde2ec;
+    padding: 16px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+main .form form .field-work-email-id-panel > legend::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22 6 12 13 2 6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+main .form form .field-work-email-id-panel > legend::after {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform 0.25s ease;
+}
+
+main .form form .field-work-email-id-panel.collapsed {
+    padding-bottom: 0;
+    row-gap: 0;
+}
+
+main .form form .field-work-email-id-panel.collapsed > *:not(legend) {
+    display: none !important;
+}
+
+main .form form .field-work-email-id-panel.collapsed > legend::after {
+    transform: rotate(180deg);
+}
+
+/* Unified email + verify box */
+main .form form .field-work-email-id-panel .field-work-email-id {
+    grid-column: span 12 !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    align-items: stretch;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 8px;
+    background: #fff;
+    position: relative;
+    margin: 0;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id > label {
+    top: 0 !important;
+    left: 14px !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id input[type="email"] {
+    border: none !important;
+    border-radius: 0 !important;
+    height: 52px !important;
+    flex: 1;
+    padding: 0 14px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id input[type="email"]:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id > button {
+    border: none !important;
+    border-left: 1.5px solid #d0d5dd !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #3d52d5 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    padding: 0 20px !important;
+    height: 52px !important;
+    width: auto !important;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: none !important;
+    align-self: center;
+    margin: 0 !important;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id > button:hover {
+    background: #f0f4ff !important;
+}
+
+main .form form .field-work-email-id-panel .field-verify-work-email-button {
+    display: none !important;
+}
+
+/* Help text */
+main .form form .field-work-email-id-panel .field-work-email-id-helptext {
+    margin: -8px 0 0;
+    padding: 0;
+    grid-column: span 12;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id-helptext p {
+    font-size: 0.82rem;
+    color: #777;
+    margin: 0;
+}
+
 /* ── Employer Details Panel ─────────────────────────────── */
 main .form form .field-employer-details-panel {
     background: #fff;
