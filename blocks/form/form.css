@@ -3864,3 +3864,203 @@ main .form form .field-employer-details-panel .field-industry-disclaimer-text p 
     margin: 0;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   Verify Email ID Panel
+   ═══════════════════════════════════════════════════════════ */
+
+main .form form .field-verify-email-id {
+    background: #fff;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    padding: 0 24px 28px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 6%);
+    overflow: hidden;
+    row-gap: 0;
+    column-gap: 24px;
+    grid-column: span 12 !important;
+    align-items: start;
+}
+
+main .form form .field-verify-email-id > legend {
+    background: linear-gradient(135deg, #eef0fb 0%, #f0f4ff 100%);
+    border-bottom: 1px solid #dde2ec;
+    margin: 0 -24px;
+    width: calc(100% + 48px);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    cursor: pointer;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+main .form form .field-verify-email-id > legend::before {
+    content: '';
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d52d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+main .form form .field-verify-email-id > legend::after {
+    content: '';
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    transition: transform 0.25s ease;
+}
+
+main .form form .field-verify-email-id.collapsed {
+    padding-bottom: 0;
+}
+
+main .form form .field-verify-email-id.collapsed > *:not(legend) {
+    display: none !important;
+}
+
+main .form form .field-verify-email-id.collapsed > legend {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+main .form form .field-verify-email-id.collapsed > legend::after {
+    transform: rotate(180deg);
+}
+
+/* Sub-panels layout */
+main .form form .field-primary-email-panel,
+main .form form .field-work-email-panel {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    grid-template-rows: auto auto !important;
+    column-gap: 12px !important;
+    row-gap: 10px !important;
+    border: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    min-width: 0;
+    align-self: start;
+}
+
+main .form form .field-primary-email-panel > legend,
+main .form form .field-work-email-panel > legend {
+    display: none !important;
+}
+
+/* Email input - floating label */
+main .form form .field-primary-email-panel .field-primary-email-id,
+main .form form .field-work-email-panel .field-work-email-id {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    position: relative !important;
+    padding-top: 12px !important;
+    margin: 0 !important;
+    min-width: 0;
+}
+
+main .form form .field-primary-email-panel .field-primary-email-id .field-label,
+main .form form .field-work-email-panel .field-work-email-id .field-label {
+    position: absolute !important;
+    top: 12px !important;
+    left: 14px !important;
+    transform: translateY(-50%) !important;
+    font-size: 0.75rem !important;
+    color: #888 !important;
+    background: #fff !important;
+    padding: 0 4px !important;
+    pointer-events: none;
+    z-index: 1;
+    white-space: nowrap;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+}
+
+main .form form .field-primary-email-panel .field-primary-email-id input[type="email"],
+main .form form .field-work-email-panel .field-work-email-id input[type="email"] {
+    height: 48px !important;
+    border: 1.5px solid #d0d5dd !important;
+    border-radius: 8px !important;
+    padding: 0 14px !important;
+    font-size: 0.95rem !important;
+    color: #1a1a1a !important;
+    background: #fff !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+main .form form .field-primary-email-panel .field-primary-email-id input[type="email"]:focus,
+main .form form .field-work-email-panel .field-work-email-id input[type="email"]:focus {
+    border-color: #3d52d5 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgb(61 82 213 / 10%) !important;
+}
+
+/* Verify button */
+main .form form .field-primary-email-panel .field-primary-email-verify-button,
+main .form form .field-work-email-panel .field-work-email-verify-button {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: end !important;
+    display: flex !important;
+    align-items: stretch !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+main .form form .field-primary-email-panel .field-primary-email-verify-button button,
+main .form form .field-work-email-panel .field-work-email-verify-button button {
+    height: 48px !important;
+    padding: 0 22px !important;
+    border: 1.5px solid #3d52d5 !important;
+    border-radius: 24px !important;
+    background: transparent !important;
+    color: #3d52d5 !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background 0.2s, color 0.2s !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+}
+
+main .form form .field-primary-email-panel .field-primary-email-verify-button button:hover,
+main .form form .field-work-email-panel .field-work-email-verify-button button:hover {
+    background: #3d52d5 !important;
+    color: #fff !important;
+}
+
+/* Help text */
+main .form form .field-primary-email-panel .field-primary-email-mandatory-note,
+main .form form .field-work-email-panel .field-work-email-note {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+main .form form .field-primary-email-panel .field-primary-email-mandatory-note p,
+main .form form .field-work-email-panel .field-work-email-note p {
+    font-size: 0.82rem !important;
+    color: #6b7280 !important;
+    margin: 0 !important;
+    line-height: 1.45 !important;
+}
+
