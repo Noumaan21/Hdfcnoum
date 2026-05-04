@@ -597,10 +597,9 @@ function decorateLoanSliders(form) {
     const approvedEl = form.querySelector('.field-approved-loan-amount p');
     if (approvedEl) approvedEl.textContent = `₹${P.toLocaleString('en-IN')}`;
 
-    // Sync values into Loan Details summary card by matching label text
-    const loanDetails = form.querySelector('.field-loan-details');
-    if (loanDetails) {
-      loanDetails.querySelectorAll('.text-wrapper, .date-wrapper').forEach((wrapper) => {
+    function syncDisplayFields(container) {
+      if (!container) return;
+      container.querySelectorAll('.text-wrapper, .date-wrapper').forEach((wrapper) => {
         const labelText = (wrapper.querySelector('label')?.textContent || '').toLowerCase();
         const input = wrapper.querySelector('input');
         if (!input) return;
@@ -615,6 +614,11 @@ function decorateLoanSliders(form) {
         }
       });
     }
+
+    // Sync values into Loan Details summary card and Xpress Personal Loan Summary
+    syncDisplayFields(form.querySelector('.field-loan-details'));
+    syncDisplayFields(form.querySelector('.field-xpress-personal-loan-summary'));
+    syncDisplayFields(form.querySelector('.field-xpress-personal-loan-summary-panel'));
   }
 
   function buildSlider(fieldWrapper, config) {
