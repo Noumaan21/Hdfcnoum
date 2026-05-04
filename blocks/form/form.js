@@ -599,10 +599,10 @@ function decorateLoanSliders(form) {
 
     function syncDisplayFields(container) {
       if (!container) return;
-      container.querySelectorAll('.text-wrapper, .number-wrapper, .date-wrapper, .field-wrapper').forEach((wrapper) => {
+      container.querySelectorAll('.text-wrapper, .date-wrapper').forEach((wrapper) => {
         const labelText = (wrapper.querySelector('label')?.textContent || '').toLowerCase();
         const input = wrapper.querySelector('input');
-        if (!input || !labelText) return;
+        if (!input) return;
         if (labelText.includes('loan amount')) {
           input.value = `₹${P.toLocaleString('en-IN')}`;
         } else if (labelText.includes('emi')) {
