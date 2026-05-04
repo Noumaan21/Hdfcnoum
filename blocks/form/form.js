@@ -26,6 +26,7 @@ import {
 export const DELAY_MS = 0;
 let captchaField;
 let afModule;
+let otpTimerInterval = null;
 
 const withFieldWrapper = (element) => (fd) => {
   const wrapper = createFieldWrapper(fd);
@@ -992,6 +993,67 @@ function decorateMoveSubmitButton(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function startOtpTimer(form) {
+  const timerInput = form.querySelector('input[name="Resend OTP in:"]');
+  const resendBtn = form.querySelector('.field-resend-button button');
+
+  let timeLeft = 30;
+
+  if (otpTimerInterval) clearInterval(otpTimerInterval);
+
+  if (resendBtn) resendBtn.disabled = true;
+  if (timerInput) timerInput.value = `${timeLeft}s`;
+
+  otpTimerInterval = setInterval(() => {
+    timeLeft -= 1;
+    if (timerInput) timerInput.value = `${timeLeft}s`;
+
+    if (timeLeft <= 0) {
+      clearInterval(otpTimerInterval);
+      otpTimerInterval = null;
+      if (resendBtn) resendBtn.disabled = false;
+      if (timerInput) timerInput.value = '0s';
+    }
+  }, 1000);
+}
+
+function stopOtpTimer(form) {
+  if (otpTimerInterval) {
+    clearInterval(otpTimerInterval);
+    otpTimerInterval = null;
+  }
+  const timerInput = form.querySelector('input[name="Resend OTP in:"]');
+  if (timerInput) timerInput.value = '';
+}
+
+function decorateOtpTimer(form) {
+  function wire() {
+    const verifySelectors = [
+      '.field-verify-email-button button',
+      '.field-verify-work-email-button button',
+      '.field-primary-email-verify-button button',
+      '.field-work-email-verify-button button',
+    ];
+    verifySelectors.forEach((sel) => {
+      const btn = form.querySelector(sel);
+      if (btn && !btn.dataset.timerWired) {
+        btn.dataset.timerWired = 'true';
+        btn.addEventListener('click', () => startOtpTimer(form));
+      }
+    });
+
+    const resendBtn = form.querySelector('.field-resend-button button');
+    if (resendBtn && !resendBtn.dataset.timerWired) {
+      resendBtn.dataset.timerWired = 'true';
+      resendBtn.addEventListener('click', () => startOtpTimer(form));
+    }
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateCollapsiblePanels(form) {
   const selectors = ['.field-loan-details > legend', '.field-personal-details > legend', '.field-employer-details-panel > legend', '.field-income-details-panel > legend', '.field-work-email-id-panel > legend', '.field-type-of-loan-panel > legend', '.field-salary-account-details > legend', '.field-office-address-panel > legend', '.field-reference-details > legend', '.field-verify-email-id > legend'];
   selectors.forEach((sel) => {
@@ -1097,6 +1159,7 @@ export default async function decorate(block) {
     }
     container.replaceWith(form);
     decorateOtpInput(form);
+    decorateOtpTimer(form);
     decorateLoanSliders(form);
     decorateCollapsiblePanels(form);
     decorateLoanEligibilityButton(form);
