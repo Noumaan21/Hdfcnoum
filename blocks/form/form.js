@@ -690,7 +690,8 @@ function decorateLoanSliders(form) {
   }
 
   apply();
-  const observer = new MutationObserver(() => apply());
+  updateEMI();
+  const observer = new MutationObserver(() => { apply(); updateEMI(); });
   observer.observe(form, { childList: true, subtree: true });
 }
 
