@@ -732,7 +732,8 @@ function decorateLoanEligibilityButton(form) {
     ];
     const phoneOk = (phone?.value || '').replace(/\D/g, '').length >= 10;
     const dobRaw = (dob?.getAttribute('edit-value') || dob?.value || '').trim();
-    const dobOk = dobRaw.length > 0 && getAge(dobRaw) >= 21;
+    const age = getAge(dobRaw);
+    const dobOk = dobRaw.length > 0 && age >= 21 && age <= 60;
     const checkboxesOk = checkboxes.length > 0 && checkboxes.every((cb) => cb.checked);
     return phoneOk && dobOk && checkboxesOk;
   }
@@ -752,13 +753,16 @@ function decorateLoanEligibilityButton(form) {
     const dobRaw = (dob.getAttribute('edit-value') || dob.value || '').trim();
     const age = dobRaw.length > 0 ? getAge(dobRaw) : null;
 
-    if (age !== null && age < 21) {
+    const ageInvalid = age !== null && (age < 21 || age > 60);
+    if (ageInvalid) {
       if (!errorEl) {
         errorEl = document.createElement('span');
         errorEl.className = 'dob-age-error';
         dobField.append(errorEl);
       }
-      errorEl.textContent = 'Age must be 21 or above to apply for a loan.';
+      errorEl.textContent = age < 21
+        ? 'Age must be 21 or above to apply for a loan.'
+        : 'Age must be 60 or below to apply for a loan.';
     } else if (errorEl) {
       errorEl.remove();
     }
