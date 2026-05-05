@@ -1122,11 +1122,33 @@ function wirePanelOtpTimer(panel, form) {
         const dobInput = form.querySelector('.field-date-of-birth input');
         const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
 
-        // Generate a local random OTP as fallback
         let otpString = String(Math.floor(100000 + Math.random() * 900000));
 
+        const fillOtp = () => {
+          const otpInput = form.querySelector('.field-otp input');
+          if (!otpInput) return;
+          otpInput.value = otpString;
+          otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+          otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+          const submitBtn = form.querySelector('.field-submit-otp button');
+          if (submitBtn) submitBtn.removeAttribute('disabled');
+        };
+
+        // Fill immediately in case OTP panel is already the active step
+        fillOtp();
+
+        // Watch for AEM wizard adding current-wizard-step to the OTP panel and fill at that moment
+        let navObserver = new MutationObserver(() => {
+          fillOtp();
+          setTimeout(fillOtp, 150);
+          setTimeout(fillOtp, 450);
+          navObserver.disconnect();
+          navObserver = null;
+        });
+        navObserver.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
+        setTimeout(() => { if (navObserver) { navObserver.disconnect(); navObserver = null; } }, 10000);
+
         try {
-          // Try the API — if it succeeds use its OTP (keeps server in sync for validation)
           const res = await fetch('http://localhost:3000/api/generate-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1134,37 +1156,13 @@ function wirePanelOtpTimer(panel, form) {
           });
           if (res.ok) {
             const data = await res.json();
-            if (data.otp) otpString = String(data.otp);
+            if (data.otp) {
+              otpString = String(data.otp);
+              fillOtp();
+            }
           }
         } catch {
-          // API unavailable — local OTP already set above, continue
-        }
-
-        // Fill OTP as soon as the panel is no longer data-visible="false"
-        const tryFill = () => {
-          const otpInput = form.querySelector('.field-otp input');
-          if (!otpInput) return false;
-          // Only block on explicit data-visible="false" — don't use getComputedStyle
-          // because wizard hides steps via CSS class, not inline display
-          const otpPanel = otpInput.closest('.field-enter-otp-panel')
-            || otpInput.closest('[data-visible]');
-          if (otpPanel?.dataset.visible === 'false') return false;
-
-          otpInput.value = otpString;
-          otpInput.dispatchEvent(new Event('input', { bubbles: true }));
-          otpInput.dispatchEvent(new Event('change', { bubbles: true }));
-          // Enable submit button directly in case events don't reach it
-          const submitBtn = form.querySelector('.field-submit-otp button');
-          if (submitBtn) submitBtn.removeAttribute('disabled');
-          return true;
-        };
-
-        if (!tryFill()) {
-          let attempts = 0;
-          const poll = setInterval(() => {
-            attempts += 1;
-            if (tryFill() || attempts >= 50) clearInterval(poll);
-          }, 200);
+          // API unavailable — local OTP stays
         }
 
         startOtpTimer(panel);
