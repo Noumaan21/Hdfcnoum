@@ -1140,30 +1140,46 @@ function wirePanelOtpTimer(panel, form) {
           return;
         }
 
-        // Store OTP and fill it once the OTP panel becomes visible
+        // Fill OTP once the OTP panel is actually visible in the DOM
         if (generatedOtp) {
-          form.dataset.pendingOtp = String(generatedOtp);
+          const otpString = String(generatedOtp);
 
-          const tryFill = () => {
+          const isOtpPanelVisible = () => {
             const otpInput = form.querySelector('.field-otp input');
-            const pending = form.dataset.pendingOtp;
-            if (!otpInput || !pending) return false;
-            const panel2 = otpInput.closest('[data-visible]');
-            if (panel2 && panel2.dataset.visible === 'false') return false;
-            delete form.dataset.pendingOtp;
-            otpInput.value = pending;
-            otpInput.dispatchEvent(new Event('input', { bubbles: true }));
-            otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+            if (!otpInput) return false;
+            // Walk up and check every ancestor for hidden state
+            let el = otpInput;
+            while (el && el !== form) {
+              const cs = getComputedStyle(el);
+              if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+              if (el.dataset && el.dataset.visible === 'false') return false;
+              el = el.parentElement;
+            }
             return true;
           };
 
-          if (!tryFill()) {
+          const fillOtp = () => {
+            const otpInput = form.querySelector('.field-otp input');
+            if (!otpInput) return;
+            otpInput.value = otpString;
+            otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+            otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+          };
+
+          if (isOtpPanelVisible()) {
+            fillOtp();
+          } else {
             const fillObserver = new MutationObserver(() => {
-              if (tryFill()) fillObserver.disconnect();
+              if (isOtpPanelVisible()) {
+                fillObserver.disconnect();
+                fillOtp();
+              }
             });
             fillObserver.observe(form, {
-              childList: true, subtree: true, attributes: true,
-              attributeFilter: ['data-visible', 'style'],
+              childList: true,
+              subtree: true,
+              attributes: true,
+              attributeFilter: ['data-visible', 'data-active', 'class', 'style'],
             });
           }
         }
