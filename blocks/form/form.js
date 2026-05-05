@@ -1261,6 +1261,20 @@ function decorateOtpInput(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateLoanApplicationNumber(form) {
+  function apply() {
+    const input = form.querySelector('.field-loan-application-number input[type="text"]');
+    if (!input || input.dataset.appNoGenerated) return;
+    input.dataset.appNoGenerated = 'true';
+    // Random 9-digit number: 100000000 – 999999999
+    input.value = String(Math.floor(100000000 + Math.random() * 900000000));
+  }
+
+  apply();
+  const observer = new MutationObserver(() => apply());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href]');
   let formDef;
@@ -1327,6 +1341,7 @@ export default async function decorate(block) {
     decorateEmailVerifyJoined(form);
     decorateBankSelector(form);
     decorateIncomeVerification(form);
+    decorateLoanApplicationNumber(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
