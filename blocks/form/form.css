@@ -2038,19 +2038,7 @@ main .form form .field-loan-details .button-wrapper button {
 }
 
 main .form form .field-loan-details .button-wrapper button::after {
-    content: "Click here";
-    font-size: 0.92rem;
-    font-weight: 700;
-    color: #3d52d5;
-    display: block;
-}
-
-main .form form .field-loan-details .button-wrapper button:hover {
-    background: transparent;
-}
-
-main .form form .field-loan-details .button-wrapper button:hover::after {
-    text-decoration: underline;
+    display: none;
 }
 
 /* Submit button moved outside Personal Details panel */
