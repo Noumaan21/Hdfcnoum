@@ -1699,23 +1699,25 @@ main .form form .field-address-details .field-aadhaar-address-type .radio-wrappe
 main .form form .field-address-details input[type="radio"] {
     -webkit-appearance: none;
     appearance: none;
+    display: block !important;
     width: 18px !important;
     height: 18px !important;
     min-width: 18px !important;
     min-height: 18px !important;
     max-width: 18px !important;
     max-height: 18px !important;
+    aspect-ratio: 1 / 1;
     border: 2px solid #c5cdd8;
     border-radius: 50%;
     background: #fff;
     cursor: pointer;
-    position: relative;
+    position: relative !important;
+    padding: 0 !important;
     margin: 0 !important;
     flex: none !important;
     flex-shrink: 0;
     align-self: center;
-    display: inline-block;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 
 main .form form .field-address-details input[type="radio"]:checked {
