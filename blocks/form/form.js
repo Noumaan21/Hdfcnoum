@@ -1122,66 +1122,39 @@ function wirePanelOtpTimer(panel, form) {
         const dobInput = form.querySelector('.field-date-of-birth input');
         const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
 
-        let generatedOtp;
-        try {
-          const res = await fetch('http://localhost:3000/api/generate-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mobile, dob }),
-          });
-          const data = await res.json();
-          if (!res.ok) {
-            globalThis.alert(data.message || 'Failed to send OTP. Please try again.');
-            return;
+        // Generate OTP locally so the fill never depends on API timing
+        const otpString = String(Math.floor(100000 + Math.random() * 900000));
+
+        // Also send to backend (fire-and-forget — don't block the UI on it)
+        fetch('http://localhost:3000/api/generate-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mobile, dob, otp: Number(otpString) }),
+        }).catch(() => {});
+
+        // Poll every 200 ms until the OTP input is in a visible panel, then fill it
+        const tryFill = () => {
+          const otpInput = form.querySelector('.field-otp input');
+          if (!otpInput) return false;
+          let el = otpInput;
+          while (el && el !== form) {
+            const cs = getComputedStyle(el);
+            if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+            if (el.dataset?.visible === 'false') return false;
+            el = el.parentElement;
           }
-          generatedOtp = data.otp;
-        } catch {
-          globalThis.alert('Network error while sending OTP. Please try again.');
-          return;
-        }
+          otpInput.value = otpString;
+          otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+          otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+          return true;
+        };
 
-        // Fill OTP once the OTP panel is actually visible in the DOM
-        if (generatedOtp) {
-          const otpString = String(generatedOtp);
-
-          const isOtpPanelVisible = () => {
-            const otpInput = form.querySelector('.field-otp input');
-            if (!otpInput) return false;
-            // Walk up and check every ancestor for hidden state
-            let el = otpInput;
-            while (el && el !== form) {
-              const cs = getComputedStyle(el);
-              if (cs.display === 'none' || cs.visibility === 'hidden') return false;
-              if (el.dataset && el.dataset.visible === 'false') return false;
-              el = el.parentElement;
-            }
-            return true;
-          };
-
-          const fillOtp = () => {
-            const otpInput = form.querySelector('.field-otp input');
-            if (!otpInput) return;
-            otpInput.value = otpString;
-            otpInput.dispatchEvent(new Event('input', { bubbles: true }));
-            otpInput.dispatchEvent(new Event('change', { bubbles: true }));
-          };
-
-          if (isOtpPanelVisible()) {
-            fillOtp();
-          } else {
-            const fillObserver = new MutationObserver(() => {
-              if (isOtpPanelVisible()) {
-                fillObserver.disconnect();
-                fillOtp();
-              }
-            });
-            fillObserver.observe(form, {
-              childList: true,
-              subtree: true,
-              attributes: true,
-              attributeFilter: ['data-visible', 'data-active', 'class', 'style'],
-            });
-          }
+        if (!tryFill()) {
+          let attempts = 0;
+          const poll = setInterval(() => {
+            attempts += 1;
+            if (tryFill() || attempts >= 30) clearInterval(poll);
+          }, 200);
         }
 
         startOtpTimer(panel);
