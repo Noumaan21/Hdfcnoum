@@ -1122,20 +1122,30 @@ function wirePanelOtpTimer(panel, form) {
         const dobInput = form.querySelector('.field-date-of-birth input');
         const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
 
+        let generatedOtp;
         try {
           const res = await fetch('http://localhost:3000/api/generate-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ mobile, dob }),
           });
+          const data = await res.json();
           if (!res.ok) {
-            const data = await res.json();
             globalThis.alert(data.message || 'Failed to send OTP. Please try again.');
             return;
           }
+          generatedOtp = data.otp;
         } catch {
           globalThis.alert('Network error while sending OTP. Please try again.');
           return;
+        }
+
+        // Auto-fill the OTP into the input box
+        const otpInput = form.querySelector('.field-otp input');
+        if (otpInput && generatedOtp) {
+          otpInput.value = String(generatedOtp);
+          otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+          otpInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
         startOtpTimer(panel);
