@@ -628,6 +628,8 @@ function decorateLoanSliders(form) {
           input.value = `${n} months`;
         } else if (labelText.includes('rate') || labelText.includes('interest')) {
           input.value = `${annualRate.toFixed(2)}% p.a.`;
+        } else if (labelText.includes('processing fee')) {
+          input.value = `₹${processingFee.toLocaleString('en-IN')}`;
         }
       });
     });
