@@ -1140,12 +1140,32 @@ function wirePanelOtpTimer(panel, form) {
           return;
         }
 
-        // Auto-fill the OTP into the input box
-        const otpInput = form.querySelector('.field-otp input');
-        if (otpInput && generatedOtp) {
-          otpInput.value = String(generatedOtp);
-          otpInput.dispatchEvent(new Event('input', { bubbles: true }));
-          otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+        // Store OTP and fill it once the OTP panel becomes visible
+        if (generatedOtp) {
+          form.dataset.pendingOtp = String(generatedOtp);
+
+          const tryFill = () => {
+            const otpInput = form.querySelector('.field-otp input');
+            const pending = form.dataset.pendingOtp;
+            if (!otpInput || !pending) return false;
+            const panel2 = otpInput.closest('[data-visible]');
+            if (panel2 && panel2.dataset.visible === 'false') return false;
+            delete form.dataset.pendingOtp;
+            otpInput.value = pending;
+            otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+            otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+            return true;
+          };
+
+          if (!tryFill()) {
+            const fillObserver = new MutationObserver(() => {
+              if (tryFill()) fillObserver.disconnect();
+            });
+            fillObserver.observe(form, {
+              childList: true, subtree: true, attributes: true,
+              attributeFilter: ['data-visible', 'style'],
+            });
+          }
         }
 
         startOtpTimer(panel);
