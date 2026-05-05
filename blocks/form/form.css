@@ -2154,6 +2154,41 @@ main .form form .field-loan-application-number input[type="text"]:hover {
     border: none;
 }
 
+/* Number + copy button inline row */
+main .form form .loan-app-number-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Copy button */
+main .form form .loan-app-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid #d0d5e8;
+    border-radius: 8px;
+    background: #fff;
+    color: #3d52d5;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    padding: 0;
+}
+
+main .form form .loan-app-copy-btn:hover {
+    background: #eef2ff;
+    border-color: #3d52d5;
+}
+
+main .form form .loan-app-copy-btn.copied {
+    background: #ecfdf5;
+    border-color: #10b981;
+    color: #10b981;
+}
+
 /* Hide the duplicate value field */
 main .form form .field-loan-application-number-value {
     display: none;

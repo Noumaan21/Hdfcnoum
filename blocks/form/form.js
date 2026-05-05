@@ -1262,12 +1262,41 @@ function decorateOtpInput(form) {
 }
 
 function decorateLoanApplicationNumber(form) {
+  const COPY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+  const CHECK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>`;
+
   function apply() {
-    const input = form.querySelector('.field-loan-application-number input[type="text"]');
+    const wrapper = form.querySelector('.field-loan-application-number');
+    const input = wrapper?.querySelector('input[type="text"]');
     if (!input || input.dataset.appNoGenerated) return;
     input.dataset.appNoGenerated = 'true';
-    // Random 9-digit number: 100000000 – 999999999
     input.value = String(Math.floor(100000000 + Math.random() * 900000000));
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'loan-app-copy-btn';
+    btn.setAttribute('aria-label', 'Copy application number');
+    btn.innerHTML = COPY_SVG;
+
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(input.value);
+      } catch {
+        input.select();
+        document.execCommand('copy');
+      }
+      btn.innerHTML = CHECK_SVG;
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = COPY_SVG;
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+
+    const row = document.createElement('div');
+    row.className = 'loan-app-number-row';
+    input.replaceWith(row);
+    row.append(input, btn);
   }
 
   apply();
