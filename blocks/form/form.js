@@ -1127,6 +1127,16 @@ function navigateWizardToStep(form, targetFieldset) {
 }
 
 function decorateEditMobileNumber(form) {
+  function getMobileStep() {
+    const otpPanel = form.querySelector('.field-enter-otp-panel');
+    if (!otpPanel) return null;
+    // Walk backwards from OTP panel to find the nearest preceding visible wizard step
+    for (let el = otpPanel.previousElementSibling; el; el = el.previousElementSibling) {
+      if (el.tagName === 'FIELDSET' && el.dataset.visible !== 'false') return el;
+    }
+    return null;
+  }
+
   function wire() {
     const instructions = form.querySelector('.field-otp-instructions');
     if (!instructions || instructions.dataset.editMobileWired) return;
@@ -1140,7 +1150,7 @@ function decorateEditMobileNumber(form) {
     uEl.style.cursor = 'pointer';
     uEl.style.color = '#3d52d5';
     uEl.addEventListener('click', () => {
-      const mobileStep = form.querySelector('.field-mobile-number')?.closest('fieldset.panel-wrapper');
+      const mobileStep = getMobileStep();
       if (mobileStep) navigateWizardToStep(form, mobileStep);
     });
   }
