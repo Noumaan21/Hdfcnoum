@@ -597,10 +597,14 @@ function decorateLoanSliders(form) {
     const approvedEl = form.querySelector('.field-approved-loan-amount p');
     if (approvedEl) approvedEl.textContent = `₹${P.toLocaleString('en-IN')}`;
 
-    // Sync values into Loan Details summary card by matching label text
-    const loanDetails = form.querySelector('.field-loan-details');
-    if (loanDetails) {
-      loanDetails.querySelectorAll('.text-wrapper, .date-wrapper').forEach((wrapper) => {
+    // Sync values into summary panels by matching label text
+    const summaryPanels = [
+      form.querySelector('.field-loan-details'),
+      form.querySelector('.field-xpress-personal-loan-summary-panel'),
+    ];
+    summaryPanels.forEach((panel) => {
+      if (!panel) return;
+      panel.querySelectorAll('.text-wrapper, .date-wrapper').forEach((wrapper) => {
         const labelText = (wrapper.querySelector('label')?.textContent || '').toLowerCase();
         const input = wrapper.querySelector('input');
         if (!input) return;
@@ -614,7 +618,7 @@ function decorateLoanSliders(form) {
           input.value = `${annualRate.toFixed(2)}% p.a.`;
         }
       });
-    }
+    });
   }
 
   function buildSlider(fieldWrapper, config) {
