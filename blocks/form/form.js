@@ -776,13 +776,24 @@ function decorateLoanEligibilityButton(form) {
       ...form.querySelectorAll('.field-consent-marketing input[type="checkbox"]'),
     ];
 
-    [phone, dob].forEach((el) => {
-      if (el && !el.dataset.eligibilityWired) {
-        el.addEventListener('input', () => { updateDobError(); updateButton(); });
-        el.addEventListener('change', () => { updateDobError(); updateButton(); });
-        el.dataset.eligibilityWired = 'true';
-      }
-    });
+    if (phone && !phone.dataset.eligibilityWired) {
+      phone.addEventListener('input', () => { updateDobError(); updateButton(); });
+      phone.addEventListener('change', () => { updateDobError(); updateButton(); });
+      phone.dataset.eligibilityWired = 'true';
+    }
+
+    if (dob && !dob.dataset.eligibilityWired) {
+      const captureDob = () => {
+        // While type="date" the browser exposes the real ISO value; persist it
+        // so handleFocusOut (which resets input.value) doesn't lose it.
+        if (dob.value) dob.setAttribute('edit-value', dob.value);
+        updateDobError();
+        updateButton();
+      };
+      dob.addEventListener('input', captureDob);
+      dob.addEventListener('change', captureDob);
+      dob.dataset.eligibilityWired = 'true';
+    }
 
     checkboxes.forEach((cb) => {
       if (!cb.dataset.eligibilityWired) {
