@@ -56,7 +56,78 @@ function maskMobileNumber(mobileNumber) {
   return ` ${'*'.repeat(5)}${value.substring(5)}`;
 }
 
+const OTP_API_BASE = 'http://localhost:3000';
+
+/**
+ * Calls the backend to generate an OTP for the given mobile + DOB.
+ * Wire this to your "Send OTP" button click rule.
+ * @name generateOtp
+ * @param {string} mobile - Mobile number from the form field
+ * @param {string} dob - Date of birth from the form field (YYYY-MM-DD)
+ * @param {scope} globals - AEM Forms globals (auto-injected by rule engine)
+ * @return {void}
+ */
+async function generateOtp(mobile, dob, globals) {
+  try {
+    const res = await fetch(`${OTP_API_BASE}/api/generate-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mobile, dob }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      globalThis.alert(data.message || 'Failed to send OTP. Please try again.');
+    }
+  } catch {
+    globalThis.alert('Network error while sending OTP. Please try again.');
+  }
+}
+
+/**
+ * Validates the OTP entered by the user.
+ * On success → navigates to the next wizard panel.
+ * On failure → marks the OTP field invalid with an error message.
+ *
+ * Wire this to your "Verify OTP" button click rule:
+ *   validateOtp(mobileField, otpField, nextPanel)
+ *
+ * @name validateOtp
+ * @param {string} mobile - Mobile number value
+ * @param {string} otp - OTP value entered by user
+ * @param {object} nextPanelRef - Reference to the next wizard panel (passed from rule editor)
+ * @param {scope} globals - AEM Forms globals (auto-injected by rule engine)
+ * @return {void}
+ */
+async function validateOtp(mobile, otp, nextPanelRef, globals) {
+  try {
+    const res = await fetch(`${OTP_API_BASE}/api/validate-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestString: {
+          mobileNo: String(mobile),
+          passwordValue: String(otp),
+        },
+      }),
+    });
+    const data = await res.json();
+
+    if (data?.status?.responseCode === '0') {
+      globals.functions.navigateTo(nextPanelRef);
+    } else {
+      const msg = data?.status?.errorDesc || 'Incorrect OTP. Please try again.';
+      globals.functions.markFieldAsInvalid(
+        globals.field.$qualifiedName,
+        msg,
+        { useQualifiedName: true },
+      );
+    }
+  } catch {
+    globalThis.alert('Network error while verifying OTP. Please try again.');
+  }
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getFullName, days, submitFormArrayToString, maskMobileNumber,
+  getFullName, days, submitFormArrayToString, maskMobileNumber, generateOtp, validateOtp,
 };
