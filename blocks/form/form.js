@@ -1140,20 +1140,22 @@ function wirePanelOtpTimer(panel, form) {
           // API unavailable — local OTP already set above, continue
         }
 
-        // Poll every 200 ms until the OTP input is in a visible panel, then fill it
+        // Fill OTP as soon as the panel is no longer data-visible="false"
         const tryFill = () => {
           const otpInput = form.querySelector('.field-otp input');
           if (!otpInput) return false;
-          let el = otpInput;
-          while (el && el !== form) {
-            const cs = getComputedStyle(el);
-            if (cs.display === 'none' || cs.visibility === 'hidden') return false;
-            if (el.dataset?.visible === 'false') return false;
-            el = el.parentElement;
-          }
+          // Only block on explicit data-visible="false" — don't use getComputedStyle
+          // because wizard hides steps via CSS class, not inline display
+          const otpPanel = otpInput.closest('.field-enter-otp-panel')
+            || otpInput.closest('[data-visible]');
+          if (otpPanel?.dataset.visible === 'false') return false;
+
           otpInput.value = otpString;
           otpInput.dispatchEvent(new Event('input', { bubbles: true }));
           otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+          // Enable submit button directly in case events don't reach it
+          const submitBtn = form.querySelector('.field-submit-otp button');
+          if (submitBtn) submitBtn.removeAttribute('disabled');
           return true;
         };
 
@@ -1161,7 +1163,7 @@ function wirePanelOtpTimer(panel, form) {
           let attempts = 0;
           const poll = setInterval(() => {
             attempts += 1;
-            if (tryFill() || attempts >= 30) clearInterval(poll);
+            if (tryFill() || attempts >= 50) clearInterval(poll);
           }, 200);
         }
 
