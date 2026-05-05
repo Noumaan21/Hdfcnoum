@@ -1040,6 +1040,34 @@ function stopOtpTimer(form) {
 
 function decorateOtpTimer(form) {
   let otpPanelVisible = false;
+  const MAX_ATTEMPTS = 3;
+  let attemptsLeft = MAX_ATTEMPTS;
+
+  function updateAttemptsDisplay() {
+    const attemptsEl = form.querySelector('.field-otp-attempts-info p');
+    if (!attemptsEl) return;
+    if (attemptsLeft > 0) {
+      attemptsEl.textContent = `${attemptsLeft}/${MAX_ATTEMPTS} attempts left`;
+    } else {
+      attemptsEl.textContent = 'Try again after 24 hours';
+      attemptsEl.style.color = '#dc2626';
+      attemptsEl.style.fontWeight = '600';
+    }
+  }
+
+  function onResendClick() {
+    if (attemptsLeft <= 0) return;
+    attemptsLeft -= 1;
+    updateAttemptsDisplay();
+    if (attemptsLeft > 0) {
+      startOtpTimer(form);
+    } else {
+      // No attempts left — hide resend button and timer permanently
+      stopOtpTimer(form);
+      const resendWrapper = form.querySelector('.field-resend-otp');
+      if (resendWrapper) resendWrapper.style.display = 'none';
+    }
+  }
 
   function wire() {
     // Wire Check Eligibility button to start OTP timer
@@ -1049,11 +1077,11 @@ function decorateOtpTimer(form) {
       eligibilityBtn.addEventListener('click', () => startOtpTimer(form));
     }
 
-    // Wire resend button to restart the timer
+    // Wire resend button with attempt tracking
     const resendBtn = form.querySelector('.field-resend-otp button');
     if (resendBtn && !resendBtn.dataset.timerWired) {
       resendBtn.dataset.timerWired = 'true';
-      resendBtn.addEventListener('click', () => startOtpTimer(form));
+      resendBtn.addEventListener('click', onResendClick);
     }
 
     // Auto-start timer when OTP panel first becomes visible
@@ -1062,6 +1090,8 @@ function decorateOtpTimer(form) {
       && getComputedStyle(otpPanel).display !== 'none';
     if (isVisible && !otpPanelVisible) {
       otpPanelVisible = true;
+      attemptsLeft = MAX_ATTEMPTS;
+      updateAttemptsDisplay();
       startOtpTimer(form);
     } else if (!isVisible) {
       otpPanelVisible = false;
