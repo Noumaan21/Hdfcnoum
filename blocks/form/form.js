@@ -1261,6 +1261,97 @@ function decorateOtpInput(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+const CUSTOMER_DATA = [
+  {
+    fullName: 'Ankit Shah',
+    panNumber: 'ABCDE1234F',
+    currentAddress: 'Mumbai, Maharashtra',
+    residenceType: 'Owned',
+    employerName: 'Infosys',
+    typeOfLoan: 'Personal Loan',
+  },
+  {
+    fullName: 'Rahul Mehta',
+    panNumber: 'PQRSX5678K',
+    currentAddress: 'Pune, Maharashtra',
+    residenceType: 'Rented',
+    employerName: 'Self Employed',
+    typeOfLoan: 'Business Loan',
+  },
+  {
+    fullName: 'Priya Sharma',
+    panNumber: 'LMNOP4321Q',
+    currentAddress: 'Delhi, India',
+    residenceType: 'Owned',
+    employerName: 'TCS',
+    typeOfLoan: 'Personal Loan',
+  },
+  {
+    fullName: 'Sneha Reddy',
+    panNumber: 'ZXCVB1234L',
+    currentAddress: 'Hyderabad, Telangana',
+    residenceType: 'Rented',
+    employerName: 'Wipro',
+    typeOfLoan: 'Home Loan',
+  },
+  {
+    fullName: 'Arjun Kumar',
+    panNumber: 'QWERT5678P',
+    currentAddress: 'Bangalore, Karnataka',
+    residenceType: 'Owned',
+    employerName: 'Accenture',
+    typeOfLoan: 'Car Loan',
+  },
+];
+
+function decorateRandomCustomerData(form) {
+  const customer = CUSTOMER_DATA[Math.floor(Math.random() * CUSTOMER_DATA.length)];
+
+  const LABEL_MAP = [
+    { match: 'full name', value: customer.fullName },
+    { match: 'pan', value: customer.panNumber },
+    { match: 'current address', value: customer.currentAddress },
+    { match: 'residence type', value: customer.residenceType },
+    { match: 'employer name', value: customer.employerName },
+    { match: 'type of loan', value: customer.typeOfLoan },
+  ];
+
+  function fillField(wrapper) {
+    if (wrapper.dataset.customerFilled) return;
+    const label = wrapper.querySelector('label');
+    const input = wrapper.querySelector('input[type="text"], input[type="email"], textarea, select');
+    if (!label || !input) return;
+
+    // Never overwrite a field that already has a value
+    if (input.value && input.value.trim()) return;
+
+    const labelText = label.textContent.trim().toLowerCase();
+    const match = LABEL_MAP.find((m) => labelText.includes(m.match));
+    if (!match) return;
+
+    wrapper.dataset.customerFilled = 'true';
+
+    if (input.tagName === 'SELECT') {
+      const option = [...input.options].find(
+        (o) => o.value.toLowerCase() === match.value.toLowerCase()
+          || o.text.toLowerCase() === match.value.toLowerCase(),
+      );
+      if (option) input.value = option.value;
+    } else {
+      input.value = match.value;
+    }
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function apply() {
+    form.querySelectorAll('.text-wrapper, .drop-down-wrapper, .multiline-wrapper').forEach(fillField);
+  }
+
+  apply();
+  const observer = new MutationObserver(() => apply());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateLoanApplicationNumber(form) {
   const COPY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
   const CHECK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>`;
@@ -1371,6 +1462,7 @@ export default async function decorate(block) {
     decorateBankSelector(form);
     decorateIncomeVerification(form);
     decorateLoanApplicationNumber(form);
+    decorateRandomCustomerData(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
