@@ -1102,7 +1102,29 @@ function wirePanelOtpTimer(panel, form) {
     const eligibilityBtn = form.querySelector('.field-view-loan-eligibility button');
     if (eligibilityBtn && !eligibilityBtn.dataset.timerWired) {
       eligibilityBtn.dataset.timerWired = 'true';
-      eligibilityBtn.addEventListener('click', () => startOtpTimer(panel));
+      eligibilityBtn.addEventListener('click', async () => {
+        const mobile = form.querySelector('.field-mobile-number input')?.value?.trim();
+        const dobInput = form.querySelector('.field-date-of-birth input');
+        const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
+
+        try {
+          const res = await fetch('http://localhost:3000/api/generate-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mobile, dob }),
+          });
+          if (!res.ok) {
+            const data = await res.json();
+            globalThis.alert(data.message || 'Failed to send OTP. Please try again.');
+            return;
+          }
+        } catch {
+          globalThis.alert('Network error while sending OTP. Please try again.');
+          return;
+        }
+
+        startOtpTimer(panel);
+      });
     }
   }
 
