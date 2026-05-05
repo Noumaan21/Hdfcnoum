@@ -2661,6 +2661,44 @@ main .form form .field-taxes-amount p {
     margin: 0;
 }
 
+/* Processing Fee row — injected dynamically next to Taxes */
+main .form form .field-processing-fee-display {
+    padding: 10px 12px 10px 14px;
+    margin: 8px 0 0;
+    position: relative;
+    grid-column: span 12;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+main .form form .field-processing-fee-display::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 32px;
+    background: #f4c06a;
+    border-radius: 2px;
+}
+
+main .form form .field-processing-fee-display label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #666;
+    margin: 0;
+    display: block;
+}
+
+main .form form .field-processing-fee-display p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
 /* Orange disclaimer box */
 main .form form .field-principal-offer-note {
     background: #f97316;

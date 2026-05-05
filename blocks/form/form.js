@@ -577,7 +577,8 @@ function decorateLoanSliders(form) {
     const r = annualRate / (12 * 100);
     const onePlusRPowN = (1 + r) ** n;
     const emi = Math.round((P * r * onePlusRPowN) / (onePlusRPowN - 1));
-    const taxes = Math.round(P * PROCESSING_FEE_RATE * GST_RATE);
+    const processingFee = Math.min(Math.round(P * PROCESSING_FEE_RATE), 6500);
+    const taxes = Math.round(processingFee * GST_RATE);
 
     const emiField = form.querySelector('.field-emi-amount');
     ensureLabel(emiField, 'EMI Amount');
@@ -593,6 +594,17 @@ function decorateLoanSliders(form) {
     ensureLabel(taxesField, 'Taxes');
     const taxesEl = taxesField?.querySelector('p');
     if (taxesEl) taxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
+
+    // Processing Fee row — injected once, updated on every slider change
+    let processingFeeRow = form.querySelector('.field-processing-fee-display');
+    if (!processingFeeRow && taxesField) {
+      processingFeeRow = document.createElement('div');
+      processingFeeRow.className = 'field-processing-fee-display';
+      processingFeeRow.innerHTML = '<label>Processing Fee</label><p></p>';
+      taxesField.insertAdjacentElement('afterend', processingFeeRow);
+    }
+    const processingFeeEl = processingFeeRow?.querySelector('p');
+    if (processingFeeEl) processingFeeEl.textContent = `₹${processingFee.toLocaleString('en-IN')}`;
 
     const approvedEl = form.querySelector('.field-approved-loan-amount p');
     if (approvedEl) approvedEl.textContent = `₹${P.toLocaleString('en-IN')}`;
