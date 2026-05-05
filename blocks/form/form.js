@@ -1103,6 +1103,53 @@ function decorateOtpTimer(form) {
   observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-visible', 'style'] });
 }
 
+function navigateWizardToStep(form, targetFieldset) {
+  const wizardPanel = targetFieldset.closest('.wizard');
+  if (!wizardPanel) return;
+  const current = wizardPanel.querySelector('.current-wizard-step');
+  if (!current || current === targetFieldset) return;
+
+  current.classList.remove('current-wizard-step');
+  targetFieldset.classList.add('current-wizard-step');
+
+  const currentMenuItem = wizardPanel.querySelector('.wizard-menu-active-item');
+  const targetMenuItem = wizardPanel.querySelector(`li[data-index="${targetFieldset.dataset.index}"]`);
+  if (currentMenuItem) currentMenuItem.classList.remove('wizard-menu-active-item');
+  if (targetMenuItem) targetMenuItem.classList.add('wizard-menu-active-item');
+
+  wizardPanel.dispatchEvent(new CustomEvent('wizard:navigate', {
+    detail: {
+      prevStep: { id: current.id, index: +current.dataset.index },
+      currStep: { id: targetFieldset.id, index: +targetFieldset.dataset.index },
+    },
+    bubbles: false,
+  }));
+}
+
+function decorateEditMobileNumber(form) {
+  function wire() {
+    const instructions = form.querySelector('.field-otp-instructions');
+    if (!instructions || instructions.dataset.editMobileWired) return;
+
+    const uEl = [...instructions.querySelectorAll('u')].find(
+      (u) => u.textContent.trim().toLowerCase().includes('edit mobile'),
+    );
+    if (!uEl) return;
+
+    instructions.dataset.editMobileWired = 'true';
+    uEl.style.cursor = 'pointer';
+    uEl.style.color = '#3d52d5';
+    uEl.addEventListener('click', () => {
+      const mobileStep = form.querySelector('.field-mobile-number')?.closest('fieldset.panel-wrapper');
+      if (mobileStep) navigateWizardToStep(form, mobileStep);
+    });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateCollapsiblePanels(form) {
   const selectors = ['.field-loan-details > legend', '.field-personal-details > legend', '.field-employer-details-panel > legend', '.field-income-details-panel > legend', '.field-work-email-id-panel > legend', '.field-type-of-loan-panel > legend', '.field-salary-account-details > legend', '.field-office-address-panel > legend', '.field-reference-details > legend', '.field-verify-email-id > legend'];
   selectors.forEach((sel) => {
@@ -1209,6 +1256,7 @@ export default async function decorate(block) {
     container.replaceWith(form);
     decorateOtpInput(form);
     decorateOtpTimer(form);
+    decorateEditMobileNumber(form);
     decorateLoanSliders(form);
     decorateCollapsiblePanels(form);
     decorateLoanEligibilityButton(form);
