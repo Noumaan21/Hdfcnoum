@@ -1122,15 +1122,23 @@ function wirePanelOtpTimer(panel, form) {
         const dobInput = form.querySelector('.field-date-of-birth input');
         const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
 
-        // Generate OTP locally so the fill never depends on API timing
-        const otpString = String(Math.floor(100000 + Math.random() * 900000));
+        // Generate a local random OTP as fallback
+        let otpString = String(Math.floor(100000 + Math.random() * 900000));
 
-        // Also send to backend (fire-and-forget — don't block the UI on it)
-        fetch('http://localhost:3000/api/generate-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mobile, dob, otp: Number(otpString) }),
-        }).catch(() => {});
+        try {
+          // Try the API — if it succeeds use its OTP (keeps server in sync for validation)
+          const res = await fetch('http://localhost:3000/api/generate-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mobile, dob }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.otp) otpString = String(data.otp);
+          }
+        } catch {
+          // API unavailable — local OTP already set above, continue
+        }
 
         // Poll every 200 ms until the OTP input is in a visible panel, then fill it
         const tryFill = () => {
