@@ -999,13 +999,16 @@ function decorateMoveSubmitButton(form) {
 
 function startOtpTimer(form) {
   const timerInput = form.querySelector('input[name="Resend OTP in:"]');
-  const resendBtn = form.querySelector('.field-resend-button button');
+  const timerWrapper = form.querySelector('.field-resend-otp-in');
+  const resendWrapper = form.querySelector('.field-resend-otp');
 
-  let timeLeft = 30;
+  let timeLeft = 45;
 
   if (otpTimerInterval) clearInterval(otpTimerInterval);
 
-  if (resendBtn) resendBtn.disabled = true;
+  // Show timer, hide resend button
+  if (timerWrapper) timerWrapper.style.display = '';
+  if (resendWrapper) resendWrapper.style.display = 'none';
   if (timerInput) timerInput.value = `${timeLeft}s`;
 
   otpTimerInterval = setInterval(() => {
@@ -1015,8 +1018,9 @@ function startOtpTimer(form) {
     if (timeLeft <= 0) {
       clearInterval(otpTimerInterval);
       otpTimerInterval = null;
-      if (resendBtn) resendBtn.disabled = false;
-      if (timerInput) timerInput.value = '0s';
+      // Hide timer, show resend button
+      if (timerWrapper) timerWrapper.style.display = 'none';
+      if (resendWrapper) resendWrapper.style.display = '';
     }
   }, 1000);
 }
@@ -1026,36 +1030,47 @@ function stopOtpTimer(form) {
     clearInterval(otpTimerInterval);
     otpTimerInterval = null;
   }
+  const timerWrapper = form.querySelector('.field-resend-otp-in');
+  const resendWrapper = form.querySelector('.field-resend-otp');
   const timerInput = form.querySelector('input[name="Resend OTP in:"]');
   if (timerInput) timerInput.value = '';
+  if (timerWrapper) timerWrapper.style.display = 'none';
+  if (resendWrapper) resendWrapper.style.display = '';
 }
 
 function decorateOtpTimer(form) {
-  function wire() {
-    const verifySelectors = [
-      '.field-verify-email-button button',
-      '.field-verify-work-email-button button',
-      '.field-primary-email-verify-button button',
-      '.field-work-email-verify-button button',
-    ];
-    verifySelectors.forEach((sel) => {
-      const btn = form.querySelector(sel);
-      if (btn && !btn.dataset.timerWired) {
-        btn.dataset.timerWired = 'true';
-        btn.addEventListener('click', () => startOtpTimer(form));
-      }
-    });
+  let otpPanelVisible = false;
 
-    const resendBtn = form.querySelector('.field-resend-button button');
+  function wire() {
+    // Wire Check Eligibility button to start OTP timer
+    const eligibilityBtn = form.querySelector('.field-view-loan-eligibility button');
+    if (eligibilityBtn && !eligibilityBtn.dataset.timerWired) {
+      eligibilityBtn.dataset.timerWired = 'true';
+      eligibilityBtn.addEventListener('click', () => startOtpTimer(form));
+    }
+
+    // Wire resend button to restart the timer
+    const resendBtn = form.querySelector('.field-resend-otp button');
     if (resendBtn && !resendBtn.dataset.timerWired) {
       resendBtn.dataset.timerWired = 'true';
       resendBtn.addEventListener('click', () => startOtpTimer(form));
+    }
+
+    // Auto-start timer when OTP panel first becomes visible
+    const otpPanel = form.querySelector('.field-enter-otp-panel');
+    const isVisible = otpPanel && otpPanel.dataset.visible === 'true'
+      && getComputedStyle(otpPanel).display !== 'none';
+    if (isVisible && !otpPanelVisible) {
+      otpPanelVisible = true;
+      startOtpTimer(form);
+    } else if (!isVisible) {
+      otpPanelVisible = false;
     }
   }
 
   wire();
   const observer = new MutationObserver(() => wire());
-  observer.observe(form, { childList: true, subtree: true });
+  observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-visible', 'style'] });
 }
 
 function decorateCollapsiblePanels(form) {
