@@ -639,11 +639,16 @@ function decorateLoanSliders(form) {
     const loanDetailsPanel = form.querySelector('.field-loan-details');
     if (loanDetailsPanel) {
       const totalCharges = processingFee + taxes;
-      loanDetailsPanel.querySelectorAll('label').forEach((lbl) => {
-        if (!lbl.textContent.toLowerCase().includes('schedule')) return;
-        const input = lbl.parentElement?.querySelector('input[type="text"]');
-        if (input) input.value = `₹${totalCharges.toLocaleString('en-IN')}`;
-      });
+      const socWrapper = loanDetailsPanel.querySelector('.field-schedule-of-charges');
+      if (socWrapper) {
+        let valueEl = socWrapper.querySelector('.soc-value');
+        if (!valueEl) {
+          valueEl = document.createElement('span');
+          valueEl.className = 'soc-value';
+          socWrapper.appendChild(valueEl);
+        }
+        valueEl.textContent = `₹${totalCharges.toLocaleString('en-IN')}`;
+      }
     }
   }
 

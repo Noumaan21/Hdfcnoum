@@ -2081,6 +2081,12 @@ main .form form .field-loan-details .button-wrapper button::after {
     display: none;
 }
 
+main .form form .field-loan-details .button-wrapper .soc-value {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
 /* Submit button moved outside Personal Details panel */
 main .form form .field-personal-details + .button-wrapper {
     margin-top: 20px;
