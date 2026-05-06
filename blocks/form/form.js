@@ -811,6 +811,22 @@ function decorateLoanEligibilityButton(form) {
 }
 
 function decorateSubmitOtpButton(form) {
+  function showOtpError(input, msg) {
+    const fieldOtp = input.closest('.field-otp');
+    if (!fieldOtp) return;
+    let errorEl = fieldOtp.querySelector('.otp-error-msg');
+    if (!errorEl) {
+      errorEl = document.createElement('span');
+      errorEl.className = 'otp-error-msg';
+      fieldOtp.append(errorEl);
+    }
+    errorEl.textContent = msg;
+  }
+
+  function clearOtpError(input) {
+    input.closest('.field-otp')?.querySelector('.otp-error-msg')?.remove();
+  }
+
   function attachListeners() {
     const btn = form.querySelector('.field-submit-otp button');
     const input = form.querySelector('.field-otp input');
@@ -819,7 +835,30 @@ function decorateSubmitOtpButton(form) {
     btn.disabled = true;
 
     input.addEventListener('input', () => {
+      clearOtpError(input);
       btn.disabled = input.value.replace(/\s/g, '').length < 6;
+    });
+
+    btn.addEventListener('click', () => {
+      const entered = input.value.replace(/\s/g, '');
+      const expected = form.dataset.generatedOtp;
+
+      if (expected && entered !== expected) {
+        showOtpError(input, 'OTP is invalid. Please try again.');
+        btn.disabled = true;
+        return;
+      }
+
+      // Valid — navigate to next wizard step
+      const otpPanel = form.querySelector('.field-enter-otp-panel');
+      if (otpPanel) {
+        for (let el = otpPanel.nextElementSibling; el; el = el.nextElementSibling) {
+          if (el.tagName === 'FIELDSET') {
+            navigateWizardToStep(form, el);
+            break;
+          }
+        }
+      }
     });
 
     input.dataset.submitWired = 'true';
@@ -1128,6 +1167,7 @@ function wireEligibilityOtpClick(form) {
       const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
 
       let otpString = String(Math.floor(100000 + Math.random() * 900000));
+      form.dataset.generatedOtp = otpString;
       const otpPanel = form.querySelector('.field-enter-otp-panel');
 
       const fillOtp = () => {
@@ -1164,6 +1204,7 @@ function wireEligibilityOtpClick(form) {
           const data = await res.json();
           if (data.otp) {
             otpString = String(data.otp);
+            form.dataset.generatedOtp = otpString;
             fillOtp();
           }
         }

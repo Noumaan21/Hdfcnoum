@@ -1,3 +1,10 @@
+.otp-error-msg {
+  display: block;
+  color: #ff5f3f;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
 :root {
     --background-color-primary: #fff;
     --label-color: #666;
