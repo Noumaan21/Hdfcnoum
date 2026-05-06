@@ -1114,38 +1114,33 @@ main .form form .field-resend-otp button:hover {
     background: #1e40af;
 }
 
-/* Resend timer — centred */
+/* Resend timer — left side of row, paired with attempts on right */
 main .form form .field-resend-otp-timer {
-    grid-column: 1 / -1;
+    grid-column: 1 / 7;
     margin: 0;
     padding: 0;
-    text-align: center;
+    text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 main .form form .field-resend-otp-timer p {
     font-size: 0.82rem;
-    color: #222;
-    font-weight: 700;
+    color: #444;
+    font-weight: 400;
     margin: 0;
+}
+
+main .form form .field-resend-otp-timer p strong {
+    font-weight: 700;
+    color: #222;
 }
 
 main .form form .field-resend-otp-in {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
+    display: none !important;
 }
 
-main .form form .field-resend-otp-in input,
-main .form form input[name="Resend OTP in:"] {
-    width: auto;
-    max-width: 100px;
-    text-align: center;
-    pointer-events: none;
-}
-
-/* Attempts info — directly below eye icon */
+/* Attempts info — right side of same row as timer */
 main .form form .field-otp-attempts-info {
     grid-column: 7 / -1;
     display: flex;
