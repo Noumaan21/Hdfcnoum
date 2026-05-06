@@ -1094,9 +1094,6 @@ function startOtpTimer(panel) {
   if (timerInput) timerInput.value = `${timeLeft}s`;
   if (timerTextEl && !timerInput) timerTextEl.textContent = `Resend OTP in: ${timeLeft}s`;
 
-  const attemptsEl = panel.querySelector('.field-otp-attempts-info p');
-  if (attemptsEl) attemptsEl.style.display = 'none';
-
   panel._otpTimerInterval = setInterval(() => {
     timeLeft -= 1;
     if (timerInput) timerInput.value = `${timeLeft}s`;
