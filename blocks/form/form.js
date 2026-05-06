@@ -839,11 +839,13 @@ function decorateSubmitOtpButton(form) {
       btn.disabled = input.value.replace(/\s/g, '').length < 6;
     });
 
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
       const entered = input.value.replace(/\s/g, '');
       const expected = form.dataset.generatedOtp;
 
       if (expected && entered !== expected) {
+        e.stopPropagation();
+        e.preventDefault();
         showOtpError(input, 'OTP is invalid. Please try again.');
         btn.disabled = true;
         return;
