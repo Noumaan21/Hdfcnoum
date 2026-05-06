@@ -633,6 +633,18 @@ function decorateLoanSliders(form) {
         }
       });
     });
+
+    // Populate Schedule of Charges in Loan Details panel only
+    // Formula: Processing Fee + 18% GST = processingFee + taxes
+    const loanDetailsPanel = form.querySelector('.field-loan-details');
+    if (loanDetailsPanel) {
+      const totalCharges = processingFee + taxes;
+      loanDetailsPanel.querySelectorAll('label').forEach((lbl) => {
+        if (!lbl.textContent.toLowerCase().includes('schedule')) return;
+        const input = lbl.parentElement?.querySelector('input[type="text"]');
+        if (input) input.value = `₹${totalCharges.toLocaleString('en-IN')}`;
+      });
+    }
   }
 
   function buildSlider(fieldWrapper, config) {
