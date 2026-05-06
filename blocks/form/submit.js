@@ -3,16 +3,52 @@ import { DEFAULT_THANK_YOU_MESSAGE, getSubmitBaseUrl } from './constant.js';
 export function submitSuccess(e, form) {
   const { payload } = e;
   const redirectUrl = form.dataset.redirectUrl || payload?.body?.redirectUrl;
-  const thankYouMsg = form.dataset.thankYouMsg || payload?.body?.thankYouMessage;
   if (redirectUrl) {
     window.location.assign(encodeURI(redirectUrl));
   } else {
+    const applicationNumber = payload?.body?.applicationNumber || '';
+    const loanAmount = payload?.body?.loanAmount ?? 0;
+
     let thankYouMessage = form.parentNode.querySelector('.form-message.success-message');
     if (!thankYouMessage) {
       thankYouMessage = document.createElement('div');
       thankYouMessage.className = 'form-message success-message';
     }
-    thankYouMessage.innerHTML = thankYouMsg || DEFAULT_THANK_YOU_MESSAGE;
+
+    thankYouMessage.innerHTML = `
+      <h2 class="thankyou-title">Thank You for submitting form</h2>
+      <div class="thankyou-card">
+        <div class="thankyou-card-top">
+          <div class="thankyou-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+              <rect width="64" height="64" rx="10" fill="#EEF4FF"/>
+              <path d="M20 14h16l8 8v28a2 2 0 0 1-2 2H20a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z" stroke="#4A7FD4" stroke-width="2" fill="#fff"/>
+              <path d="M36 14v8h8" stroke="#4A7FD4" stroke-width="2" fill="none"/>
+              <line x1="24" y1="28" x2="40" y2="28" stroke="#4A7FD4" stroke-width="2" stroke-linecap="round"/>
+              <line x1="24" y1="34" x2="40" y2="34" stroke="#4A7FD4" stroke-width="2" stroke-linecap="round"/>
+              <line x1="24" y1="40" x2="33" y2="40" stroke="#4A7FD4" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="thankyou-details">
+            <span class="thankyou-label">Loan Application Number</span>
+            <span class="thankyou-app-number">${applicationNumber}</span>
+            <p class="thankyou-subtext">We may call or email you, if needed.</p>
+          </div>
+        </div>
+        <hr class="thankyou-divider"/>
+        <div class="thankyou-summary">
+          <h3 class="thankyou-summary-title">Xpress Personal Loan Summary</h3>
+          <div class="thankyou-summary-item">
+            <span class="thankyou-summary-label">Loan Amount</span>
+            <span class="thankyou-summary-value">&#8377;${loanAmount}</span>
+          </div>
+        </div>
+      </div>
+      <div class="thankyou-info-bar">
+        You will receive your loan in your registered account on successful completion subject to your KYC and internal policies and guidelines.
+      </div>
+    `;
+
     form.parentNode.insertBefore(thankYouMessage, form);
     if (thankYouMessage.scrollIntoView) {
       thankYouMessage.scrollIntoView({ behavior: 'smooth' });

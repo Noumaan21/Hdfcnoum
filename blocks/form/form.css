@@ -661,12 +661,108 @@ main .form form .wizard.left .panel-wrapper{
 }
 
 main .form .form-message.success-message {
-    color: #0f5132;
-    background-color: #d1e7dd;
-    border-color: #badbcc;
+    background: none;
+    border: none;
     flex: 100%;
     grid-column: span 12;
-    padding: 10px;
+    padding: 0;
+    font-family: inherit;
+}
+
+.thankyou-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 20px;
+}
+
+.thankyou-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+}
+
+.thankyou-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.thankyou-icon svg {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.thankyou-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.thankyou-label {
+    font-size: 1rem;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.thankyou-app-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    min-height: 1.4em;
+}
+
+.thankyou-subtext {
+    font-size: 0.875rem;
+    color: #555;
+    margin: 10px 0 0;
+}
+
+.thankyou-divider {
+    border: none;
+    border-top: 1px dashed #ccc;
+    margin: 16px 0;
+}
+
+.thankyou-summary-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 14px;
+}
+
+.thankyou-summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.thankyou-summary-label {
+    font-size: 0.8rem;
+    color: #c8506b;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.thankyou-summary-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.thankyou-info-bar {
+    background: #eef2ff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.6;
 }
 
 main .form .form-message.error-message {
@@ -2253,7 +2349,7 @@ main .form form .field-loan-application-number-value {
 
 /* Contact note text */
 main .form form .field-contact-note {
-    padding: 14px 0 6px;
+    padding: 4px 0 0;
     margin: 0;
 }
 
@@ -2267,8 +2363,8 @@ main .form form .field-contact-note p {
 main .form form .field-xpress-personal-loan-summary-panel {
     border: none;
     border-top: 1.5px dashed #d0d5e8;
-    padding: 20px 0 8px;
-    margin: 12px 0 0;
+    padding: 14px 0 8px;
+    margin: 4px 0 0;
     row-gap: 8px;
     column-gap: 0;
 }
@@ -2277,7 +2373,7 @@ main .form form .field-xpress-personal-loan-summary-panel > legend {
     font-size: 1.1rem;
     font-weight: 700;
     color: #1a1a1a;
-    padding: 0 0 14px;
+    padding: 0 0 8px;
     margin-bottom: 0;
     border: none;
 }
