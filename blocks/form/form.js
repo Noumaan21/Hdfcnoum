@@ -1094,6 +1094,9 @@ function startOtpTimer(panel) {
   if (timerInput) timerInput.value = `${timeLeft}s`;
   if (timerTextEl && !timerInput) timerTextEl.textContent = `Resend OTP in: ${timeLeft}s`;
 
+  const attemptsEl = panel.querySelector('.field-otp-attempts-info p');
+  if (attemptsEl) attemptsEl.style.display = 'none';
+
   panel._otpTimerInterval = setInterval(() => {
     timeLeft -= 1;
     if (timerInput) timerInput.value = `${timeLeft}s`;
@@ -1134,6 +1137,7 @@ function wirePanelOtpTimer(panel, form) {
   function updateAttemptsDisplay() {
     const attemptsEl = panel.querySelector('.field-otp-attempts-info p');
     if (!attemptsEl) return;
+    attemptsEl.style.display = '';
     if (attemptsLeft > 0) {
       attemptsEl.textContent = `${attemptsLeft}/${MAX_ATTEMPTS} attempts left`;
       attemptsEl.style.color = '';
