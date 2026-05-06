@@ -852,6 +852,21 @@ function decorateSubmitOtpButton(form) {
     });
 
     btn.addEventListener('click', (e) => {
+      const otpPanel = form.querySelector('.field-enter-otp-panel');
+
+      // When attempts exhausted, skip OTP validation and go straight to next step
+      if (otpPanel?.dataset.attemptsExhausted === 'true') {
+        if (otpPanel) {
+          for (let el = otpPanel.nextElementSibling; el; el = el.nextElementSibling) {
+            if (el.tagName === 'FIELDSET') {
+              navigateWizardToStep(form, el);
+              break;
+            }
+          }
+        }
+        return;
+      }
+
       const entered = input.value.replace(/\s/g, '');
       const expected = form.dataset.generatedOtp;
 
@@ -864,7 +879,6 @@ function decorateSubmitOtpButton(form) {
       }
 
       // Valid — navigate to next wizard step
-      const otpPanel = form.querySelector('.field-enter-otp-panel');
       if (otpPanel) {
         for (let el = otpPanel.nextElementSibling; el; el = el.nextElementSibling) {
           if (el.tagName === 'FIELDSET') {
@@ -1195,9 +1209,10 @@ function wirePanelOtpTimer(panel, form) {
       const resendWrapper = panel.querySelector('.field-resend-otp') || panel.querySelector('.field-resend');
       if (resendWrapper) resendWrapper.style.display = 'none';
 
-      // Disable submit and show locked message when all attempts exhausted
+      // Enable submit to let user proceed after attempts exhausted
+      panel.dataset.attemptsExhausted = 'true';
       const submitBtn = panel.querySelector('.field-submit-otp button') || form.querySelector('.field-submit-otp button');
-      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) submitBtn.removeAttribute('disabled');
     }
   }
 
