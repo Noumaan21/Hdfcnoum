@@ -1111,33 +1111,47 @@ function wirePanelOtpTimer(panel, form) {
     resendBtn.addEventListener('click', onResendClick);
   }
 
-  // Wire eligibility button only for first OTP panel
-  const allPanels = [...form.querySelectorAll('.field-enter-otp-panel')];
-  if (allPanels.indexOf(panel) === 0) {
+  attemptsLeft = MAX_ATTEMPTS;
+  updateAttemptsDisplay();
+  startOtpTimer(panel);
+}
+
+function wireEligibilityOtpClick(form) {
+  function wire() {
     const eligibilityBtn = form.querySelector('.field-view-loan-eligibility button');
-    if (eligibilityBtn && !eligibilityBtn.dataset.timerWired) {
-      eligibilityBtn.dataset.timerWired = 'true';
-      eligibilityBtn.addEventListener('click', async () => {
-        const mobile = form.querySelector('.field-mobile-number input')?.value?.trim();
-        const dobInput = form.querySelector('.field-date-of-birth input');
-        const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
+    if (!eligibilityBtn || eligibilityBtn.dataset.timerWired) return;
+    eligibilityBtn.dataset.timerWired = 'true';
 
-        let otpString = String(Math.floor(100000 + Math.random() * 900000));
+    eligibilityBtn.addEventListener('click', async () => {
+      const mobile = form.querySelector('.field-mobile-number input')?.value?.trim();
+      const dobInput = form.querySelector('.field-date-of-birth input');
+      const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
 
-        const fillOtp = () => {
-          const otpInput = form.querySelector('.field-otp input');
-          if (!otpInput) return;
-          otpInput.value = otpString;
-          otpInput.dispatchEvent(new Event('input', { bubbles: true }));
-          otpInput.dispatchEvent(new Event('change', { bubbles: true }));
-          const submitBtn = form.querySelector('.field-submit-otp button');
-          if (submitBtn) submitBtn.removeAttribute('disabled');
-        };
+      let otpString = String(Math.floor(100000 + Math.random() * 900000));
+      const otpPanel = form.querySelector('.field-enter-otp-panel');
 
-        // Fill immediately in case OTP panel is already the active step
-        fillOtp();
+      const fillOtp = () => {
+        const otpInput = form.querySelector('.field-otp input');
+        if (!otpInput) return;
+        otpInput.value = otpString;
+        otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+        otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+        const submitBtn = form.querySelector('.field-submit-otp button');
+        if (submitBtn) submitBtn.removeAttribute('disabled');
+        if (otpPanel) {
+          let banner = otpPanel.querySelector('.otp-demo-banner');
+          if (!banner) {
+            banner = document.createElement('div');
+            banner.className = 'otp-demo-banner';
+            otpPanel.insertAdjacentElement('afterbegin', banner);
+          }
+          banner.textContent = `Your OTP: ${otpString}`;
+        }
+      };
 
-        // Watch for AEM wizard adding current-wizard-step to the OTP panel and fill at that moment
+      fillOtp();
+
+      if (otpPanel) {
         let navObserver = new MutationObserver(() => {
           fillOtp();
           setTimeout(fillOtp, 150);
@@ -1145,34 +1159,30 @@ function wirePanelOtpTimer(panel, form) {
           navObserver.disconnect();
           navObserver = null;
         });
-        navObserver.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
+        navObserver.observe(otpPanel, { attributes: true, attributeFilter: ['class', 'style'] });
         setTimeout(() => { if (navObserver) { navObserver.disconnect(); navObserver = null; } }, 10000);
+      }
 
-        try {
-          const res = await fetch('http://localhost:3000/api/generate-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mobile, dob }),
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.otp) {
-              otpString = String(data.otp);
-              fillOtp();
-            }
+      try {
+        const res = await fetch('http://localhost:3000/api/generate-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mobile, dob }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.otp) {
+            otpString = String(data.otp);
+            fillOtp();
           }
-        } catch {
-          // API unavailable — local OTP stays
         }
-
-        startOtpTimer(panel);
-      });
-    }
+      } catch { /* API unavailable — local OTP stays */ }
+    });
   }
 
-  attemptsLeft = MAX_ATTEMPTS;
-  updateAttemptsDisplay();
-  startOtpTimer(panel);
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
 }
 
 function decorateOtpTimer(form) {
@@ -1194,7 +1204,7 @@ function decorateOtpTimer(form) {
 
   wire();
   const observer = new MutationObserver(() => wire());
-  observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-visible', 'style'] });
+  observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-visible', 'style', 'class'] });
 }
 
 function navigateWizardToStep(form, targetFieldset) {
@@ -1494,6 +1504,7 @@ export default async function decorate(block) {
     container.replaceWith(form);
     decorateOtpInput(form);
     decorateOtpTimer(form);
+    wireEligibilityOtpClick(form);
     decorateEditMobileNumber(form);
     decorateLoanSliders(form);
     decorateCollapsiblePanels(form);

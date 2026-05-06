@@ -1,3 +1,16 @@
+.otp-demo-banner {
+  background: #e8f4fd;
+  border: 1px solid #3d52d5;
+  border-radius: 8px;
+  color: #1a2e6b;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
 :root {
     --background-color-primary: #fff;
     --label-color: #666;
