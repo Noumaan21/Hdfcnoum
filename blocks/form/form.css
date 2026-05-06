@@ -2132,10 +2132,10 @@ main .form form .field-loan-application-summary {
     background: #fff !important;
     border: 1px solid #dde2ec !important;
     border-radius: 16px !important;
-    padding: 28px !important;
+    padding: 24px !important;
     box-shadow: 0 2px 12px rgb(0 0 0 / 8%) !important;
     overflow: hidden;
-    row-gap: 20px;
+    row-gap: 8px;
     column-gap: 16px;
     grid-column: span 12;
 }
