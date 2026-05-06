@@ -2296,51 +2296,6 @@ main .form form .field-loan-application-number input[type="text"]:hover {
     border: none;
 }
 
-/* Number + copy button inline row */
-main .form form .loan-app-number-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Let the number input grow, button keeps its fixed size */
-main .form form .loan-app-number-row input[type="text"] {
-    flex: 1;
-    width: auto;
-    min-width: 0;
-}
-
-/* Copy button — plain icon, no box */
-main .form form .field-loan-application-number .loan-app-copy-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: auto;
-    height: auto;
-    padding: 2px;
-    border: none;
-    border-radius: 4px;
-    background: transparent;
-    color: #3d52d5;
-    cursor: pointer;
-    transition: color 0.15s, opacity 0.15s;
-    font-size: 0;
-    line-height: 1;
-    align-self: center;
-    opacity: 0.75;
-}
-
-main .form form .field-loan-application-number .loan-app-copy-btn:hover {
-    opacity: 1;
-    background: transparent;
-    border: none;
-}
-
-main .form form .field-loan-application-number .loan-app-copy-btn.copied {
-    color: #10b981;
-    opacity: 1;
-}
 
 /* Hide the duplicate value field */
 main .form form .field-loan-application-number-value {
