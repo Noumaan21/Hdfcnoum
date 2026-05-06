@@ -1138,15 +1138,6 @@ function wireEligibilityOtpClick(form) {
         otpInput.dispatchEvent(new Event('change', { bubbles: true }));
         const submitBtn = form.querySelector('.field-submit-otp button');
         if (submitBtn) submitBtn.removeAttribute('disabled');
-        if (otpPanel) {
-          let banner = otpPanel.querySelector('.otp-demo-banner');
-          if (!banner) {
-            banner = document.createElement('div');
-            banner.className = 'otp-demo-banner';
-            otpPanel.insertAdjacentElement('afterbegin', banner);
-          }
-          banner.textContent = `Your OTP: ${otpString}`;
-        }
       };
 
       fillOtp();
