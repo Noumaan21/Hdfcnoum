@@ -633,47 +633,6 @@ function decorateLoanSliders(form) {
         }
       });
     });
-
-    // Schedule of Charges — only in Loan Details panel
-    const loanDetailsPanel = form.querySelector('.field-loan-details');
-    if (loanDetailsPanel) {
-      const totalCharges = processingFee + taxes;
-      const chargesValue = `₹${totalCharges.toLocaleString('en-IN')}`;
-
-      // Find any existing wrapper whose label mentions "schedule"
-      let scheduleWrapper = null;
-      loanDetailsPanel.querySelectorAll('label').forEach((lbl) => {
-        if (lbl.textContent.toLowerCase().includes('schedule')) {
-          scheduleWrapper = lbl.closest('.text-wrapper, .date-wrapper, .button-wrapper') || lbl.parentElement;
-        }
-      });
-
-      if (scheduleWrapper) {
-        // Prefer an existing input; fall back to a p; create one if absent
-        let valueEl = scheduleWrapper.querySelector('input[type="text"]') || scheduleWrapper.querySelector('p');
-        if (!valueEl) {
-          valueEl = document.createElement('input');
-          valueEl.type = 'text';
-          valueEl.readOnly = true;
-          scheduleWrapper.append(valueEl);
-        }
-        if (valueEl.tagName === 'INPUT') valueEl.value = chargesValue;
-        else valueEl.textContent = chargesValue;
-      } else {
-        // Field absent — inject a styled .text-wrapper after the Processing Fee wrapper
-        let anchor = null;
-        loanDetailsPanel.querySelectorAll('label').forEach((lbl) => {
-          if (lbl.textContent.toLowerCase().includes('processing fee')) {
-            anchor = lbl.closest('.text-wrapper, .date-wrapper') || lbl.parentElement;
-          }
-        });
-        const newWrapper = document.createElement('div');
-        newWrapper.className = 'text-wrapper';
-        newWrapper.innerHTML = `<label>Schedule of Charges</label><input type="text" readonly value="${chargesValue}">`;
-        if (anchor) anchor.insertAdjacentElement('afterend', newWrapper);
-        else loanDetailsPanel.append(newWrapper);
-      }
-    }
   }
 
   function buildSlider(fieldWrapper, config) {
