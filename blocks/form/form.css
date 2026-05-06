@@ -1114,38 +1114,56 @@ main .form form .field-resend-otp button:hover {
     background: #1e40af;
 }
 
-/* Resend timer — centred */
+/* Resend timer row — label + countdown + attempts all on one line */
 main .form form .field-resend-otp-timer {
-    grid-column: 1 / -1;
+    grid-column: 1 / 5;
     margin: 0;
     padding: 0;
-    text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 main .form form .field-resend-otp-timer p {
     font-size: 0.82rem;
-    color: #222;
-    font-weight: 700;
+    color: #444;
+    font-weight: 400;
     margin: 0;
+    white-space: nowrap;
 }
 
 main .form form .field-resend-otp-in {
-    grid-column: 1 / -1;
+    grid-column: 5 / 7;
     display: flex;
-    justify-content: center;
+    align-items: center;
     margin: 0;
     padding: 0;
 }
 
-main .form form .field-resend-otp-in input,
-main .form form input[name="Resend OTP in:"] {
-    width: auto;
-    max-width: 100px;
-    text-align: center;
-    pointer-events: none;
+/* Hide the label inside the countdown wrapper */
+main .form form .field-resend-otp-in > label {
+    display: none;
 }
 
-/* Attempts info — directly below eye icon */
+/* Style countdown input as plain bold text */
+main .form form .field-resend-otp-in input,
+main .form form input[name="Resend OTP in:"] {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #222;
+    pointer-events: none;
+    text-align: left;
+    border-radius: 0;
+}
+
+/* Attempts info — right side of same row */
 main .form form .field-otp-attempts-info {
     grid-column: 7 / -1;
     display: flex;
