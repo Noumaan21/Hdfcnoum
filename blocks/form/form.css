@@ -737,9 +737,13 @@ main .form .form-message.success-message {
 }
 
 .thankyou-summary-item {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     gap: 4px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 20px;
+    background: #f9fafb;
 }
 
 .thankyou-summary-label {
