@@ -1104,6 +1104,7 @@ function startOtpTimer(panel) {
       panel._otpTimerInterval = null;
       if (timerWrapper) timerWrapper.style.display = 'none';
       if (resendWrapper) resendWrapper.style.display = '';
+      if (panel._updateAttemptsDisplay) panel._updateAttemptsDisplay();
     }
   }, 1000);
 }
@@ -1143,6 +1144,7 @@ function wirePanelOtpTimer(panel, form) {
       attemptsEl.style.fontWeight = '600';
     }
   }
+  panel._updateAttemptsDisplay = updateAttemptsDisplay;
 
   function onResendClick() {
     if (attemptsLeft <= 0) return;
