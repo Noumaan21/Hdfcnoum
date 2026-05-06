@@ -1089,18 +1089,15 @@ function startOtpTimer(panel) {
 
   let timeLeft = 45;
 
-  if (timerWrapper) timerWrapper.style.display = '';
   if (resendWrapper) resendWrapper.style.display = 'none';
-  if (timerInput) timerInput.value = `${timeLeft}s`;
-  if (timerTextEl && !timerInput) timerTextEl.textContent = `Resend OTP in: ${timeLeft}s`;
+  if (timerTextEl) timerTextEl.innerHTML = `Resend OTP in: <strong>${timeLeft}s</strong>`;
 
   const attemptsEl = panel.querySelector('.field-otp-attempts-info p');
-  if (attemptsEl) attemptsEl.style.display = 'none';
+  if (attemptsEl) attemptsEl.style.display = '';
 
   panel._otpTimerInterval = setInterval(() => {
     timeLeft -= 1;
-    if (timerInput) timerInput.value = `${timeLeft}s`;
-    if (timerTextEl && !timerInput) timerTextEl.textContent = `Resend OTP in: ${timeLeft}s`;
+    if (timerTextEl) timerTextEl.innerHTML = `Resend OTP in: <strong>${timeLeft}s</strong>`;
 
     if (timeLeft <= 0) {
       clearInterval(panel._otpTimerInterval);
@@ -1117,13 +1114,9 @@ function stopOtpTimer(panel) {
     clearInterval(panel._otpTimerInterval);
     panel._otpTimerInterval = null;
   }
-  const timerInput = panel.querySelector('input[name="Resend OTP in:"]');
   const timerTextEl = panel.querySelector('.field-resend-otp-timer p');
-  const timerWrapper = panel.querySelector('.field-resend-otp-in') || panel.querySelector('.field-resend-otp-timer');
   const resendWrapper = panel.querySelector('.field-resend-otp') || panel.querySelector('.field-resend');
-  if (timerInput) timerInput.value = '';
-  if (timerTextEl) timerTextEl.textContent = 'Resend OTP in:';
-  if (timerWrapper) timerWrapper.style.display = 'none';
+  if (timerTextEl) timerTextEl.innerHTML = '';
   if (resendWrapper) resendWrapper.style.display = '';
 }
 
