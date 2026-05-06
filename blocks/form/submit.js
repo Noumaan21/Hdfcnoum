@@ -31,7 +31,15 @@ export function submitSuccess(e, form) {
           </div>
           <div class="thankyou-details">
             <span class="thankyou-label">Loan Application Number</span>
-            <span class="thankyou-app-number">${applicationNumber}</span>
+            <div class="thankyou-app-number-row">
+              <span class="thankyou-app-number">${applicationNumber}</span>
+              <button class="thankyou-copy-btn" aria-label="Copy application number" title="Copy">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+              </button>
+            </div>
             <p class="thankyou-subtext">We may call or email you, if needed.</p>
           </div>
         </div>
@@ -50,6 +58,17 @@ export function submitSuccess(e, form) {
     `;
 
     form.parentNode.insertBefore(thankYouMessage, form);
+
+    const copyBtn = thankYouMessage.querySelector('.thankyou-copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(applicationNumber).then(() => {
+          copyBtn.classList.add('thankyou-copy-btn--copied');
+          setTimeout(() => copyBtn.classList.remove('thankyou-copy-btn--copied'), 1500);
+        });
+      });
+    }
+
     if (thankYouMessage.scrollIntoView) {
       thankYouMessage.scrollIntoView({ behavior: 'smooth' });
     }
