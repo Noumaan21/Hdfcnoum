@@ -630,6 +630,9 @@ function decorateLoanSliders(form) {
           input.value = `${annualRate.toFixed(2)}% p.a.`;
         } else if (labelText.includes('processing fee')) {
           input.value = `₹${processingFee.toLocaleString('en-IN')}`;
+        } else if (labelText.includes('schedule')) {
+          const totalCharges = processingFee + taxes;
+          input.value = `₹${totalCharges.toLocaleString('en-IN')}`;
         }
       });
     });
