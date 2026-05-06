@@ -1136,12 +1136,53 @@ function wirePanelOtpTimer(panel, form) {
     if (attemptsLeft <= 0) return;
     attemptsLeft -= 1;
     updateAttemptsDisplay();
+
     if (attemptsLeft > 0) {
+      // Generate new OTP
+      const newOtp = String(Math.floor(100000 + Math.random() * 900000));
+      form.dataset.generatedOtp = newOtp;
+
+      // Fill the OTP input with the new OTP
+      const otpInput = panel.querySelector('.field-otp input') || form.querySelector('.field-otp input');
+      if (otpInput) {
+        otpInput.value = newOtp;
+        otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+        otpInput.dispatchEvent(new Event('change', { bubbles: true }));
+        // Clear any previous error
+        otpInput.closest('.field-otp')?.querySelector('.otp-error-msg')?.remove();
+      }
+
+      // Re-enable submit button for the new OTP
+      const submitBtn = panel.querySelector('.field-submit-otp button') || form.querySelector('.field-submit-otp button');
+      if (submitBtn) submitBtn.removeAttribute('disabled');
+
       startOtpTimer(panel);
+
+      // Try real API in background; update stored OTP if it responds
+      const mobile = form.querySelector('.field-mobile-number input')?.value?.trim();
+      const dobInput = form.querySelector('.field-date-of-birth input');
+      const dob = (dobInput?.getAttribute('edit-value') || dobInput?.value || '').trim();
+      fetch('http://localhost:3000/api/generate-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile, dob }),
+      }).then((res) => res.ok && res.json()).then((data) => {
+        if (data?.otp) {
+          form.dataset.generatedOtp = String(data.otp);
+          if (otpInput) {
+            otpInput.value = String(data.otp);
+            otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        }
+      }).catch(() => { /* API unavailable — local OTP stays */ });
     } else {
       stopOtpTimer(panel);
       const resendWrapper = panel.querySelector('.field-resend-otp') || panel.querySelector('.field-resend');
       if (resendWrapper) resendWrapper.style.display = 'none';
+
+      // Disable submit and show locked message when all attempts exhausted
+      const submitBtn = panel.querySelector('.field-submit-otp button') || form.querySelector('.field-submit-otp button');
+      if (submitBtn) submitBtn.disabled = true;
     }
   }
 
