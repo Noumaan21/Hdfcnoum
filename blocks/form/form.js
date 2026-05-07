@@ -2020,6 +2020,12 @@ function decorateEmployerAddressSync(form) {
     const sync = () => {
       const val = getSelectedText(dropdown);
       if (!val) return;
+      // Sync to employer_name input
+      const employerNameInput = form.querySelector('input[name="employer_name"]');
+      if (employerNameInput) {
+        employerNameInput.value = val;
+        employerNameInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
       setTimeout(() => syncToReview(val), 0);
     };
 
