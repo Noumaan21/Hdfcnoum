@@ -2013,14 +2013,18 @@ function decorateEmployerAddressSync(form) {
       }
     });
 
-    if (!dropdown || dropdown.dataset.employerSynced) return;
-    dropdown.dataset.employerSynced = 'true';
-    dropdown.dataset.skipGeneralSync = 'true';
+    // Also wire directly by name in case label-based lookup fails
+    const namedSelect = form.querySelector('select[name="employer_company_name_select"]');
+    const targetDropdown = namedSelect || dropdown;
+
+    if (!targetDropdown || targetDropdown.dataset.employerSynced) return;
+    targetDropdown.dataset.employerSynced = 'true';
+    targetDropdown.dataset.skipGeneralSync = 'true';
 
     const sync = () => {
-      const val = getSelectedText(dropdown);
+      const opt = targetDropdown.options[targetDropdown.selectedIndex];
+      const val = (opt && opt.value) ? (opt.text || opt.value) : '';
       if (!val) return;
-      // Sync to employer_name input
       const employerNameInput = form.querySelector('input[name="employer_name"]');
       if (employerNameInput) {
         employerNameInput.value = val;
@@ -2029,8 +2033,8 @@ function decorateEmployerAddressSync(form) {
       setTimeout(() => syncToReview(val), 0);
     };
 
-    dropdown.addEventListener('change', sync);
-    if (dropdown.value) sync();
+    targetDropdown.addEventListener('change', sync);
+    if (targetDropdown.value) sync();
   }
 
   wire();
