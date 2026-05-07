@@ -1545,7 +1545,7 @@ function decorateOtpBackButton(form) {
     const backBtn = document.createElement('button');
     backBtn.type = 'button';
     backBtn.className = 'otp-back-btn';
-    backBtn.textContent = '← Back';
+    backBtn.textContent = 'Back';
     submitWrapper.insertAdjacentElement('afterend', backBtn);
 
     backBtn.addEventListener('click', () => {
