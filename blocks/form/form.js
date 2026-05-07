@@ -1739,7 +1739,7 @@ function decorateEmployerAddressSync(form) {
       const val = getValue();
       if (!val) return;
 
-      // 1. Update "Employer Name" in review panels
+      // 1. Update "Employer Name" in review panels and rename label
       ['.field-loan-details', '.field-xpress-personal-loan-summary-panel'].forEach((sel) => {
         const panel = form.querySelector(sel);
         if (!panel) return;
@@ -1748,7 +1748,13 @@ function decorateEmployerAddressSync(form) {
           const input = wrapper.querySelector('input');
           if (!label || !input) return;
           const t = label.textContent.trim().toLowerCase();
-          if (t.includes('employer') && t.includes('name')) input.value = val;
+          if (t.includes('employer') && t.includes('name')) {
+            if (!label.dataset.relabeled) {
+              label.textContent = 'Employer/Company Name';
+              label.dataset.relabeled = 'true';
+            }
+            input.value = val;
+          }
         });
       });
 
