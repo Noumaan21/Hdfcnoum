@@ -1725,13 +1725,15 @@ function decorateSummarySync(form) {
 
   function labelsMatch(sourceKey, reviewKey) {
     if (sourceKey === reviewKey) return true;
-    if (sourceKey.includes(reviewKey)) return true;
-    if (reviewKey.includes(sourceKey)) return true;
-    // Word-level match: all significant words of the review label appear in the source label.
-    // Requires at least 2 significant words to avoid accidental single-word matches
-    // (e.g. "pan" must not match "full name", "employer name", etc.)
-    const reviewWords = reviewKey.split(/\W+/).filter((w) => w.length > 2);
-    return reviewWords.length >= 2 && reviewWords.every((w) => sourceKey.includes(w));
+    // Use whole-word set membership — never substring includes().
+    // "company".includes("pan") is true, which would wrongly map employer name → PAN field.
+    const toWordSet = (str) => new Set(str.split(/\W+/).filter((w) => w.length >= 2));
+    const sourceWords = toWordSet(sourceKey);
+    // Only consider review words that are >= 3 chars (ignore "of", "to", etc.)
+    const reviewWords = reviewKey.split(/\W+/).filter((w) => w.length >= 3);
+    if (reviewWords.length === 0) return false;
+    // Every significant word in the review label must appear as a whole word in the source label
+    return reviewWords.every((w) => sourceWords.has(w));
   }
 
   function syncToReview(sourceInput) {
