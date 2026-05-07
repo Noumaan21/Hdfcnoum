@@ -1702,47 +1702,74 @@ function decorateLoanApplicationNumber(form) {
 }
 
 function decorateEmployerAddressSync(form) {
-  const REVIEW_SELECTORS = ['.field-personal-details', '.field-loan-details', '.field-xpress-personal-loan-summary-panel'];
-
-  function getDisplayValue(input) {
-    if (input.tagName === 'SELECT') {
-      const opt = input.options[input.selectedIndex];
-      return (opt && opt.value) ? (opt.text || opt.value) : '';
-    }
-    return input.value;
+  function getSelectedText(select) {
+    const opt = select.options[select.selectedIndex];
+    return (opt && opt.value) ? (opt.text || opt.value) : '';
   }
 
-  function findInput(wrapperSelector, labelTest) {
+  function findByLabel(container, labelTest) {
+    if (!container) return null;
     let found = null;
-    form.querySelectorAll(wrapperSelector).forEach((wrapper) => {
+    container.querySelectorAll('.drop-down-wrapper, .text-wrapper, .multiline-wrapper').forEach((wrapper) => {
       if (found) return;
-      if (REVIEW_SELECTORS.some((s) => wrapper.closest(s))) return;
       const label = wrapper.querySelector('label');
-      // include select elements as well as text inputs
-      const input = wrapper.querySelector('select, input[type="text"], textarea');
-      if (!label || !input) return;
-      if (labelTest(label.textContent.trim().toLowerCase())) found = input;
+      if (!label) return;
+      if (labelTest(label.textContent.trim().toLowerCase())) {
+        found = wrapper.querySelector('select, input[type="text"], textarea');
+      }
     });
     return found;
   }
 
   function wire() {
-    const employerInput = findInput('.drop-down-wrapper, .text-wrapper', (t) => t.includes('employer') && (t.includes('name') || t.includes('company')));
-    const addressInput = findInput('.text-wrapper, .multiline-wrapper', (t) => t.includes('employer') && t.includes('address'));
-    if (!employerInput || !addressInput) return;
-    if (employerInput.dataset.employerAddressSynced) return;
-    employerInput.dataset.employerAddressSynced = 'true';
+    // Source: select or text input in the employer details panel only
+    const employerPanel = form.querySelector('.field-employer-details-panel');
+    if (!employerPanel) return;
+    const source = findByLabel(employerPanel, (t) => t.includes('employer') || t.includes('company'));
+    if (!source || source.dataset.employerSynced) return;
+    source.dataset.employerSynced = 'true';
+    // Prevent general decorateSummarySync from double-syncing this field
+    source.dataset.skipGeneralSync = 'true';
 
-    const sync = () => {
-      if (!addressInput.dataset.manuallyEdited) {
-        const val = getDisplayValue(employerInput);
-        addressInput.value = val;
-        addressInput.dispatchEvent(new Event('change', { bubbles: true }));
+    function getValue() {
+      return source.tagName === 'SELECT' ? getSelectedText(source) : source.value;
+    }
+
+    function doSync() {
+      const val = getValue();
+      if (!val) return;
+
+      // 1. Update "Employer Name" in review panels
+      ['.field-loan-details', '.field-xpress-personal-loan-summary-panel'].forEach((sel) => {
+        const panel = form.querySelector(sel);
+        if (!panel) return;
+        panel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
+          const label = wrapper.querySelector('label');
+          const input = wrapper.querySelector('input');
+          if (!label || !input) return;
+          const t = label.textContent.trim().toLowerCase();
+          if (t.includes('employer') && t.includes('name')) input.value = val;
+        });
+      });
+
+      // 2. Pre-fill "Current Employer Address" in office address panel
+      const officePanel = form.querySelector('.field-office-address-panel');
+      const addrInput = findByLabel(officePanel, (t) => t.includes('address'));
+      if (addrInput && !addrInput.dataset.manuallyEdited) {
+        addrInput.value = val;
       }
-    };
-    employerInput.addEventListener('input', sync);
-    employerInput.addEventListener('change', sync);
-    addressInput.addEventListener('input', () => { addressInput.dataset.manuallyEdited = 'true'; });
+    }
+
+    source.addEventListener('change', doSync);
+    source.addEventListener('input', doSync);
+    // Wire manual-edit guard on address field
+    const officePanel = form.querySelector('.field-office-address-panel');
+    const addrInput = findByLabel(officePanel, (t) => t.includes('address'));
+    if (addrInput && !addrInput.dataset.addrGuardWired) {
+      addrInput.dataset.addrGuardWired = 'true';
+      addrInput.addEventListener('input', () => { addrInput.dataset.manuallyEdited = 'true'; });
+    }
+    if (source.value) doSync();
   }
 
   wire();
@@ -1818,6 +1845,7 @@ function decorateSummarySync(form) {
     if (reviewFields.size === 0) return;
     form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
       if (REVIEW_PANELS.some((s) => input.closest(s))) return;
+      if (input.dataset.skipGeneralSync) return;
       const val = getDisplayValue(input);
       if (!val || !val.trim()) return;
       const wrapper = input.closest('[class*="-wrapper"]');
@@ -1837,6 +1865,7 @@ function decorateSummarySync(form) {
     form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
       if (input.dataset.reviewSyncWired) return;
       if (REVIEW_PANELS.some((s) => input.closest(s))) return;
+      if (input.dataset.skipGeneralSync) return;
       input.dataset.reviewSyncWired = 'true';
       input.addEventListener('input', () => syncToReview(input));
       input.addEventListener('change', () => syncToReview(input));
