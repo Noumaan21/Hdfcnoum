@@ -1704,13 +1704,22 @@ function decorateLoanApplicationNumber(form) {
 function decorateEmployerAddressSync(form) {
   const REVIEW_SELECTORS = ['.field-personal-details', '.field-loan-details', '.field-xpress-personal-loan-summary-panel'];
 
+  function getDisplayValue(input) {
+    if (input.tagName === 'SELECT') {
+      const opt = input.options[input.selectedIndex];
+      return (opt && opt.value) ? (opt.text || opt.value) : '';
+    }
+    return input.value;
+  }
+
   function findInput(wrapperSelector, labelTest) {
     let found = null;
     form.querySelectorAll(wrapperSelector).forEach((wrapper) => {
       if (found) return;
       if (REVIEW_SELECTORS.some((s) => wrapper.closest(s))) return;
       const label = wrapper.querySelector('label');
-      const input = wrapper.querySelector('input[type="text"], textarea');
+      // include select elements as well as text inputs
+      const input = wrapper.querySelector('select, input[type="text"], textarea');
       if (!label || !input) return;
       if (labelTest(label.textContent.trim().toLowerCase())) found = input;
     });
@@ -1718,7 +1727,7 @@ function decorateEmployerAddressSync(form) {
   }
 
   function wire() {
-    const employerInput = findInput('.text-wrapper', (t) => t.includes('employer') && (t.includes('name') || t.includes('company')));
+    const employerInput = findInput('.drop-down-wrapper, .text-wrapper', (t) => t.includes('employer') && (t.includes('name') || t.includes('company')));
     const addressInput = findInput('.text-wrapper, .multiline-wrapper', (t) => t.includes('employer') && t.includes('address'));
     if (!employerInput || !addressInput) return;
     if (employerInput.dataset.employerAddressSynced) return;
@@ -1726,7 +1735,8 @@ function decorateEmployerAddressSync(form) {
 
     const sync = () => {
       if (!addressInput.dataset.manuallyEdited) {
-        addressInput.value = employerInput.value;
+        const val = getDisplayValue(employerInput);
+        addressInput.value = val;
         addressInput.dispatchEvent(new Event('change', { bubbles: true }));
       }
     };
@@ -1778,6 +1788,14 @@ function decorateSummarySync(form) {
     return reviewWords.every((w) => sourceWords.has(w));
   }
 
+  function getDisplayValue(input) {
+    if (input.tagName === 'SELECT') {
+      const opt = input.options[input.selectedIndex];
+      return (opt && opt.value) ? (opt.text || opt.value) : '';
+    }
+    return input.value;
+  }
+
   function syncToReview(sourceInput) {
     if (REVIEW_PANELS.some((s) => sourceInput.closest(s))) return;
     const wrapper = sourceInput.closest('[class*="-wrapper"]');
@@ -1786,10 +1804,11 @@ function decorateSummarySync(form) {
     const sourceKey = label.textContent.trim().toLowerCase();
     if (!sourceKey) return;
 
+    const val = getDisplayValue(sourceInput);
     const reviewFields = getReviewFields();
     reviewFields.forEach((inputs, key) => {
       if (labelsMatch(sourceKey, key)) {
-        inputs.forEach((inp) => { inp.value = sourceInput.value; });
+        inputs.forEach((inp) => { inp.value = val; });
       }
     });
   }
@@ -1799,7 +1818,8 @@ function decorateSummarySync(form) {
     if (reviewFields.size === 0) return;
     form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
       if (REVIEW_PANELS.some((s) => input.closest(s))) return;
-      if (!input.value || !input.value.trim()) return;
+      const val = getDisplayValue(input);
+      if (!val || !val.trim()) return;
       const wrapper = input.closest('[class*="-wrapper"]');
       const label = wrapper?.querySelector('label');
       if (!label) return;
@@ -1807,7 +1827,7 @@ function decorateSummarySync(form) {
       if (!sourceKey) return;
       reviewFields.forEach((inputs, key) => {
         if (labelsMatch(sourceKey, key)) {
-          inputs.forEach((inp) => { inp.value = input.value; });
+          inputs.forEach((inp) => { inp.value = val; });
         }
       });
     });
