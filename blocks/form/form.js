@@ -1799,6 +1799,64 @@ function decorateEmailOtpPanels(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+const SALARY_BANK_DATA = {
+  hdfc:           { name: 'HDFC Bank',             ifscPrefix: 'HDFC0' },
+  icici_bank:     { name: 'ICICI Bank',             ifscPrefix: 'ICIC0' },
+  axis:           { name: 'Axis Bank',              ifscPrefix: 'UTIB0' },
+  kotak:          { name: 'Kotak Mahindra Bank',    ifscPrefix: 'KKBK0' },
+  sbi:            { name: 'State Bank of India',    ifscPrefix: 'SBIN0' },
+  bank_of_baroda: { name: 'Bank of Baroda',         ifscPrefix: 'BARB0' },
+  idfc_first_bank:{ name: 'IDFC First Bank',        ifscPrefix: 'IDFB0' },
+  'Union Bank':   { name: 'Union Bank of India',    ifscPrefix: 'UBIN0' },
+  Others:         { name: 'Others',                 ifscPrefix: 'OTHR0' },
+};
+
+function decorateSalaryAccountDetails(form) {
+  function randDigits(n) {
+    return Array.from({ length: n }, () => Math.floor(Math.random() * 10)).join('');
+  }
+
+  function fill(bankKey) {
+    const data = SALARY_BANK_DATA[bankKey];
+    if (!data) return;
+
+    const acInput = form.querySelector('.field-salary-ac-number input');
+    const ifscInput = form.querySelector('.field-ifsc input');
+    const bankInput = form.querySelector('.field-bank-name input');
+
+    if (acInput) acInput.value = randDigits(12);
+    if (ifscInput) ifscInput.value = data.ifscPrefix + randDigits(6);
+    if (bankInput) bankInput.value = data.name;
+
+    [acInput, ifscInput, bankInput].forEach((el) => {
+      if (el) el.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+
+  function wire() {
+    // Radio buttons
+    const radios = form.querySelectorAll('input[name="salary_bank_quick_select"]');
+    radios.forEach((radio) => {
+      if (radio.dataset.salaryBankWired) return;
+      radio.dataset.salaryBankWired = 'true';
+      radio.addEventListener('change', () => { if (radio.checked) fill(radio.value); });
+      if (radio.checked) fill(radio.value);
+    });
+
+    // Dropdown for other banks
+    const dropdown = form.querySelector('select[name="salary_bank_dropdown"]');
+    if (dropdown && !dropdown.dataset.salaryBankWired) {
+      dropdown.dataset.salaryBankWired = 'true';
+      dropdown.addEventListener('change', () => { if (dropdown.value) fill(dropdown.value); });
+      if (dropdown.value) fill(dropdown.value);
+    }
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateWorkEmailSync(form) {
   function wire() {
     const source = form.querySelector('input[name="email_id"]');
@@ -2090,6 +2148,7 @@ export default async function decorate(block) {
     decorateRandomCustomerData(form);
     decorateWorkEmailSync(form);
     decorateEmailOtpPanels(form);
+    decorateSalaryAccountDetails(form);
     decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
