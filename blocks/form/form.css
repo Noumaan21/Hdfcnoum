@@ -4082,6 +4082,7 @@ main .form form .field-work-email-id-panel .field-work-email-id input[type="emai
     background: transparent !important;
     box-shadow: none !important;
     outline: none !important;
+    text-align: left !important;
 }
 
 main .form form .field-work-email-id-panel .field-work-email-id input[type="email"]:focus {
@@ -4430,6 +4431,7 @@ main .form form .field-work-email-panel .field-work-email-id input[type="email"]
     margin: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    text-align: left !important;
 }
 
 main .form form .field-primary-email-panel .field-primary-email-id input[type="email"]:focus,
