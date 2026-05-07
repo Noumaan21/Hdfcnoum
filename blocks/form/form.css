@@ -1745,6 +1745,64 @@ main .form form .field-personal-details-panel .field-verify-email-button {
     display: none !important;
 }
 
+/* PAN Number + Verify — same layout as email verify */
+main .form form .text-wrapper[data-pan-verify-added="true"] {
+    padding-top: 0 !important;
+    display: flex !important;
+    align-items: stretch;
+    border: 1.5px solid #d0d5dd;
+    border-radius: 8px;
+    background: #fff;
+    position: relative;
+    margin: 0;
+}
+
+main .form form .text-wrapper[data-pan-verify-added="true"] > label {
+    top: 0 !important;
+    left: 14px !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
+}
+
+main .form form .text-wrapper[data-pan-verify-added="true"] input[type="text"] {
+    border: none !important;
+    border-radius: 0 !important;
+    height: 52px !important;
+    flex: 1;
+    padding: 0 14px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+main .form form .text-wrapper[data-pan-verify-added="true"] input[type="text"]:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-btn {
+    border: none !important;
+    border-left: 1.5px solid #d0d5dd !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #3d52d5 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    padding: 0 20px !important;
+    height: 52px !important;
+    width: auto !important;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: none !important;
+    align-self: center;
+    margin: 0 !important;
+}
+
+main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-btn:hover {
+    background: #f0f4ff !important;
+}
+
 /* Email suggestion chips */
 main .form form .field-personal-details-panel .field-email-suggestions {
     display: flex;

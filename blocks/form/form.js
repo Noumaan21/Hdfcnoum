@@ -1082,6 +1082,26 @@ function decorateEmailVerifyJoined(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decoratePanVerify(form) {
+  function apply() {
+    form.querySelectorAll('.text-wrapper').forEach((wrapper) => {
+      if (wrapper.dataset.panVerifyAdded) return;
+      const label = wrapper.querySelector('label');
+      if (!label) return;
+      if (!label.textContent.trim().toLowerCase().includes('pan')) return;
+      wrapper.dataset.panVerifyAdded = 'true';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Verify';
+      btn.className = 'pan-verify-btn';
+      wrapper.appendChild(btn);
+    });
+  }
+  apply();
+  const observer = new MutationObserver(() => apply());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateMoveSubmitButton(form) {
   function moveButton() {
     const personalDetails = form.querySelector('.field-personal-details');
@@ -1600,6 +1620,7 @@ export default async function decorate(block) {
     decorateSubmitOtpButton(form);
     decorateMoveSubmitButton(form);
     decorateEmailVerifyJoined(form);
+    decoratePanVerify(form);
     decorateBankSelector(form);
     decorateIncomeVerification(form);
     decorateLoanApplicationNumber(form);
