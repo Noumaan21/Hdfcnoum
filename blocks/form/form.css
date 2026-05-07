@@ -1792,7 +1792,7 @@ main .form form .text-wrapper[data-pan-verify-added="true"] {
     border-radius: 8px;
     background: #fff;
     position: relative;
-    margin: 0;
+    margin: 8px 0 0 !important;
     overflow: visible;
 }
 
@@ -4062,7 +4062,7 @@ main .form form .field-work-email-id-panel .field-work-email-id {
     border-radius: 8px;
     background: #fff;
     position: relative;
-    margin: 0;
+    margin: 8px 0 0 !important;
     overflow: visible;
 }
 
