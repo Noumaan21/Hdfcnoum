@@ -1735,6 +1735,20 @@ function decorateEmployerAddressSync(form) {
         }
       });
     });
+
+    // Fill "Current Employer Address" in the Office Address panel
+    const officePanel = form.querySelector('.field-office-address-panel');
+    if (officePanel) {
+      officePanel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
+        const label = wrapper.querySelector('label');
+        const input = wrapper.querySelector('input');
+        if (!label || !input) return;
+        const t = label.textContent.trim().toLowerCase();
+        if (t.includes('current employer') || t.includes('employer address')) {
+          input.value = val;
+        }
+      });
+    }
   }
 
   function wire() {
