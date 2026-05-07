@@ -1707,75 +1707,45 @@ function decorateEmployerAddressSync(form) {
     return (opt && opt.value) ? (opt.text || opt.value) : '';
   }
 
-  function findByLabel(container, labelTest) {
-    if (!container) return null;
-    let found = null;
-    container.querySelectorAll('.drop-down-wrapper, .text-wrapper, .multiline-wrapper').forEach((wrapper) => {
-      if (found) return;
-      const label = wrapper.querySelector('label');
-      if (!label) return;
-      if (labelTest(label.textContent.trim().toLowerCase())) {
-        found = wrapper.querySelector('select, input[type="text"], textarea');
-      }
+  function syncToReview(val) {
+    ['.field-loan-details', '.field-xpress-personal-loan-summary-panel'].forEach((sel) => {
+      const panel = form.querySelector(sel);
+      if (!panel) return;
+      panel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
+        const label = wrapper.querySelector('label');
+        const input = wrapper.querySelector('input');
+        if (!label || !input) return;
+        const t = label.textContent.trim().toLowerCase();
+        if (t.includes('employer')) {
+          if (!label.dataset.relabeled) {
+            label.textContent = 'Employer/Company Name';
+            label.dataset.relabeled = 'true';
+          }
+          input.value = val;
+        }
+      });
     });
-    return found;
   }
 
   function wire() {
-    // Source: select or text input in the employer details panel only
     const employerPanel = form.querySelector('.field-employer-details-panel');
     if (!employerPanel) return;
-    const source = findByLabel(employerPanel, (t) => t.includes('employer') || t.includes('company'));
-    if (!source || source.dataset.employerSynced) return;
-    source.dataset.employerSynced = 'true';
-    // Prevent general decorateSummarySync from double-syncing this field
-    source.dataset.skipGeneralSync = 'true';
 
-    function getValue() {
-      return source.tagName === 'SELECT' ? getSelectedText(source) : source.value;
-    }
+    // Find the Employer/Company Name dropdown
+    const dropdown = employerPanel.querySelector('select');
+    if (!dropdown || dropdown.dataset.employerSynced) return;
+    dropdown.dataset.employerSynced = 'true';
+    dropdown.dataset.skipGeneralSync = 'true';
 
-    function doSync() {
-      const val = getValue();
+    const sync = () => {
+      const val = getSelectedText(dropdown);
       if (!val) return;
+      // Use setTimeout so this always runs after syncAllToReview
+      setTimeout(() => syncToReview(val), 0);
+    };
 
-      // 1. Update "Employer Name" in review panels and rename label
-      ['.field-loan-details', '.field-xpress-personal-loan-summary-panel'].forEach((sel) => {
-        const panel = form.querySelector(sel);
-        if (!panel) return;
-        panel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
-          const label = wrapper.querySelector('label');
-          const input = wrapper.querySelector('input');
-          if (!label || !input) return;
-          const t = label.textContent.trim().toLowerCase();
-          if (t.includes('employer') && t.includes('name')) {
-            if (!label.dataset.relabeled) {
-              label.textContent = 'Employer/Company Name';
-              label.dataset.relabeled = 'true';
-            }
-            input.value = val;
-          }
-        });
-      });
-
-      // 2. Pre-fill "Current Employer Address" in office address panel
-      const officePanel = form.querySelector('.field-office-address-panel');
-      const addrInput = findByLabel(officePanel, (t) => t.includes('address'));
-      if (addrInput && !addrInput.dataset.manuallyEdited) {
-        addrInput.value = val;
-      }
-    }
-
-    source.addEventListener('change', doSync);
-    source.addEventListener('input', doSync);
-    // Wire manual-edit guard on address field
-    const officePanel = form.querySelector('.field-office-address-panel');
-    const addrInput = findByLabel(officePanel, (t) => t.includes('address'));
-    if (addrInput && !addrInput.dataset.addrGuardWired) {
-      addrInput.dataset.addrGuardWired = 'true';
-      addrInput.addEventListener('input', () => { addrInput.dataset.manuallyEdited = 'true'; });
-    }
-    if (source.value) doSync();
+    dropdown.addEventListener('change', sync);
+    if (dropdown.value) sync();
   }
 
   wire();
