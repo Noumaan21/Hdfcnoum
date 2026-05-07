@@ -1214,9 +1214,21 @@ main .form form .field-resend-otp button:hover {
     background: #1e40af;
 }
 
-/* Resend timer row — label injected via ::before on the countdown wrapper */
+/* Resend timer row — hidden by default via CSS, shown via JS with display:flex */
 main .form form .field-resend-otp-timer {
     display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #444;
+    font-weight: 500;
+}
+
+main .form form .field-resend-otp-timer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #444;
+    font-weight: 500;
 }
 
 main .form form .field-resend-otp-in {

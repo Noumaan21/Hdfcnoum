@@ -1108,7 +1108,7 @@ function startOtpTimer(panel) {
 
   let timeLeft = 45;
 
-  if (timerWrapper) timerWrapper.style.display = '';
+  if (timerWrapper) timerWrapper.style.display = 'flex';
   if (resendWrapper) resendWrapper.style.display = 'none';
   if (timerInput) timerInput.value = `${timeLeft}s`;
   if (timerTextEl && !timerInput) timerTextEl.textContent = `Resend OTP in: ${timeLeft}s`;
