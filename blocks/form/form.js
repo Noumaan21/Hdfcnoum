@@ -1703,6 +1703,75 @@ function decorateLoanApplicationNumber(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decoratePrimaryEmailVerify(form) {
+  function wire() {
+    const primaryPanel = form.querySelector('.field-primary-email-panel');
+    if (!primaryPanel || primaryPanel.dataset.primaryEmailWired) return;
+
+    const emailInput = primaryPanel.querySelector('input[name="primary_email_id"]');
+    const verifyBtn = primaryPanel.querySelector('button[name="primary_email_verify_button"]');
+    const otpPanel = primaryPanel.querySelector('.field-enter-otp-panel');
+
+    if (!emailInput || !verifyBtn || !otpPanel) return;
+
+    primaryPanel.dataset.primaryEmailWired = 'true';
+
+    // Hide OTP panel until Verify is clicked
+    otpPanel.style.display = 'none';
+
+    // Wire Submit OTP: correct OTP → hide panel and mark email verified
+    const submitOtpBtn = otpPanel.querySelector('.field-submit-otp button');
+    const otpInput = otpPanel.querySelector('.field-otp input');
+    if (submitOtpBtn && !submitOtpBtn.dataset.primaryEmailSubmitWired) {
+      submitOtpBtn.dataset.primaryEmailSubmitWired = 'true';
+      submitOtpBtn.addEventListener('click', () => {
+        const entered = (otpInput?.value || '').replace(/\s/g, '');
+        const expected = form.dataset.generatedOtp;
+        if (!expected || entered !== expected) return;
+        otpPanel.style.display = 'none';
+        verifyBtn.textContent = 'Verified';
+        verifyBtn.disabled = true;
+        verifyBtn.classList.add('email-verified');
+      });
+    }
+
+    const updateVerifyBtn = () => { verifyBtn.disabled = !isValidEmail(emailInput.value); };
+    updateVerifyBtn();
+    emailInput.addEventListener('input', updateVerifyBtn);
+
+    verifyBtn.addEventListener('click', () => {
+      if (!isValidEmail(emailInput.value)) return;
+
+      // Show OTP panel
+      otpPanel.style.display = '';
+
+      // Reset wiring flags so wirePanelOtpTimer runs fresh
+      delete otpPanel.dataset.otpTimerWired;
+      const resendBtn = otpPanel.querySelector('.field-resend button');
+      if (resendBtn) delete resendBtn.dataset.timerWired;
+
+      // Generate and fill OTP
+      const otp = String(Math.floor(100000 + Math.random() * 900000));
+      form.dataset.generatedOtp = otp;
+      if (otpInput) {
+        otpInput.value = otp;
+        otpInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      // Start timer — hides Resend until countdown hits 0
+      wirePanelOtpTimer(otpPanel, form);
+
+      verifyBtn.textContent = 'OTP Sent';
+      verifyBtn.disabled = true;
+      verifyBtn.classList.remove('email-verified');
+    });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateWorkEmailSync(form) {
   function wire() {
     const source = form.querySelector('input[name="email_id"]');
@@ -1993,6 +2062,7 @@ export default async function decorate(block) {
     decorateLoanApplicationNumber(form);
     decorateRandomCustomerData(form);
     decorateWorkEmailSync(form);
+    decoratePrimaryEmailVerify(form);
     decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
