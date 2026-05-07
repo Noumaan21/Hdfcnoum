@@ -1735,20 +1735,6 @@ function decorateEmployerAddressSync(form) {
         }
       });
     });
-
-    // Fill "Current Employer Address" in the Office Address panel
-    const officePanel = form.querySelector('.field-office-address-panel');
-    if (officePanel) {
-      officePanel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
-        const label = wrapper.querySelector('label');
-        const input = wrapper.querySelector('input');
-        if (!label || !input) return;
-        const t = label.textContent.trim().toLowerCase();
-        if (t.includes('current employer') || t.includes('employer address')) {
-          input.value = val;
-        }
-      });
-    }
   }
 
   function wire() {
@@ -1757,7 +1743,19 @@ function decorateEmployerAddressSync(form) {
     const employerPanel = form.querySelector('.field-employer-details-panel');
     if (!employerPanel) return;
 
-    const dropdown = employerPanel.querySelector('select');
+    // Find the Employer/Company Name dropdown by its label, not just the first select
+    let dropdown = null;
+    employerPanel.querySelectorAll('select').forEach((sel) => {
+      if (dropdown) return;
+      const wrapper = sel.closest('[class*="-wrapper"]');
+      const label = wrapper?.querySelector('label');
+      if (!label) return;
+      const t = label.textContent.trim().toLowerCase();
+      if (t.includes('employer') || t.includes('company')) {
+        dropdown = sel;
+      }
+    });
+
     if (!dropdown || dropdown.dataset.employerSynced) return;
     dropdown.dataset.employerSynced = 'true';
     dropdown.dataset.skipGeneralSync = 'true';
