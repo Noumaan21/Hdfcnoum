@@ -1194,7 +1194,8 @@ main .form form .field-otp .otp-eye-toggle svg {
 }
 
 main .form form .field-resend-otp button,
-main .form form .field-resend button {
+main .form form .field-resend button,
+main .form form .field-back button {
     background-color: rgb(165 180 252 / 30%);
     color: #3730a3;
     border: 1.5px solid #a5b4fc;
@@ -1212,7 +1213,8 @@ main .form form .field-resend button {
 }
 
 main .form form .field-resend-otp button:hover,
-main .form form .field-resend button:hover {
+main .form form .field-resend button:hover,
+main .form form .field-back button:hover {
     background-color: rgb(165 180 252 / 50%);
 }
 
