@@ -958,7 +958,7 @@ function decorateIncomeVerification(form) {
 
 const BANK_CARDS = [
   {
-    value: 'hdfc_bank', name: 'HDFC Bank',
+    value: 'hdfc_bank', name: 'HDFC',
     svg: `<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#fff"/><rect x="9" y="9" width="26" height="26" rx="2" fill="none" stroke="#dc2626" stroke-width="2.5"/><rect x="14" y="14" width="4" height="16" fill="#dc2626"/><rect x="26" y="14" width="4" height="16" fill="#dc2626"/><rect x="14" y="20" width="16" height="4" fill="#dc2626"/></svg>`,
   },
   {
@@ -966,7 +966,7 @@ const BANK_CARDS = [
     svg: `<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#fff"/><circle cx="22" cy="22" r="13" fill="#f26522"/><circle cx="22" cy="15" r="2.5" fill="white"/><rect x="19.5" y="19" width="5" height="10" rx="1.5" fill="white"/></svg>`,
   },
   {
-    value: 'axis_bank', name: 'Axis Bank',
+    value: 'axis_bank', name: 'Axis',
     svg: `<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#fff"/><polygon points="22,8 35,36 9,36" fill="none" stroke="#97144d" stroke-width="3" stroke-linejoin="round"/><line x1="14" y1="28" x2="30" y2="28" stroke="#97144d" stroke-width="3" stroke-linecap="round"/></svg>`,
   },
   {
@@ -978,11 +978,11 @@ const BANK_CARDS = [
     svg: `<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#fff"/><circle cx="22" cy="22" r="13" fill="#1e4799"/><circle cx="22" cy="18" r="4.5" fill="white"/><path d="M18.5 22 L20 31 L24 31 L25.5 22 Z" fill="white"/></svg>`,
   },
   {
-    value: 'bank_of_baroda', name: 'Bank of Bar...',
+    value: 'bank_of_baroda', name: 'Bank of Baroda',
     svg: `<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#fff"/><rect x="13" y="11" width="5" height="22" rx="1" fill="#e55000"/><path d="M18 11 L25 11 C29 11 31 14 31 17.5 C31 21 29 22.5 27 23 C29.5 23.5 32 26 32 29 C32 32.5 29.5 33 25 33 L18 33 Z" fill="#e55000"/></svg>`,
   },
   {
-    value: 'idfc_first', name: 'IDFC First',
+    value: 'idfc_first', name: 'IDFC First Bank',
     svg: `<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#fff"/><rect x="10" y="10" width="24" height="24" rx="3" fill="#971b2f"/><rect x="16" y="15" width="4" height="14" rx="1" fill="white"/><rect x="16" y="15" width="12" height="4" rx="1" fill="white"/><rect x="16" y="21" width="9" height="3" rx="1" fill="white"/></svg>`,
   },
 ];
