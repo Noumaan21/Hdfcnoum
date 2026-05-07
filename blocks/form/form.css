@@ -1218,6 +1218,11 @@ main .form form .field-back button:hover {
     background-color: rgb(165 180 252 / 50%);
 }
 
+main .form form .field-back button {
+    width: auto;
+    padding: 8px 24px;
+}
+
 /* Resend timer row — hidden by default via CSS, shown via JS with display:flex */
 main .form form .field-resend-otp-timer {
     display: none;
