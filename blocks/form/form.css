@@ -1194,8 +1194,7 @@ main .form form .field-otp .otp-eye-toggle svg {
 }
 
 main .form form .field-resend-otp button,
-main .form form .field-resend button,
-main .form form .field-back button {
+main .form form .field-resend button {
     background-color: rgb(165 180 252 / 30%);
     color: #3730a3;
     border: 1.5px solid #a5b4fc;
@@ -1213,9 +1212,28 @@ main .form form .field-back button {
 }
 
 main .form form .field-resend-otp button:hover,
-main .form form .field-resend button:hover,
-main .form form .field-back button:hover {
+main .form form .field-resend button:hover {
     background-color: rgb(165 180 252 / 50%);
+}
+
+main .form form .field-back button {
+    background: #1e3a8a;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: auto !important;
+    transition: background 0.2s;
+}
+
+main .form form .field-back button:hover {
+    background: #1e40af;
 }
 
 /* Resend timer row — hidden by default via CSS, shown via JS with display:flex */
@@ -1329,26 +1347,26 @@ main .form form .field-submit-otp button:not(:disabled):hover {
     background-color: rgb(165 180 252 / 50%);
 }
 
-/* Wizard Back button — styled to match Submit OTP button */
+/* Wizard Back button — styled to match Confirm button */
 main .form form .wizard-button-prev {
-    background-color: rgb(165 180 252 / 30%);
-    color: #3730a3;
-    border: 1.5px solid #a5b4fc;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
+    background: #1e3a8a;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
-    width: 160px;
-    transition: background-color 0.2s;
+    gap: 8px;
+    width: auto;
+    transition: background 0.2s;
     justify-content: center;
 }
 
 main .form form .wizard-button-prev:hover {
-    background-color: rgb(165 180 252 / 50%);
+    background: #1e40af;
 }
 
 /* Important links note — centered gray text with top divider */
