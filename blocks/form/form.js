@@ -1270,6 +1270,18 @@ function wireEligibilityOtpClick(form) {
         });
         navObserver.observe(otpPanel, { attributes: true, attributeFilter: ['class', 'style'] });
         setTimeout(() => { if (navObserver) { navObserver.disconnect(); navObserver = null; } }, 10000);
+
+        // Restart the OTP timer exactly when the panel becomes the active wizard step
+        let timerTrigger = new MutationObserver(() => {
+          if (otpPanel.classList.contains('current-wizard-step')) {
+            timerTrigger.disconnect();
+            timerTrigger = null;
+            delete otpPanel.dataset.otpTimerWired;
+            wirePanelOtpTimer(otpPanel, form);
+          }
+        });
+        timerTrigger.observe(otpPanel, { attributes: true, attributeFilter: ['class'] });
+        setTimeout(() => { if (timerTrigger) { timerTrigger.disconnect(); timerTrigger = null; } }, 10000);
       }
 
       try {
@@ -1296,17 +1308,13 @@ function wireEligibilityOtpClick(form) {
 }
 
 function decorateOtpTimer(form) {
-  const seenPanels = new WeakSet();
-
   function wire() {
     form.querySelectorAll('.field-enter-otp-panel').forEach((panel) => {
       const isVisible = panel.dataset.visible !== 'false'
         && getComputedStyle(panel).display !== 'none';
-      if (isVisible && !seenPanels.has(panel)) {
-        seenPanels.add(panel);
+      if (isVisible && !panel.dataset.otpTimerWired) {
         wirePanelOtpTimer(panel, form);
       } else if (!isVisible && panel.dataset.otpTimerWired) {
-        // Reset wired flag when panel hides so it re-inits on next show
         delete panel.dataset.otpTimerWired;
       }
     });
