@@ -1218,7 +1218,8 @@ main .form form .field-resend button:hover {
 
 main .form form .field-back button,
 main .form form button[name="Back"],
-main .form form button[name="back"] {
+main .form form button[name="back"],
+main .form form button[name="Back_button"] {
     background: #1e3a8a !important;
     color: #fff !important;
     border: none !important;
@@ -1236,7 +1237,8 @@ main .form form button[name="back"] {
 
 main .form form .field-back button:hover,
 main .form form button[name="Back"]:hover,
-main .form form button[name="back"]:hover {
+main .form form button[name="back"]:hover,
+main .form form button[name="Back_button"]:hover {
     background: #1e40af !important;
 }
 
