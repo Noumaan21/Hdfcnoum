@@ -1749,7 +1749,6 @@ main .form form .field-personal-details-panel .field-verify-email-button {
 main .form form .text-wrapper[data-pan-verify-added="true"] {
     padding-top: 0 !important;
     display: flex !important;
-    flex-wrap: wrap;
     align-items: stretch;
     border: 1.5px solid #d0d5dd;
     border-radius: 8px;
@@ -1802,13 +1801,9 @@ main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verifie
     cursor: default !important;
 }
 
-main .form form .pan-error-msg {
-    display: none;
-    flex: 0 0 100%;
-    color: #dc2626;
-    font-size: 0.8rem;
-    padding: 4px 14px 6px;
-    order: 99;
+main .form form .pan-verify-btn:disabled:not(.pan-verified) {
+    opacity: 0.4;
+    cursor: not-allowed !important;
 }
 
 /* Email suggestion chips */

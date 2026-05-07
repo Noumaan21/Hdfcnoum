@@ -1107,31 +1107,25 @@ function decoratePanVerify(form) {
       if (labelText !== 'pan number' && !labelText.startsWith('pan ') && labelText !== 'pan') return;
       wrapper.dataset.panVerifyAdded = 'true';
 
-      // Error lives INSIDE the wrapper so it's never confused with another element
-      const errorEl = document.createElement('span');
-      errorEl.className = 'pan-error-msg';
-      wrapper.appendChild(errorEl);
-
+      const input = wrapper.querySelector('input');
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.textContent = 'Verify';
       btn.className = 'pan-verify-btn';
+      btn.disabled = true;
+
+      const checkValidity = () => {
+        btn.disabled = !!validatePan(input?.value);
+      };
+
+      if (input) input.addEventListener('input', checkValidity);
 
       btn.addEventListener('click', () => {
-        const input = wrapper.querySelector('input');
-        const error = validatePan(input?.value);
-        if (error) {
-          errorEl.textContent = error;
-          errorEl.style.display = 'block';
-          if (input) input.setCustomValidity(error);
-        } else {
-          errorEl.textContent = '';
-          errorEl.style.display = 'none';
-          if (input) input.setCustomValidity('');
-          btn.textContent = 'Verified';
-          btn.disabled = true;
-          btn.classList.add('pan-verified');
-        }
+        if (validatePan(input?.value)) return;
+        btn.textContent = 'Verified';
+        btn.disabled = true;
+        btn.classList.add('pan-verified');
+        if (input) input.removeEventListener('input', checkValidity);
       });
 
       wrapper.appendChild(btn);
