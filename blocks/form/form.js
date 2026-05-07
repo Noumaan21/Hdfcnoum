@@ -681,6 +681,7 @@ function decorateLoanSliders(form) {
       labelsDiv.append(span);
     });
 
+    range._loanConfig = config;
     sliderWrap.append(range, labelsDiv);
     fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
 
@@ -1626,6 +1627,57 @@ function decorateRandomCustomerData(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateLoanAmountFromIncome(form) {
+  const MIN_LOAN = 50000;
+  const MAX_LOAN = 1500000;
+
+  // Max loan = Monthly Net Income × 15, capped at ₹15L, floor ₹50K
+  function calcMaxLoan(monthlyIncome) {
+    const raw = Math.min(monthlyIncome * 15, MAX_LOAN);
+    const rounded = Math.round(raw / 10000) * 10000; // round to nearest 10K step
+    return Math.max(rounded, MIN_LOAN);
+  }
+
+  function getLoanRange() {
+    return form.querySelector('.loan-range-slider input[type="range"]');
+  }
+
+  function applyMax(newMax) {
+    const range = getLoanRange();
+    if (!range || !range._loanConfig) return;
+    range._loanConfig.max = newMax;
+    range.max = newMax;
+    if (Number(range.value) > newMax) range.value = newMax;
+    range.dispatchEvent(new Event('input', { bubbles: false }));
+  }
+
+  function wire() {
+    const panel = form.querySelector('.field-income-details-panel');
+    if (!panel) return;
+    panel.querySelectorAll('.number-wrapper, .text-wrapper').forEach((wrapper) => {
+      if (wrapper.dataset.incomeValidationWired) return;
+      const label = wrapper.querySelector('label');
+      const input = wrapper.querySelector('input[type="number"]');
+      if (!label || !input) return;
+      const text = label.textContent.trim().toLowerCase();
+      if (!text.includes('income') && !text.includes('salary') && !text.includes('monthly')) return;
+      wrapper.dataset.incomeValidationWired = 'true';
+
+      const update = () => {
+        const val = Number(input.value);
+        if (val > 0) applyMax(calcMaxLoan(val));
+        else applyMax(MAX_LOAN); // reset to full max if cleared
+      };
+      input.addEventListener('input', update);
+      input.addEventListener('change', update);
+    });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateLoanApplicationNumber(form) {
   function apply() {
     const wrapper = form.querySelector('.field-loan-application-number');
@@ -1700,6 +1752,7 @@ export default async function decorate(block) {
     wireEligibilityOtpClick(form);
     decorateEditMobileNumber(form);
     decorateLoanSliders(form);
+    decorateLoanAmountFromIncome(form);
     decorateCollapsiblePanels(form);
     decorateLoanEligibilityButton(form);
     decorateSubmitOtpButton(form);
