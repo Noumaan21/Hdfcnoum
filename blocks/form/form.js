@@ -1115,6 +1115,11 @@ function decoratePanVerify(form) {
       btn.disabled = true;
 
       const checkValidity = () => {
+        if (input) {
+          const pos = input.selectionStart;
+          input.value = input.value.toUpperCase();
+          input.setSelectionRange(pos, pos);
+        }
         btn.disabled = !!validatePan(input?.value);
       };
 
