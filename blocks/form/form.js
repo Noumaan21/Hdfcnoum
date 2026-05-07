@@ -1138,9 +1138,12 @@ function validatePan(raw) {
 }
 
 function decoratePanVerify(form) {
+  const REVIEW_PANELS = ['.field-personal-details', '.field-loan-details', '.field-xpress-personal-loan-summary-panel'];
   function apply() {
     form.querySelectorAll('.text-wrapper').forEach((wrapper) => {
       if (wrapper.dataset.panVerifyAdded || wrapper.querySelector('.pan-verify-btn')) return;
+      // Skip PAN fields inside review/summary panels — they are display-only
+      if (REVIEW_PANELS.some((s) => wrapper.closest(s))) return;
       const label = wrapper.querySelector('label');
       if (!label) return;
       const labelText = label.textContent.trim().toLowerCase();

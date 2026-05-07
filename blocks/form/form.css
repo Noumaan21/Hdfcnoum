@@ -1491,8 +1491,9 @@ main .form form .field-personal-details .field-date-of-birth > label {
 }
 
 main .form form .field-personal-details .field-mobile-number input,
-main .form form .field-personal-details .field-date-of-birth input {
-    border: none;
+main .form form .field-personal-details .field-date-of-birth input,
+main .form form .field-personal-details .text-wrapper input {
+    border: none !important;
     background: transparent !important;
     background-image: none !important;
     padding: 0 !important;
@@ -1507,6 +1508,8 @@ main .form form .field-personal-details .field-date-of-birth input {
     width: 100%;
     letter-spacing: normal;
     text-indent: 0;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 /* ===== Customer Details Panel ===== */
