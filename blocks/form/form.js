@@ -969,11 +969,13 @@ const BANK_CARDS = [
 function decorateBankSelector(form) {
   function build() {
     const panel = form.querySelector('.field-loan-type-selection');
-    if (!panel || panel.dataset.bankDecorated) return;
+    if (!panel || panel.dataset.bankJsDecorated) return;
     const selectWrapper = panel.querySelector('.field-select-loan-type');
     const select = selectWrapper?.querySelector('select');
     if (!select) return;
-    panel.dataset.bankDecorated = 'true';
+    panel.dataset.bankJsDecorated = 'true';
+    // Remove any previously injected container so we always rebuild fresh
+    panel.querySelector('.bank-picker-container')?.remove();
 
     const container = document.createElement('div');
     container.className = 'bank-picker-container';
