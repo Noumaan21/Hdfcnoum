@@ -1095,15 +1095,6 @@ function validatePan(raw) {
   return null;
 }
 
-function getOrCreatePanError(wrapper) {
-  const next = wrapper.nextElementSibling;
-  if (next && next.classList.contains('pan-error-msg')) return next;
-  const el = document.createElement('span');
-  el.className = 'pan-error-msg';
-  wrapper.insertAdjacentElement('afterend', el);
-  return el;
-}
-
 function decoratePanVerify(form) {
   function apply() {
     form.querySelectorAll('.text-wrapper').forEach((wrapper) => {
@@ -1114,6 +1105,11 @@ function decoratePanVerify(form) {
       if (labelText !== 'pan number' && !labelText.startsWith('pan ') && labelText !== 'pan') return;
       wrapper.dataset.panVerifyAdded = 'true';
 
+      // Error lives INSIDE the wrapper so it's never confused with another element
+      const errorEl = document.createElement('span');
+      errorEl.className = 'pan-error-msg';
+      wrapper.appendChild(errorEl);
+
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.textContent = 'Verify';
@@ -1121,7 +1117,6 @@ function decoratePanVerify(form) {
 
       btn.addEventListener('click', () => {
         const input = wrapper.querySelector('input');
-        const errorEl = getOrCreatePanError(wrapper);
         const error = validatePan(input?.value);
         if (error) {
           errorEl.textContent = error;
