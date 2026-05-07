@@ -1727,10 +1727,11 @@ function decorateSummarySync(form) {
     if (sourceKey === reviewKey) return true;
     if (sourceKey.includes(reviewKey)) return true;
     if (reviewKey.includes(sourceKey)) return true;
-    // Word-level match: all significant words of the review label appear in the source label
-    // Handles cases like "enter employer/company name" matching "employer name"
+    // Word-level match: all significant words of the review label appear in the source label.
+    // Requires at least 2 significant words to avoid accidental single-word matches
+    // (e.g. "pan" must not match "full name", "employer name", etc.)
     const reviewWords = reviewKey.split(/\W+/).filter((w) => w.length > 2);
-    return reviewWords.length > 0 && reviewWords.every((w) => sourceKey.includes(w));
+    return reviewWords.length >= 2 && reviewWords.every((w) => sourceKey.includes(w));
   }
 
   function syncToReview(sourceInput) {
@@ -1749,6 +1750,25 @@ function decorateSummarySync(form) {
     });
   }
 
+  function syncAllToReview() {
+    const reviewFields = getReviewFields();
+    if (reviewFields.size === 0) return;
+    form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
+      if (REVIEW_PANELS.some((s) => input.closest(s))) return;
+      if (!input.value || !input.value.trim()) return;
+      const wrapper = input.closest('[class*="-wrapper"]');
+      const label = wrapper?.querySelector('label');
+      if (!label) return;
+      const sourceKey = label.textContent.trim().toLowerCase();
+      if (!sourceKey) return;
+      reviewFields.forEach((inputs, key) => {
+        if (labelsMatch(sourceKey, key)) {
+          inputs.forEach((inp) => { inp.value = input.value; });
+        }
+      });
+    });
+  }
+
   function wire() {
     form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
       if (input.dataset.reviewSyncWired) return;
@@ -1760,7 +1780,7 @@ function decorateSummarySync(form) {
   }
 
   wire();
-  const observer = new MutationObserver(() => wire());
+  const observer = new MutationObserver(() => { wire(); syncAllToReview(); });
   observer.observe(form, { childList: true, subtree: true });
 }
 
