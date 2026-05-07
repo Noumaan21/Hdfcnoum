@@ -1732,6 +1732,7 @@ function decorateEmployerAddressSync(form) {
         if (!label || !input) return;
         if (label.textContent.trim().toLowerCase().includes('employer')) {
           input.value = val;
+          input.dataset.employerControlled = 'true';
         }
       });
     });
@@ -1788,6 +1789,7 @@ function decorateSummarySync(form) {
       const panel = form.querySelector(sel);
       if (!panel) return;
       panel.querySelectorAll('input[type="text"], input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"])').forEach((input) => {
+        if (input.dataset.employerControlled) return;
         const wrapper = input.closest('[class*="-wrapper"]');
         const label = wrapper?.querySelector('label');
         if (!label) return;
