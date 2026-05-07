@@ -1746,7 +1746,8 @@ main .form form .field-personal-details-panel .field-email-id > button:disabled:
     cursor: not-allowed !important;
 }
 
-main .form form .field-personal-details-panel .field-email-id > button.email-verified {
+main .form form .field-personal-details-panel .field-email-id > button.email-verified,
+main .form form .field-work-email-id-panel .field-work-email-id > button.email-verified {
     color: #16a34a !important;
     cursor: default !important;
 }
