@@ -1536,6 +1536,40 @@ function decorateLoanApplicationNumber(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateOtpBackButton(form) {
+  function wire() {
+    const submitWrapper = form.querySelector('.field-submit-otp');
+    if (!submitWrapper || submitWrapper.dataset.backWired) return;
+    submitWrapper.dataset.backWired = 'true';
+
+    const backBtn = document.createElement('button');
+    backBtn.type = 'button';
+    backBtn.className = 'otp-back-btn';
+    backBtn.textContent = '← Back';
+    submitWrapper.insertAdjacentElement('afterend', backBtn);
+
+    backBtn.addEventListener('click', () => {
+      // Stop the running timer
+      const otpPanel = form.querySelector('.field-enter-otp-panel');
+      if (otpPanel) {
+        if (otpPanel._otpTimerInterval) {
+          clearInterval(otpPanel._otpTimerInterval);
+          otpPanel._otpTimerInterval = null;
+        }
+        delete otpPanel.dataset.otpTimerWired;
+      }
+
+      // Navigate to the first wizard step
+      const firstStep = form.querySelector('.wizard > fieldset');
+      if (firstStep) navigateWizardToStep(form, firstStep);
+    });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href]');
   let formDef;
@@ -1593,6 +1627,7 @@ export default async function decorate(block) {
     container.replaceWith(form);
     decorateOtpInput(form);
     decorateOtpTimer(form);
+    decorateOtpBackButton(form);
     wireEligibilityOtpClick(form);
     decorateEditMobileNumber(form);
     decorateLoanSliders(form);
