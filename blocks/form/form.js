@@ -1880,20 +1880,29 @@ function decorateSalaryAccountDetails(form) {
   }
 
   function wire() {
-    // Radio buttons
-    const radios = form.querySelectorAll('input[name="salary_bank_quick_select"]');
+    const radios = [...form.querySelectorAll('input[name="salary_bank_quick_select"]')];
+    const dropdown = form.querySelector('select[name="salary_bank_dropdown"]');
+
+    // Radio buttons — selecting one clears the dropdown
     radios.forEach((radio) => {
       if (radio.dataset.salaryBankWired) return;
       radio.dataset.salaryBankWired = 'true';
-      radio.addEventListener('change', () => { if (radio.checked) fill(radio.value); });
+      radio.addEventListener('change', () => {
+        if (!radio.checked) return;
+        if (dropdown) dropdown.value = '';   // clear dropdown selection
+        fill(radio.value);
+      });
       if (radio.checked) fill(radio.value);
     });
 
-    // Dropdown for other banks
-    const dropdown = form.querySelector('select[name="salary_bank_dropdown"]');
+    // Dropdown — selecting one unchecks all radio buttons
     if (dropdown && !dropdown.dataset.salaryBankWired) {
       dropdown.dataset.salaryBankWired = 'true';
-      dropdown.addEventListener('change', () => { if (dropdown.value) fill(dropdown.value); });
+      dropdown.addEventListener('change', () => {
+        if (!dropdown.value) return;
+        radios.forEach((r) => { r.checked = false; }); // clear radio selection
+        fill(dropdown.value);
+      });
       if (dropdown.value) fill(dropdown.value);
     }
   }
