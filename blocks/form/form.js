@@ -1352,11 +1352,10 @@ function decorateEditMobileNumber(form) {
   function getMobileStep() {
     const otpPanel = form.querySelector('.field-enter-otp-panel');
     if (!otpPanel) return null;
-    // Walk backwards from OTP panel to find the nearest preceding visible wizard step
-    for (let el = otpPanel.previousElementSibling; el; el = el.previousElementSibling) {
-      if (el.tagName === 'FIELDSET' && el.dataset.visible !== 'false') return el;
-    }
-    return null;
+    const wizard = otpPanel.closest('.wizard');
+    if (!wizard) return null;
+    return wizard.querySelector(':scope > fieldset:not([data-visible="false"])')
+      || wizard.querySelector(':scope > fieldset');
   }
 
   function wire() {
