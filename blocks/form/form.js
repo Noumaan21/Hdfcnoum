@@ -1059,6 +1059,13 @@ function decorateBankSelector(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+const ALLOWED_EMAIL_DOMAINS = ['@gmail.com', '@outlook.com', '@yahoo.com'];
+
+function isValidEmailDomain(value) {
+  const v = (value || '').trim().toLowerCase();
+  return ALLOWED_EMAIL_DOMAINS.some((domain) => v.endsWith(domain));
+}
+
 function decorateEmailVerifyJoined(form) {
   const pairs = [
     { panel: '.field-personal-details-panel', email: '.field-email-id', verify: '.field-verify-email-button' },
@@ -1075,6 +1082,21 @@ function decorateEmailVerifyJoined(form) {
       if (!btn) return;
       emailWrapper.dataset.verifyMerged = 'true';
       emailWrapper.appendChild(btn);
+
+      const input = emailWrapper.querySelector('input');
+      btn.disabled = true;
+
+      input.addEventListener('input', () => {
+        btn.disabled = !isValidEmailDomain(input.value);
+      });
+
+      btn.addEventListener('click', () => {
+        if (!isValidEmailDomain(input.value)) return;
+        btn.textContent = 'Verified';
+        btn.disabled = true;
+        btn.classList.add('email-verified');
+        input.removeEventListener('input', () => {});
+      });
     });
   }
   mergeAll();

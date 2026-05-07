@@ -1737,8 +1737,18 @@ main .form form .field-personal-details-panel .field-email-id > button {
     margin: 0 !important;
 }
 
-main .form form .field-personal-details-panel .field-email-id > button:hover {
+main .form form .field-personal-details-panel .field-email-id > button:hover:not(:disabled) {
     background: #f0f4ff !important;
+}
+
+main .form form .field-personal-details-panel .field-email-id > button:disabled:not(.email-verified) {
+    opacity: 0.4;
+    cursor: not-allowed !important;
+}
+
+main .form form .field-personal-details-panel .field-email-id > button.email-verified {
+    color: #16a34a !important;
+    cursor: default !important;
 }
 
 main .form form .field-personal-details-panel .field-verify-email-button {
