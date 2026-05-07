@@ -1433,7 +1433,7 @@ function decorateOtpInput(form) {
 const CUSTOMER_DATA = [
   {
     fullName: 'Ankit Shah',
-    panNumber: 'ABCDE1234F',
+
     currentAddress: 'Mumbai, Maharashtra',
     residenceType: 'Owned',
     employerName: 'Infosys',
@@ -1441,7 +1441,7 @@ const CUSTOMER_DATA = [
   },
   {
     fullName: 'Rahul Mehta',
-    panNumber: 'PQRSX5678K',
+
     currentAddress: 'Pune, Maharashtra',
     residenceType: 'Rented',
     employerName: 'Self Employed',
@@ -1449,7 +1449,7 @@ const CUSTOMER_DATA = [
   },
   {
     fullName: 'Priya Sharma',
-    panNumber: 'LMNOP4321Q',
+
     currentAddress: 'Delhi, India',
     residenceType: 'Owned',
     employerName: 'TCS',
@@ -1457,7 +1457,7 @@ const CUSTOMER_DATA = [
   },
   {
     fullName: 'Sneha Reddy',
-    panNumber: 'ZXCVB1234L',
+
     currentAddress: 'Hyderabad, Telangana',
     residenceType: 'Rented',
     employerName: 'Wipro',
@@ -1465,7 +1465,7 @@ const CUSTOMER_DATA = [
   },
   {
     fullName: 'Arjun Kumar',
-    panNumber: 'QWERT5678P',
+
     currentAddress: 'Bangalore, Karnataka',
     residenceType: 'Owned',
     employerName: 'Accenture',
@@ -1478,7 +1478,7 @@ function decorateRandomCustomerData(form) {
 
   const LABEL_MAP = [
     { match: 'full name', value: customer.fullName },
-    { match: 'pan', value: customer.panNumber },
+
     { match: 'current address', value: customer.currentAddress },
     { match: 'residence type', value: customer.residenceType },
     { match: 'employer name', value: customer.employerName },
