@@ -630,6 +630,8 @@ function decorateLoanSliders(form) {
           input.value = `${annualRate.toFixed(2)}% p.a.`;
         } else if (labelText.includes('processing fee')) {
           input.value = `₹${processingFee.toLocaleString('en-IN')}`;
+        } else if (labelText.includes('tax') || labelText.includes('gst')) {
+          input.value = `₹${taxes.toLocaleString('en-IN')}`;
         }
       });
     });
@@ -1714,6 +1716,62 @@ function decorateLoanApplicationNumber(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateSummarySync(form) {
+  const REVIEW_PANELS = [
+    '.field-loan-details',
+    '.field-xpress-personal-loan-summary-panel',
+    '.field-personal-details',
+  ];
+
+  function getReviewFields() {
+    const map = new Map();
+    REVIEW_PANELS.forEach((sel) => {
+      const panel = form.querySelector(sel);
+      if (!panel) return;
+      panel.querySelectorAll('input[type="text"], input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"])').forEach((input) => {
+        const wrapper = input.closest('[class*="-wrapper"]');
+        const label = wrapper?.querySelector('label');
+        if (!label) return;
+        const key = label.textContent.trim().toLowerCase();
+        if (!key) return;
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(input);
+      });
+    });
+    return map;
+  }
+
+  function syncToReview(sourceInput) {
+    if (REVIEW_PANELS.some((s) => sourceInput.closest(s))) return;
+    const wrapper = sourceInput.closest('[class*="-wrapper"]');
+    const label = wrapper?.querySelector('label');
+    if (!label) return;
+    const sourceKey = label.textContent.trim().toLowerCase();
+    if (!sourceKey) return;
+
+    const reviewFields = getReviewFields();
+    reviewFields.forEach((inputs, key) => {
+      if (key === sourceKey || key.includes(sourceKey) || sourceKey.includes(key)) {
+        inputs.forEach((inp) => { inp.value = sourceInput.value; });
+      }
+    });
+  }
+
+  function wire() {
+    form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
+      if (input.dataset.reviewSyncWired) return;
+      if (REVIEW_PANELS.some((s) => input.closest(s))) return;
+      input.dataset.reviewSyncWired = 'true';
+      input.addEventListener('input', () => syncToReview(input));
+      input.addEventListener('change', () => syncToReview(input));
+    });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href]');
   let formDef;
@@ -1785,6 +1843,7 @@ export default async function decorate(block) {
     decorateIncomeVerification(form);
     decorateLoanApplicationNumber(form);
     decorateRandomCustomerData(form);
+    decorateSummarySync(form);
 
     // Wrap "here" in consent labels so it can be styled blue
     form.querySelectorAll('.field-consent-communication label, .field-consent-marketing label').forEach((label) => {
