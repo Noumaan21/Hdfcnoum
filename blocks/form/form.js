@@ -1723,6 +1723,16 @@ function decorateSummarySync(form) {
     return map;
   }
 
+  function labelsMatch(sourceKey, reviewKey) {
+    if (sourceKey === reviewKey) return true;
+    if (sourceKey.includes(reviewKey)) return true;
+    if (reviewKey.includes(sourceKey)) return true;
+    // Word-level match: all significant words of the review label appear in the source label
+    // Handles cases like "enter employer/company name" matching "employer name"
+    const reviewWords = reviewKey.split(/\W+/).filter((w) => w.length > 2);
+    return reviewWords.length > 0 && reviewWords.every((w) => sourceKey.includes(w));
+  }
+
   function syncToReview(sourceInput) {
     if (REVIEW_PANELS.some((s) => sourceInput.closest(s))) return;
     const wrapper = sourceInput.closest('[class*="-wrapper"]');
@@ -1733,7 +1743,7 @@ function decorateSummarySync(form) {
 
     const reviewFields = getReviewFields();
     reviewFields.forEach((inputs, key) => {
-      if (key === sourceKey || key.includes(sourceKey) || sourceKey.includes(key)) {
+      if (labelsMatch(sourceKey, key)) {
         inputs.forEach((inp) => { inp.value = sourceInput.value; });
       }
     });
