@@ -2070,14 +2070,10 @@ function decorateSummarySync(form) {
 
   function labelsMatch(sourceKey, reviewKey) {
     if (sourceKey === reviewKey) return true;
-    // Use whole-word set membership — never substring includes().
-    // "company".includes("pan") is true, which would wrongly map employer name → PAN field.
     const toWordSet = (str) => new Set(str.split(/\W+/).filter((w) => w.length >= 2));
     const sourceWords = toWordSet(sourceKey);
-    // Only consider review words that are >= 3 chars (ignore "of", "to", etc.)
     const reviewWords = reviewKey.split(/\W+/).filter((w) => w.length >= 3);
     if (reviewWords.length === 0) return false;
-    // Every significant word in the review label must appear as a whole word in the source label
     return reviewWords.every((w) => sourceWords.has(w));
   }
 
@@ -2087,6 +2083,21 @@ function decorateSummarySync(form) {
       return (opt && opt.value) ? (opt.text || opt.value) : '';
     }
     return input.value;
+  }
+
+  function getRadioGroupInfo(radioName) {
+    const firstRadio = form.querySelector(`input[type="radio"][name="${radioName}"]`);
+    if (!firstRadio) return null;
+    const fieldset = firstRadio.closest('fieldset');
+    const legend = fieldset?.querySelector(':scope > legend');
+    if (!legend) return null;
+    const groupLabel = legend.textContent.trim().toLowerCase();
+    const checked = form.querySelector(`input[type="radio"][name="${radioName}"]:checked`);
+    if (!checked) return { groupLabel, val: '' };
+    const optLabel = form.querySelector(`label[for="${checked.id}"]`)
+      || checked.closest('.option-wrapper, .field-wrapper')?.querySelector('label');
+    const val = optLabel ? optLabel.textContent.trim() : (checked.value || '');
+    return { groupLabel, val };
   }
 
   function syncToReview(sourceInput) {
@@ -2109,6 +2120,8 @@ function decorateSummarySync(form) {
   function syncAllToReview() {
     const reviewFields = getReviewFields();
     if (reviewFields.size === 0) return;
+
+    // Sync text/select/textarea fields
     form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea').forEach((input) => {
       if (REVIEW_PANELS.some((s) => input.closest(s))) return;
       if (input.dataset.skipGeneralSync) return;
@@ -2125,6 +2138,21 @@ function decorateSummarySync(form) {
         }
       });
     });
+
+    // Sync radio groups (e.g. Type of Loan)
+    const seenNames = new Set();
+    form.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      if (REVIEW_PANELS.some((s) => radio.closest(s))) return;
+      if (seenNames.has(radio.name)) return;
+      seenNames.add(radio.name);
+      const info = getRadioGroupInfo(radio.name);
+      if (!info || !info.val) return;
+      reviewFields.forEach((inputs, key) => {
+        if (labelsMatch(info.groupLabel, key)) {
+          inputs.forEach((inp) => { inp.value = info.val; });
+        }
+      });
+    });
   }
 
   function wire() {
@@ -2136,11 +2164,22 @@ function decorateSummarySync(form) {
       input.addEventListener('input', () => syncToReview(input));
       input.addEventListener('change', () => syncToReview(input));
     });
+
+    // Wire radio groups
+    form.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      if (radio.dataset.reviewSyncWired) return;
+      if (REVIEW_PANELS.some((s) => radio.closest(s))) return;
+      radio.dataset.reviewSyncWired = 'true';
+      radio.addEventListener('change', () => syncAllToReview());
+    });
   }
 
   wire();
+  // Also observe attribute changes (class, data-active) so wizard step navigation triggers sync
   const observer = new MutationObserver(() => { wire(); syncAllToReview(); });
-  observer.observe(form, { childList: true, subtree: true });
+  observer.observe(form, {
+    childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'data-active', 'data-visible'],
+  });
 }
 
 export default async function decorate(block) {
