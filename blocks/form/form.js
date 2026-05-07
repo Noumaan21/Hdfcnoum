@@ -1931,24 +1931,6 @@ function decorateWorkEmailSync(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
-function decorateAadhaarAddressSync(form) {
-  function sync() {
-    const addressDisplay = form.querySelector('.field-aadhaar-address-display p');
-    const currentAddressInput = form.querySelector('input[name="current_address"]');
-    if (!addressDisplay || !currentAddressInput) return;
-
-    const value = addressDisplay.textContent.trim();
-    if (!value || currentAddressInput.value === value) return;
-
-    currentAddressInput.value = value;
-    currentAddressInput.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  sync();
-  const observer = new MutationObserver(() => sync());
-  observer.observe(form, { childList: true, subtree: true });
-}
-
 function decorateEmployerAddressSync(form) {
   function getSelectedText(select) {
     const opt = select.options[select.selectedIndex];
