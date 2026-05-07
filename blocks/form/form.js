@@ -1549,19 +1549,14 @@ function decorateOtpBackButton(form) {
     submitWrapper.insertAdjacentElement('afterend', backBtn);
 
     backBtn.addEventListener('click', () => {
-      // Stop the running timer
       const otpPanel = form.querySelector('.field-enter-otp-panel');
-      if (otpPanel) {
-        if (otpPanel._otpTimerInterval) {
-          clearInterval(otpPanel._otpTimerInterval);
-          otpPanel._otpTimerInterval = null;
+      if (!otpPanel) return;
+      for (let el = otpPanel.previousElementSibling; el; el = el.previousElementSibling) {
+        if (el.tagName === 'FIELDSET' && el.dataset.visible !== 'false') {
+          navigateWizardToStep(form, el);
+          break;
         }
-        delete otpPanel.dataset.otpTimerWired;
       }
-
-      // Navigate to the first wizard step
-      const firstStep = form.querySelector('.wizard > fieldset');
-      if (firstStep) navigateWizardToStep(form, firstStep);
     });
   }
 
