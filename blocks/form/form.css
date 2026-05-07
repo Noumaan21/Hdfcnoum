@@ -1200,14 +1200,14 @@ main .form form .field-back button {
     color: #3730a3;
     border: 1.5px solid #a5b4fc;
     border-radius: 8px;
-    padding: 10px 20px;
+    padding: 8px 24px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 100%;
+    width: fit-content;
     transition: background-color 0.2s;
     justify-content: center;
 }
@@ -1216,11 +1216,6 @@ main .form form .field-resend-otp button:hover,
 main .form form .field-resend button:hover,
 main .form form .field-back button:hover {
     background-color: rgb(165 180 252 / 50%);
-}
-
-main .form form .field-back button {
-    width: auto;
-    padding: 8px 24px;
 }
 
 /* Resend timer row — hidden by default via CSS, shown via JS with display:flex */
