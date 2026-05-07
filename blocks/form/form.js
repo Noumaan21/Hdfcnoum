@@ -1607,8 +1607,18 @@ function decorateRandomCustomerData(form) {
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
+  function fillAddressDisplay() {
+    const addressDisplay = form.querySelector('.field-aadhaar-address-display');
+    if (!addressDisplay || addressDisplay.dataset.customerFilled) return;
+    const p = addressDisplay.querySelector('p');
+    if (!p) return;
+    addressDisplay.dataset.customerFilled = 'true';
+    p.textContent = customer.currentAddress;
+  }
+
   function apply() {
     form.querySelectorAll('.text-wrapper, .drop-down-wrapper, .multiline-wrapper').forEach(fillField);
+    fillAddressDisplay();
   }
 
   apply();
