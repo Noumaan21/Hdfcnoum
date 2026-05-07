@@ -957,13 +957,13 @@ function decorateIncomeVerification(form) {
 }
 
 const BANK_CARDS = [
-  { value: 'hdfc_bank', name: 'HDFC', logo: 'https://logo.clearbit.com/hdfcbank.com' },
-  { value: 'icici_bank', name: 'ICICI Bank', logo: 'https://logo.clearbit.com/icicibank.com' },
-  { value: 'axis_bank', name: 'Axis', logo: 'https://logo.clearbit.com/axisbank.com' },
-  { value: 'kotak', name: 'Kotak', logo: 'https://logo.clearbit.com/kotak.com' },
-  { value: 'sbi', name: 'SBI', logo: 'https://logo.clearbit.com/sbi.co.in' },
-  { value: 'bank_of_baroda', name: 'Bank of Baroda', logo: 'https://logo.clearbit.com/bankofbaroda.in' },
-  { value: 'idfc_first', name: 'IDFC First Bank', logo: 'https://logo.clearbit.com/idfcfirstbank.com' },
+  { value: 'hdfc_bank', name: 'HDFC', logo: 'https://www.google.com/s2/favicons?domain=hdfcbank.com&sz=128', fallbackColor: '#dc2626' },
+  { value: 'icici_bank', name: 'ICICI Bank', logo: 'https://www.google.com/s2/favicons?domain=icicibank.com&sz=128', fallbackColor: '#f26522' },
+  { value: 'axis_bank', name: 'Axis', logo: 'https://www.google.com/s2/favicons?domain=axisbank.com&sz=128', fallbackColor: '#97144d' },
+  { value: 'kotak', name: 'Kotak', logo: 'https://www.google.com/s2/favicons?domain=kotak.com&sz=128', fallbackColor: '#231f20' },
+  { value: 'sbi', name: 'SBI', logo: 'https://www.google.com/s2/favicons?domain=onlinesbi.sbi&sz=128', fallbackColor: '#1e4799' },
+  { value: 'bank_of_baroda', name: 'Bank of Baroda', logo: 'https://www.google.com/s2/favicons?domain=bankofbaroda.in&sz=128', fallbackColor: '#e55000' },
+  { value: 'idfc_first', name: 'IDFC First Bank', logo: 'https://www.google.com/s2/favicons?domain=idfcfirstbank.com&sz=128', fallbackColor: '#971b2f' },
 ];
 
 function decorateBankSelector(form) {
@@ -997,6 +997,17 @@ function decorateBankSelector(form) {
       img.alt = bank.name;
       img.width = 44;
       img.height = 44;
+      img.onerror = () => {
+        img.style.display = 'none';
+        iconWrap.style.background = bank.fallbackColor;
+        iconWrap.style.color = '#fff';
+        iconWrap.style.fontSize = '0.6rem';
+        iconWrap.style.fontWeight = '700';
+        iconWrap.style.display = 'flex';
+        iconWrap.style.alignItems = 'center';
+        iconWrap.style.justifyContent = 'center';
+        iconWrap.textContent = bank.name.slice(0, 4).toUpperCase();
+      };
       iconWrap.appendChild(img);
 
       const nameEl = document.createElement('span');

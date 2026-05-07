@@ -3773,6 +3773,15 @@ main .form form .field-loan-type-selection .bank-icon-wrap svg {
     border-radius: 8px;
 }
 
+main .form form .field-loan-type-selection .bank-icon-wrap img {
+    display: block;
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f8f9ff;
+}
+
 main .form form .field-loan-type-selection .bank-card.selected .bank-icon-wrap {
     border-color: #3d52d5;
     box-shadow: 0 0 0 1px #3d52d5;
