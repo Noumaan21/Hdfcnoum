@@ -1082,6 +1082,18 @@ function decorateEmailVerifyJoined(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+// PAN format: 3 alpha + 'P' + 1 alpha + 4 digits + 1 alpha
+const PAN_REGEX = /^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/i;
+
+function validatePan(value) {
+  if (!value || value.length !== 10) return 'PAN must be exactly 10 characters.';
+  if (!/^[A-Za-z]{5}/.test(value)) return 'First 5 characters of PAN must be alphabets.';
+  if (value[3].toUpperCase() !== 'P') return 'Fourth character of PAN must be "P".';
+  if (!/[0-9]{4}/.test(value.slice(5, 9))) return 'Characters 6–9 of PAN must be numeric.';
+  if (!PAN_REGEX.test(value)) return 'PAN could not be verified. Please enter a valid PAN.';
+  return null;
+}
+
 function decoratePanVerify(form) {
   function apply() {
     form.querySelectorAll('.text-wrapper').forEach((wrapper) => {
@@ -1090,10 +1102,36 @@ function decoratePanVerify(form) {
       if (!label) return;
       if (!label.textContent.trim().toLowerCase().includes('pan')) return;
       wrapper.dataset.panVerifyAdded = 'true';
+
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.textContent = 'Verify';
       btn.className = 'pan-verify-btn';
+
+      let errorEl = wrapper.querySelector('.pan-error-msg');
+      if (!errorEl) {
+        errorEl = document.createElement('span');
+        errorEl.className = 'pan-error-msg';
+        wrapper.parentNode.insertBefore(errorEl, wrapper.nextSibling);
+      }
+
+      btn.addEventListener('click', () => {
+        const input = wrapper.querySelector('input');
+        const error = validatePan(input?.value?.trim());
+        if (error) {
+          errorEl.textContent = error;
+          errorEl.style.display = 'block';
+          input.setCustomValidity(error);
+        } else {
+          errorEl.textContent = '';
+          errorEl.style.display = 'none';
+          input.setCustomValidity('');
+          btn.textContent = 'Verified';
+          btn.disabled = true;
+          btn.classList.add('pan-verified');
+        }
+      });
+
       wrapper.appendChild(btn);
     });
   }

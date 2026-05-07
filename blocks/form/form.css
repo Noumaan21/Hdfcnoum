@@ -1796,6 +1796,19 @@ main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-
     background: #f0f4ff !important;
 }
 
+main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verified {
+    color: #16a34a !important;
+    cursor: default !important;
+}
+
+main .form form .pan-error-msg {
+    display: none;
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    padding-left: 2px;
+}
+
 /* Email suggestion chips */
 main .form form .field-personal-details-panel .field-email-suggestions {
     display: flex;
