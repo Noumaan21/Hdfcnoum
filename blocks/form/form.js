@@ -2218,7 +2218,6 @@ export default async function decorate(block) {
     decorateEmailOtpPanels(form);
     decorateSalaryAccountDetails(form);
     decorateConfirmButton(form);
-    decorateAadhaarAddressSync(form);
     decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
