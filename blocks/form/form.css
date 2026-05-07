@@ -1793,6 +1793,24 @@ main .form form .text-wrapper[data-pan-verify-added="true"] {
     background: #fff;
     position: relative;
     margin: 0;
+    overflow: visible;
+}
+
+/* Floating label sits on the top border line */
+main .form form .text-wrapper[data-pan-verify-added="true"] > label {
+    position: absolute !important;
+    top: 0 !important;
+    left: 14px !important;
+    transform: translateY(-50%) !important;
+    background: #fff !important;
+    padding: 0 4px !important;
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    color: #888 !important;
+    z-index: 1 !important;
+    line-height: 1 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
 }
 
 main .form form .text-wrapper[data-pan-verify-added="true"] input[type="text"] {
@@ -1815,7 +1833,7 @@ main .form form .text-wrapper[data-pan-verify-added="true"] input[type="text"]:f
 main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-btn {
     border: none !important;
     border-left: 1.5px solid #d0d5dd !important;
-    border-radius: 0 !important;
+    border-radius: 0 8px 8px 0 !important;
     background: transparent !important;
     color: #3d52d5 !important;
     font-weight: 700 !important;
@@ -1826,17 +1844,20 @@ main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-
     cursor: pointer;
     white-space: nowrap;
     box-shadow: none !important;
-    align-self: center;
+    align-self: stretch;
     margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
-main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-btn:hover {
+main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verify-btn:hover:not(:disabled):not(.pan-verified) {
     background: #f0f4ff !important;
 }
 
 main .form form .text-wrapper[data-pan-verify-added="true"] > button.pan-verified {
     color: #16a34a !important;
     cursor: default !important;
+    background: transparent !important;
 }
 
 main .form form .pan-verify-btn:disabled:not(.pan-verified) {
