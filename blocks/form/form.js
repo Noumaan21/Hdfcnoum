@@ -1701,6 +1701,22 @@ function decorateLoanApplicationNumber(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateWorkEmailSync(form) {
+  function wire() {
+    const source = form.querySelector('input[name="work_email_id"]');
+    const target = form.querySelector('input[name="primary_email_id"]');
+    if (!source || !target || source.dataset.primaryEmailSynced) return;
+    source.dataset.primaryEmailSynced = 'true';
+    const sync = () => { target.value = source.value; };
+    source.addEventListener('input', sync);
+    source.addEventListener('change', sync);
+    if (source.value) sync();
+  }
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateEmployerAddressSync(form) {
   function getSelectedText(select) {
     const opt = select.options[select.selectedIndex];
@@ -1974,6 +1990,7 @@ export default async function decorate(block) {
     decorateIncomeVerification(form);
     decorateLoanApplicationNumber(form);
     decorateRandomCustomerData(form);
+    decorateWorkEmailSync(form);
     decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
