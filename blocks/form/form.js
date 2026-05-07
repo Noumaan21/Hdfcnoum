@@ -1082,16 +1082,26 @@ function decorateEmailVerifyJoined(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
-// PAN format: 3 alpha + 'P' + 1 alpha + 4 digits + 1 alpha
-const PAN_REGEX = /^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/i;
+// PAN: 3 alpha + 'P' (4th) + 1 alpha + 4 digits + 1 alpha, total 10 chars
+const PAN_REGEX = /^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/;
 
-function validatePan(value) {
-  if (!value || value.length !== 10) return 'PAN must be exactly 10 characters.';
-  if (!/^[A-Za-z]{5}/.test(value)) return 'First 5 characters of PAN must be alphabets.';
-  if (value[3].toUpperCase() !== 'P') return 'Fourth character of PAN must be "P".';
-  if (!/[0-9]{4}/.test(value.slice(5, 9))) return 'Characters 6–9 of PAN must be numeric.';
-  if (!PAN_REGEX.test(value)) return 'PAN could not be verified. Please enter a valid PAN.';
+function validatePan(raw) {
+  const v = (raw || '').trim().toUpperCase();
+  if (v.length !== 10) return 'PAN must be exactly 10 characters.';
+  if (!/^[A-Z]{5}/.test(v)) return 'First 5 characters of PAN must be alphabets.';
+  if (v[3] !== 'P') return 'Fourth character of PAN must be "P".';
+  if (!/^[0-9]{4}$/.test(v.slice(5, 9))) return 'Characters 6–9 of PAN must be numeric.';
+  if (!PAN_REGEX.test(v)) return 'PAN could not be verified. Please enter a valid PAN.';
   return null;
+}
+
+function getOrCreatePanError(wrapper) {
+  const next = wrapper.nextElementSibling;
+  if (next && next.classList.contains('pan-error-msg')) return next;
+  const el = document.createElement('span');
+  el.className = 'pan-error-msg';
+  wrapper.insertAdjacentElement('afterend', el);
+  return el;
 }
 
 function decoratePanVerify(form) {
@@ -1100,7 +1110,8 @@ function decoratePanVerify(form) {
       if (wrapper.dataset.panVerifyAdded) return;
       const label = wrapper.querySelector('label');
       if (!label) return;
-      if (!label.textContent.trim().toLowerCase().includes('pan')) return;
+      const labelText = label.textContent.trim().toLowerCase();
+      if (labelText !== 'pan number' && !labelText.startsWith('pan ') && labelText !== 'pan') return;
       wrapper.dataset.panVerifyAdded = 'true';
 
       const btn = document.createElement('button');
@@ -1108,24 +1119,18 @@ function decoratePanVerify(form) {
       btn.textContent = 'Verify';
       btn.className = 'pan-verify-btn';
 
-      let errorEl = wrapper.querySelector('.pan-error-msg');
-      if (!errorEl) {
-        errorEl = document.createElement('span');
-        errorEl.className = 'pan-error-msg';
-        wrapper.parentNode.insertBefore(errorEl, wrapper.nextSibling);
-      }
-
       btn.addEventListener('click', () => {
         const input = wrapper.querySelector('input');
-        const error = validatePan(input?.value?.trim());
+        const errorEl = getOrCreatePanError(wrapper);
+        const error = validatePan(input?.value);
         if (error) {
           errorEl.textContent = error;
           errorEl.style.display = 'block';
-          input.setCustomValidity(error);
+          if (input) input.setCustomValidity(error);
         } else {
           errorEl.textContent = '';
           errorEl.style.display = 'none';
-          input.setCustomValidity('');
+          if (input) input.setCustomValidity('');
           btn.textContent = 'Verified';
           btn.disabled = true;
           btn.classList.add('pan-verified');
