@@ -1824,7 +1824,6 @@ function decorateConfirmButton(form) {
   }
 
   function allFilled(panel) {
-    // Check text/select/textarea fields
     const fields = [...panel.querySelectorAll('input, select, textarea')].filter((f) => {
       if (f.type === 'submit' || f.type === 'button' || f.type === 'hidden') return false;
       if (f.disabled) return false;
@@ -1835,22 +1834,7 @@ function decorateConfirmButton(form) {
       if (getComputedStyle(wrapper).display === 'none') return false;
       return true;
     });
-    if (!fields.every((f) => (f.value || '').trim() !== '')) return false;
-
-    // Check every visible radio group has at least one option selected
-    const radioNames = new Set(
-      [...panel.querySelectorAll('input[type="radio"]')]
-        .filter((r) => {
-          const wrapper = r.closest('[class*="-wrapper"]');
-          return wrapper && getComputedStyle(wrapper).display !== 'none';
-        })
-        .map((r) => r.name),
-    );
-    for (const name of radioNames) {
-      if (!panel.querySelector(`input[type="radio"][name="${name}"]:checked`)) return false;
-    }
-
-    return true;
+    return fields.every((f) => (f.value || '').trim() !== '');
   }
 
   function wireBtn(btn) {
