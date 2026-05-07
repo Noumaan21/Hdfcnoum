@@ -1066,13 +1066,28 @@ function isValidEmailDomain(value) {
   return ALLOWED_EMAIL_DOMAINS.some((domain) => v.endsWith(domain));
 }
 
+function isValidEmail(value) {
+  const v = (value || '').trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
 function decorateEmailVerifyJoined(form) {
   const pairs = [
-    { panel: '.field-personal-details-panel', email: '.field-email-id', verify: '.field-verify-email-button' },
-    { panel: '.field-work-email-id-panel', email: '.field-work-email-id', verify: '.field-verify-work-email-button' },
+    {
+      panel: '.field-personal-details-panel',
+      email: '.field-email-id',
+      verify: '.field-verify-email-button',
+      isValid: isValidEmailDomain,
+    },
+    {
+      panel: '.field-work-email-id-panel',
+      email: '.field-work-email-id',
+      verify: '.field-verify-work-email-button',
+      isValid: isValidEmail,
+    },
   ];
   function mergeAll() {
-    pairs.forEach(({ panel, email, verify }) => {
+    pairs.forEach(({ panel, email, verify, isValid }) => {
       const panelEl = form.querySelector(panel);
       if (!panelEl) return;
       const emailWrapper = panelEl.querySelector(email);
@@ -1086,16 +1101,15 @@ function decorateEmailVerifyJoined(form) {
       const input = emailWrapper.querySelector('input');
       btn.disabled = true;
 
-      input.addEventListener('input', () => {
-        btn.disabled = !isValidEmailDomain(input.value);
-      });
+      const checkValidity = () => { btn.disabled = !isValid(input.value); };
+      input.addEventListener('input', checkValidity);
 
       btn.addEventListener('click', () => {
-        if (!isValidEmailDomain(input.value)) return;
+        if (!isValid(input.value)) return;
         btn.textContent = 'Verified';
         btn.disabled = true;
         btn.classList.add('email-verified');
-        input.removeEventListener('input', () => {});
+        input.removeEventListener('input', checkValidity);
       });
     });
   }
