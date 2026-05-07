@@ -1738,8 +1738,34 @@ function decorateEmployerAddressSync(form) {
     });
   }
 
+  function syncOtherToOfficeAddress(val) {
+    const officePanel = form.querySelector('.field-office-address-panel');
+    if (!officePanel) return;
+    officePanel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
+      const label = wrapper.querySelector('label');
+      const input = wrapper.querySelector('input');
+      if (!label || !input) return;
+      const t = label.textContent.trim().toLowerCase();
+      if (t.includes('current employer') || t.includes('employer address')) {
+        input.value = val;
+      }
+    });
+  }
+
+  function wireOtherInput() {
+    const otherInput = form.querySelector('input[name="employer_company_name_other"]');
+    if (!otherInput || otherInput.dataset.officeAddrSynced) return;
+    otherInput.dataset.officeAddrSynced = 'true';
+    otherInput.dataset.skipGeneralSync = 'true';
+    const sync = () => syncOtherToOfficeAddress(otherInput.value);
+    otherInput.addEventListener('input', sync);
+    otherInput.addEventListener('change', sync);
+    if (otherInput.value) sync();
+  }
+
   function wire() {
     relabelReviewFields();
+    wireOtherInput();
 
     const employerPanel = form.querySelector('.field-employer-details-panel');
     if (!employerPanel) return;
