@@ -1088,17 +1088,19 @@ const PAN_REGEX = /^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/;
 function validatePan(raw) {
   const v = (raw || '').trim().toUpperCase();
   if (v.length !== 10) return 'PAN must be exactly 10 characters.';
+  // Pass immediately if the full regex matches — no further checks needed
+  if (PAN_REGEX.test(v)) return null;
+  // Regex failed — give a specific message for the first broken rule
   if (!/^[A-Z]{5}/.test(v)) return 'First 5 characters of PAN must be alphabets.';
   if (v[3] !== 'P') return 'Fourth character of PAN must be "P".';
   if (!/^[0-9]{4}$/.test(v.slice(5, 9))) return 'Characters 6–9 of PAN must be numeric.';
-  if (!PAN_REGEX.test(v)) return 'PAN could not be verified. Please enter a valid PAN.';
-  return null;
+  return 'PAN could not be verified. Please enter a valid PAN.';
 }
 
 function decoratePanVerify(form) {
   function apply() {
     form.querySelectorAll('.text-wrapper').forEach((wrapper) => {
-      if (wrapper.dataset.panVerifyAdded) return;
+      if (wrapper.dataset.panVerifyAdded || wrapper.querySelector('.pan-verify-btn')) return;
       const label = wrapper.querySelector('label');
       if (!label) return;
       const labelText = label.textContent.trim().toLowerCase();
