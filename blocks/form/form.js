@@ -1707,6 +1707,21 @@ function decorateEmployerAddressSync(form) {
     return (opt && opt.value) ? (opt.text || opt.value) : '';
   }
 
+  function relabelReviewFields() {
+    ['.field-loan-details', '.field-xpress-personal-loan-summary-panel'].forEach((sel) => {
+      const panel = form.querySelector(sel);
+      if (!panel) return;
+      panel.querySelectorAll('.text-wrapper').forEach((wrapper) => {
+        const label = wrapper.querySelector('label');
+        if (!label || label.dataset.relabeled) return;
+        if (label.textContent.trim().toLowerCase().includes('employer')) {
+          label.textContent = 'Employer/Company Name';
+          label.dataset.relabeled = 'true';
+        }
+      });
+    });
+  }
+
   function syncToReview(val) {
     ['.field-loan-details', '.field-xpress-personal-loan-summary-panel'].forEach((sel) => {
       const panel = form.querySelector(sel);
@@ -1715,12 +1730,7 @@ function decorateEmployerAddressSync(form) {
         const label = wrapper.querySelector('label');
         const input = wrapper.querySelector('input');
         if (!label || !input) return;
-        const t = label.textContent.trim().toLowerCase();
-        if (t.includes('employer')) {
-          if (!label.dataset.relabeled) {
-            label.textContent = 'Employer/Company Name';
-            label.dataset.relabeled = 'true';
-          }
+        if (label.textContent.trim().toLowerCase().includes('employer')) {
           input.value = val;
         }
       });
@@ -1728,10 +1738,11 @@ function decorateEmployerAddressSync(form) {
   }
 
   function wire() {
+    relabelReviewFields();
+
     const employerPanel = form.querySelector('.field-employer-details-panel');
     if (!employerPanel) return;
 
-    // Find the Employer/Company Name dropdown
     const dropdown = employerPanel.querySelector('select');
     if (!dropdown || dropdown.dataset.employerSynced) return;
     dropdown.dataset.employerSynced = 'true';
@@ -1740,7 +1751,6 @@ function decorateEmployerAddressSync(form) {
     const sync = () => {
       const val = getSelectedText(dropdown);
       if (!val) return;
-      // Use setTimeout so this always runs after syncAllToReview
       setTimeout(() => syncToReview(val), 0);
     };
 
