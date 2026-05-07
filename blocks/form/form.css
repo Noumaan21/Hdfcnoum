@@ -1325,25 +1325,6 @@ main .form form .field-submit-otp button:not(:disabled):hover {
     background-color: rgb(165 180 252 / 50%);
 }
 
-/* Back button on OTP panel */
-main .form form .otp-back-btn {
-    margin-top: 12px;
-    background: transparent;
-    color: #3730a3;
-    border: 1.5px solid #a5b4fc;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 160px;
-    transition: background-color 0.2s;
-}
-
-main .form form .otp-back-btn:hover {
-    background-color: rgb(165 180 252 / 20%);
-}
-
 /* Important links note — centered gray text with top divider */
 main .form form .field-important-links-note {
     border-top: 1px solid #e0e0e0;
