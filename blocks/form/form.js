@@ -1532,43 +1532,28 @@ function decorateOtpInput(form) {
 const CUSTOMER_DATA = [
   {
     fullName: 'Ankit Shah',
-
     currentAddress: 'Mumbai, Maharashtra',
     residenceType: 'Owned',
-    employerName: 'Infosys',
-    typeOfLoan: 'Personal Loan',
   },
   {
     fullName: 'Rahul Mehta',
-
     currentAddress: 'Pune, Maharashtra',
     residenceType: 'Rented',
-    employerName: 'Self Employed',
-    typeOfLoan: 'Business Loan',
   },
   {
     fullName: 'Priya Sharma',
-
     currentAddress: 'Delhi, India',
     residenceType: 'Owned',
-    employerName: 'TCS',
-    typeOfLoan: 'Personal Loan',
   },
   {
     fullName: 'Sneha Reddy',
-
     currentAddress: 'Hyderabad, Telangana',
     residenceType: 'Rented',
-    employerName: 'Wipro',
-    typeOfLoan: 'Home Loan',
   },
   {
     fullName: 'Arjun Kumar',
-
     currentAddress: 'Bangalore, Karnataka',
     residenceType: 'Owned',
-    employerName: 'Accenture',
-    typeOfLoan: 'Car Loan',
   },
 ];
 
@@ -1577,11 +1562,8 @@ function decorateRandomCustomerData(form) {
 
   const LABEL_MAP = [
     { match: 'full name', value: customer.fullName },
-
     { match: 'current address', value: customer.currentAddress },
     { match: 'residence type', value: customer.residenceType },
-    { match: 'employer name', value: customer.employerName },
-    { match: 'type of loan', value: customer.typeOfLoan },
   ];
 
   function fillField(wrapper) {
