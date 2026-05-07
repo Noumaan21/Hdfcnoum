@@ -1701,6 +1701,45 @@ function decorateLoanApplicationNumber(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
+function decorateEmployerAddressSync(form) {
+  const REVIEW_SELECTORS = ['.field-personal-details', '.field-loan-details', '.field-xpress-personal-loan-summary-panel'];
+
+  function findInput(wrapperSelector, labelTest) {
+    let found = null;
+    form.querySelectorAll(wrapperSelector).forEach((wrapper) => {
+      if (found) return;
+      if (REVIEW_SELECTORS.some((s) => wrapper.closest(s))) return;
+      const label = wrapper.querySelector('label');
+      const input = wrapper.querySelector('input[type="text"], textarea');
+      if (!label || !input) return;
+      if (labelTest(label.textContent.trim().toLowerCase())) found = input;
+    });
+    return found;
+  }
+
+  function wire() {
+    const employerInput = findInput('.text-wrapper', (t) => t.includes('employer') && (t.includes('name') || t.includes('company')));
+    const addressInput = findInput('.text-wrapper, .multiline-wrapper', (t) => t.includes('employer') && t.includes('address'));
+    if (!employerInput || !addressInput) return;
+    if (employerInput.dataset.employerAddressSynced) return;
+    employerInput.dataset.employerAddressSynced = 'true';
+
+    const sync = () => {
+      if (!addressInput.dataset.manuallyEdited) {
+        addressInput.value = employerInput.value;
+        addressInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    };
+    employerInput.addEventListener('input', sync);
+    employerInput.addEventListener('change', sync);
+    addressInput.addEventListener('input', () => { addressInput.dataset.manuallyEdited = 'true'; });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateSummarySync(form) {
   const REVIEW_PANELS = [
     '.field-loan-details',
@@ -1860,6 +1899,7 @@ export default async function decorate(block) {
     decorateIncomeVerification(form);
     decorateLoanApplicationNumber(form);
     decorateRandomCustomerData(form);
+    decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
     // Wrap "here" in consent labels so it can be styled blue
