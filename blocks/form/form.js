@@ -1811,6 +1811,52 @@ const SALARY_BANK_DATA = {
   Others:         { name: 'Others',                 ifscPrefix: 'OTHR0' },
 };
 
+function decorateConfirmButton(form) {
+  function getPanel(btn) {
+    // Walk up to the nearest fieldset that is a wizard step or panel-wrapper
+    let el = btn.parentElement;
+    while (el && el !== form) {
+      if (el.tagName === 'FIELDSET' && el.classList.contains('panel-wrapper')) return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+
+  function allFilled(panel) {
+    const fields = [...panel.querySelectorAll('input, select, textarea')].filter((f) => {
+      // Skip hidden, disabled, submit, button, radio/checkbox, and the confirm button itself
+      if (f.type === 'submit' || f.type === 'button' || f.type === 'hidden') return false;
+      if (f.disabled) return false;
+      if (f.type === 'radio' || f.type === 'checkbox') return false;
+      if (f.closest('.field-submit-otp, .field-resend, .field-back')) return false;
+      const wrapper = f.closest('[class*="-wrapper"]');
+      if (!wrapper) return false;
+      // Skip fields inside hidden sub-panels
+      if (getComputedStyle(wrapper).display === 'none') return false;
+      return true;
+    });
+    return fields.every((f) => (f.value || '').trim() !== '');
+  }
+
+  function wire() {
+    const btn = form.querySelector('button[name="confirm_button"]');
+    if (!btn || btn.dataset.confirmWired) return;
+
+    const panel = getPanel(btn);
+    if (!panel) return;
+
+    btn.dataset.confirmWired = 'true';
+    btn.disabled = !allFilled(panel);
+
+    panel.addEventListener('input', () => { btn.disabled = !allFilled(panel); });
+    panel.addEventListener('change', () => { btn.disabled = !allFilled(panel); });
+  }
+
+  wire();
+  const observer = new MutationObserver(() => wire());
+  observer.observe(form, { childList: true, subtree: true });
+}
+
 function decorateSalaryAccountDetails(form) {
   function randDigits(n) {
     return Array.from({ length: n }, () => Math.floor(Math.random() * 10)).join('');
@@ -2149,6 +2195,7 @@ export default async function decorate(block) {
     decorateWorkEmailSync(form);
     decorateEmailOtpPanels(form);
     decorateSalaryAccountDetails(form);
+    decorateConfirmButton(form);
     decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
