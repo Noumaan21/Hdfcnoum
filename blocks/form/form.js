@@ -682,6 +682,7 @@ function decorateLoanSliders(form) {
     });
 
     range._loanConfig = config;
+    range._labelsDiv = labelsDiv;
     sliderWrap.append(range, labelsDiv);
     fieldWrapper.insertAdjacentElement('afterend', sliderWrap);
 
@@ -1630,12 +1631,32 @@ function decorateRandomCustomerData(form) {
 function decorateLoanAmountFromIncome(form) {
   const MIN_LOAN = 50000;
   const MAX_LOAN = 1500000;
+  const STEP = 10000;
 
-  // Max loan = Monthly Net Income × 15, capped at ₹15L, floor ₹50K
+  // Standard formula: Max loan = Monthly Net Income × 10, capped at ₹15L, floor ₹50K
   function calcMaxLoan(monthlyIncome) {
-    const raw = Math.min(monthlyIncome * 15, MAX_LOAN);
-    const rounded = Math.round(raw / 10000) * 10000; // round to nearest 10K step
+    const raw = Math.min(monthlyIncome * 10, MAX_LOAN);
+    const rounded = Math.round(raw / STEP) * STEP;
     return Math.max(rounded, MIN_LOAN);
+  }
+
+  function formatLabel(val) {
+    if (val >= 100000) {
+      const l = val / 100000;
+      return `${Number.isInteger(l) ? l : l.toFixed(1)}L`;
+    }
+    return `${Math.round(val / 1000)}K`;
+  }
+
+  function regenerateLabels(labelsDiv, min, max) {
+    labelsDiv.innerHTML = '';
+    const count = 6;
+    for (let i = 0; i <= count; i++) {
+      const val = Math.round((min + ((max - min) / count) * i) / STEP) * STEP;
+      const span = document.createElement('span');
+      span.textContent = formatLabel(val);
+      labelsDiv.append(span);
+    }
   }
 
   function getLoanRange() {
@@ -1648,6 +1669,7 @@ function decorateLoanAmountFromIncome(form) {
     range._loanConfig.max = newMax;
     range.max = newMax;
     if (Number(range.value) > newMax) range.value = newMax;
+    if (range._labelsDiv) regenerateLabels(range._labelsDiv, MIN_LOAN, newMax);
     range.dispatchEvent(new Event('input', { bubbles: false }));
   }
 
@@ -1666,7 +1688,7 @@ function decorateLoanAmountFromIncome(form) {
       const update = () => {
         const val = Number(input.value);
         if (val > 0) applyMax(calcMaxLoan(val));
-        else applyMax(MAX_LOAN); // reset to full max if cleared
+        else applyMax(MAX_LOAN);
       };
       input.addEventListener('input', update);
       input.addEventListener('change', update);
