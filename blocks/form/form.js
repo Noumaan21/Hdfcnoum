@@ -1701,34 +1701,6 @@ function decorateLoanApplicationNumber(form) {
   observer.observe(form, { childList: true, subtree: true });
 }
 
-function decorateEmailSync(form) {
-  function wire() {
-    const personalPanel = form.querySelector('.field-personal-details-panel');
-    const workEmailPanel = form.querySelector('.field-work-email-id-panel');
-    if (!personalPanel || !workEmailPanel) return;
-
-    const emailInput = personalPanel.querySelector('.field-email-id input');
-    const workEmailInput = workEmailPanel.querySelector('.field-work-email-id input');
-    if (!emailInput || !workEmailInput || emailInput.dataset.emailSyncWired) return;
-    emailInput.dataset.emailSyncWired = 'true';
-
-    const sync = () => {
-      if (emailInput.value) {
-        workEmailInput.value = emailInput.value;
-        workEmailInput.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    };
-
-    emailInput.addEventListener('input', sync);
-    emailInput.addEventListener('change', sync);
-    if (emailInput.value) sync();
-  }
-
-  wire();
-  const observer = new MutationObserver(() => wire());
-  observer.observe(form, { childList: true, subtree: true });
-}
-
 function decorateEmployerAddressSync(form) {
   function getSelectedText(select) {
     const opt = select.options[select.selectedIndex];
@@ -1974,7 +1946,6 @@ export default async function decorate(block) {
     decorateIncomeVerification(form);
     decorateLoanApplicationNumber(form);
     decorateRandomCustomerData(form);
-    decorateEmailSync(form);
     decorateEmployerAddressSync(form);
     decorateSummarySync(form);
 
