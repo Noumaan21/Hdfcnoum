@@ -1757,13 +1757,6 @@ main .form form .text-wrapper[data-pan-verify-added="true"] {
     margin: 0;
 }
 
-main .form form .text-wrapper[data-pan-verify-added="true"] > label {
-    top: 0 !important;
-    left: 14px !important;
-    transform: translateY(-50%) !important;
-    z-index: 2;
-}
-
 main .form form .text-wrapper[data-pan-verify-added="true"] input[type="text"] {
     border: none !important;
     border-radius: 0 !important;
