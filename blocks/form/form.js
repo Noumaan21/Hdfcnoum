@@ -1308,21 +1308,57 @@ function wireEligibilityOtpClick(form) {
 }
 
 function decorateOtpTimer(form) {
-  function wire() {
-    form.querySelectorAll('.field-enter-otp-panel').forEach((panel) => {
-      const isVisible = panel.dataset.visible !== 'false'
-        && getComputedStyle(panel).display !== 'none';
-      if (isVisible && !panel.dataset.otpTimerWired) {
-        wirePanelOtpTimer(panel, form);
-      } else if (!isVisible && panel.dataset.otpTimerWired) {
-        delete panel.dataset.otpTimerWired;
+  const otpPanel = form.querySelector('.field-enter-otp-panel');
+  if (!otpPanel) return;
+
+  function resetOtpState() {
+    // Clear any running interval
+    if (otpPanel._otpTimerInterval) {
+      clearInterval(otpPanel._otpTimerInterval);
+      otpPanel._otpTimerInterval = null;
+    }
+    delete otpPanel.dataset.otpTimerWired;
+    delete otpPanel.dataset.attemptsExhausted;
+    // Hide resend, hide timer text so state is clean for next visit
+    const timerWrapper = otpPanel.querySelector('.field-resend-otp-in') || otpPanel.querySelector('.field-resend-otp-timer');
+    const resendWrapper = otpPanel.querySelector('.field-resend-otp') || otpPanel.querySelector('.field-resend');
+    if (timerWrapper) timerWrapper.style.display = 'none';
+    if (resendWrapper) resendWrapper.style.display = 'none';
+  }
+
+  function startTimerNow() {
+    delete otpPanel.dataset.otpTimerWired;
+    wirePanelOtpTimer(otpPanel, form);
+  }
+
+  // Primary: listen to wizard:navigate fired after current-wizard-step is updated
+  function attachWizardListener() {
+    const wizardEl = form.querySelector('.wizard');
+    if (!wizardEl || wizardEl.dataset.otpNavWired) return;
+    wizardEl.dataset.otpNavWired = 'true';
+    wizardEl.addEventListener('wizard:navigate', (e) => {
+      if (e.detail?.currStep?.id === otpPanel.id) {
+        startTimerNow();
+      } else if (otpPanel.dataset.otpTimerWired) {
+        resetOtpState();
       }
     });
   }
 
-  wire();
-  const observer = new MutationObserver(() => wire());
-  observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-visible', 'style', 'class'] });
+  // Fallback: watch OTP panel class directly
+  const panelObserver = new MutationObserver(() => {
+    const isActive = otpPanel.classList.contains('current-wizard-step');
+    if (isActive && !otpPanel.dataset.otpTimerWired) {
+      startTimerNow();
+    } else if (!isActive && otpPanel.dataset.otpTimerWired) {
+      resetOtpState();
+    }
+  });
+  panelObserver.observe(otpPanel, { attributes: true, attributeFilter: ['class', 'data-active'] });
+
+  attachWizardListener();
+  const wizardWatcher = new MutationObserver(() => attachWizardListener());
+  wizardWatcher.observe(form, { childList: true, subtree: false });
 }
 
 function navigateWizardToStep(form, targetFieldset) {
@@ -1549,17 +1585,6 @@ function decorateOtpBackButton(form) {
     submitWrapper.insertAdjacentElement('afterend', backBtn);
 
     backBtn.addEventListener('click', () => {
-      // Stop the running timer
-      const otpPanel = form.querySelector('.field-enter-otp-panel');
-      if (otpPanel) {
-        if (otpPanel._otpTimerInterval) {
-          clearInterval(otpPanel._otpTimerInterval);
-          otpPanel._otpTimerInterval = null;
-        }
-        delete otpPanel.dataset.otpTimerWired;
-      }
-
-      // Navigate to the first wizard step
       const firstStep = form.querySelector('.wizard > fieldset');
       if (firstStep) navigateWizardToStep(form, firstStep);
     });
