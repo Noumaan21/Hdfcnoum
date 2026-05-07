@@ -1703,7 +1703,7 @@ function decorateLoanApplicationNumber(form) {
 
 function decorateWorkEmailSync(form) {
   function wire() {
-    const source = form.querySelector('input[name="work_email_id"]');
+    const source = form.querySelector('input[name="email_id"]');
     const target = form.querySelector('input[name="primary_email_id"]');
     if (!source || !target || source.dataset.primaryEmailSynced) return;
     source.dataset.primaryEmailSynced = 'true';
