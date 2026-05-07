@@ -4052,7 +4052,7 @@ main .form form .field-work-email-id-panel.collapsed > legend::after {
     transform: rotate(180deg);
 }
 
-/* Unified email + verify box */
+/* Unified email + verify box — matches field-personal-details-panel .field-email-id */
 main .form form .field-work-email-id-panel .field-work-email-id {
     grid-column: span 12 !important;
     padding-top: 0 !important;
@@ -4063,13 +4063,24 @@ main .form form .field-work-email-id-panel .field-work-email-id {
     background: #fff;
     position: relative;
     margin: 0;
+    overflow: visible;
 }
 
 main .form form .field-work-email-id-panel .field-work-email-id > label {
+    position: absolute !important;
     top: 0 !important;
     left: 14px !important;
     transform: translateY(-50%) !important;
-    z-index: 2;
+    background: #fff !important;
+    padding: 0 4px !important;
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    color: #888 !important;
+    z-index: 2 !important;
+    line-height: 1 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
 }
 
 main .form form .field-work-email-id-panel .field-work-email-id input[type="email"] {
@@ -4083,6 +4094,8 @@ main .form form .field-work-email-id-panel .field-work-email-id input[type="emai
     box-shadow: none !important;
     outline: none !important;
     text-align: left !important;
+    font-size: 0.95rem !important;
+    color: #1a1a1a !important;
 }
 
 main .form form .field-work-email-id-panel .field-work-email-id input[type="email"]:focus {
@@ -4093,7 +4106,7 @@ main .form form .field-work-email-id-panel .field-work-email-id input[type="emai
 main .form form .field-work-email-id-panel .field-work-email-id > button {
     border: none !important;
     border-left: 1.5px solid #d0d5dd !important;
-    border-radius: 0 !important;
+    border-radius: 0 8px 8px 0 !important;
     background: transparent !important;
     color: #3d52d5 !important;
     font-weight: 700 !important;
@@ -4104,12 +4117,24 @@ main .form form .field-work-email-id-panel .field-work-email-id > button {
     cursor: pointer;
     white-space: nowrap;
     box-shadow: none !important;
-    align-self: center;
+    align-self: stretch;
+    display: flex !important;
+    align-items: center !important;
     margin: 0 !important;
 }
 
-main .form form .field-work-email-id-panel .field-work-email-id > button:hover {
+main .form form .field-work-email-id-panel .field-work-email-id > button:hover:not(:disabled):not(.email-verified) {
     background: #f0f4ff !important;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id > button:disabled:not(.email-verified) {
+    opacity: 0.4;
+    cursor: not-allowed !important;
+}
+
+main .form form .field-work-email-id-panel .field-work-email-id > button.email-verified {
+    color: #16a34a !important;
+    cursor: default !important;
 }
 
 main .form form .field-work-email-id-panel .field-verify-work-email-button {
