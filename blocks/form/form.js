@@ -1600,10 +1600,10 @@ function decorateRandomCustomerData(form) {
   function fillAddressDisplay() {
     const addressDisplay = form.querySelector('.field-aadhaar-address-display');
     if (!addressDisplay || addressDisplay.dataset.customerFilled) return;
-    const p = addressDisplay.querySelector('p');
-    if (!p) return;
+    const b = addressDisplay.querySelector('b');
+    if (!b) return;
     addressDisplay.dataset.customerFilled = 'true';
-    p.textContent = customer.currentAddress;
+    b.textContent = customer.currentAddress;
   }
 
   function apply() {
