@@ -1572,6 +1572,7 @@ function decorateRandomCustomerData(form) {
   ];
 
   function fillField(wrapper) {
+    if (wrapper.dataset.customerFilled) return;
     const label = wrapper.querySelector('label');
     const input = wrapper.querySelector('input[type="text"], input[type="email"], textarea, select');
     if (!label || !input) return;
@@ -1600,10 +1601,10 @@ function decorateRandomCustomerData(form) {
   function fillAddressDisplay() {
     const addressDisplay = form.querySelector('.field-aadhaar-address-display');
     if (!addressDisplay || addressDisplay.dataset.customerFilled) return;
-    const b = addressDisplay.querySelector('b');
-    if (!b) return;
+    const p = addressDisplay.querySelector('p');
+    if (!p) return;
     addressDisplay.dataset.customerFilled = 'true';
-    b.textContent = customer.currentAddress;
+    p.textContent = customer.currentAddress;
   }
 
   function apply() {
