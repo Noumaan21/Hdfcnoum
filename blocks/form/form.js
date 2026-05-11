@@ -1600,8 +1600,11 @@ function decorateRandomCustomerData(form) {
   function fillAddressDisplay() {
     const addressDisplay = form.querySelector('.field-aadhaar-address-display');
     if (!addressDisplay) return;
-    const b = addressDisplay.querySelector('b');
-    if (!b) return;
+    let b = addressDisplay.querySelector('b');
+    if (!b) {
+      b = document.createElement('b');
+      addressDisplay.appendChild(b);
+    }
     b.textContent = customer.currentAddress;
   }
 
