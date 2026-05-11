@@ -1599,13 +1599,11 @@ function decorateRandomCustomerData(form) {
 
   function fillAddressDisplay() {
     const addressDisplay = form.querySelector('.field-aadhaar-address-display');
-    if (!addressDisplay) return;
-    let b = addressDisplay.querySelector('b');
-    if (!b) {
-      b = document.createElement('b');
-      addressDisplay.appendChild(b);
-    }
-    b.textContent = customer.currentAddress;
+    if (!addressDisplay || addressDisplay.dataset.customerFilled) return;
+    const p = addressDisplay.querySelector('p');
+    if (!p) return;
+    addressDisplay.dataset.customerFilled = 'true';
+    p.textContent = customer.currentAddress;
   }
 
   function apply() {
