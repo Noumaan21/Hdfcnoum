@@ -1572,7 +1572,6 @@ function decorateRandomCustomerData(form) {
   ];
 
   function fillField(wrapper) {
-    if (wrapper.dataset.customerFilled) return;
     const label = wrapper.querySelector('label');
     const input = wrapper.querySelector('input[type="text"], input[type="email"], textarea, select');
     if (!label || !input) return;
